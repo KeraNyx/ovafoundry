@@ -8,7 +8,6 @@
         <table>
             <tr>
                 <th>{{ localize 'OVA.Type' }}</th>
-                <th>{{ localize 'OVA.Level' }}</th>
                 <th>{{ localize 'OVA.Active' }}</th>
             </tr>
             <tr>
@@ -22,20 +21,18 @@
                     </select>
                 </td>
                 <td>
-                    <input name="data.level" type="text" value="{{data.level}}" data-dtype="Number" />
-                </td>
-                <td>
                     <input name="data.active" type="checkbox" value="{{data.active}}" data-dtype="Boolean" {{checked
                         data.active}} />
                 </td>
             </tr>
         </table>
+
         <h1>{{localize "OVA.Perk.NamePlural"}}</h1>
         <div class="perks content flexcol" style=" min-height: 20px;">
             {{#each data.perks as |perk|}}
-            <div class="item flexrow" data-item-id="perk.id">
-                <div class="item-view">{{perk.name}}</div>
-                <a class="item-control item-delete flex0" title="Delete Item"><i class="fas fa-trash"></i></a>
+            <div class="item flexrow" data-item-id="{{perk._id}}">
+                <h3>{{perk.name}} ({{localize 'OVA.EnduranceCost'}}: {{perk.data.enduranceCost}})</h3>
+                <a class="item-control item-delete flex0" title="Delete Item"><i class="fas fa-minus"></i></a>
             </div>
             {{/each}}
         </div>

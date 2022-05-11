@@ -1,15 +1,26 @@
 <form class="actor-sheet {{cssClass}}" autocomplete="off">
-    <header class="sheet-header">
-        <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="64" width="64" />
-        <h1 class="charname"><input name="name" type="text" value="{{actor.name}}"
-                placeholder="{{ localize 'Name' }}" /></h1>
+    <header class="char-sheet-header">
+        <img src="systems/ova/images/ova-logo.png" class="logo" />
+        <div class="character-name-container">
+            <input name="name" type="text" class="character-name" value="{{actor.name}}"
+                placeholder="{{ localize 'OVA.Name' }}" />
+            <div>{{ localize 'OVA.CharacterName'}}</div>
+        </div>
+        <img src="{{actor.img}}" class="character-portrait" data-edit="img" title="{{actor.name}}" height="128"
+            width="128" />
     </header>
 
-    <div class="abilities">
-        <h3>Abilities</h3>
-        {{> "systems/ova/templates/parts/ability-list.html" item=actor.abilities}}
+    <div class="ability-block flexrow">
+        <div>
+            <h3 class="ability-title">{{ localize 'OVA.Ability.NamePlural' }}</h3>
+            {{> "systems/ova/templates/parts/ability-list.html" items=abilities }}
+        </div>
+        <dib>
+            <h3 class="ability-title">{{ localize 'OVA.Weakness.NamePlural' }}</h3>
+            {{> "systems/ova/templates/parts/ability-list.html" items=weaknesses }}
+        </dib>
     </div>
     <div class="combat">
 
     </div>
-</form>
+</form>{}

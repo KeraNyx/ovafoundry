@@ -34,7 +34,7 @@
         ],
         "ability": {
             "type": "ability",
-            "level": 0,
+            "level": 1,
             "active": true,
             "perks": []
         },

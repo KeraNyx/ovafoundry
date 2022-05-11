@@ -1,5 +1,11 @@
 export default class OVACharacterSheet extends ActorSheet {
     /** @override */
+    constructor(...args) {
+        super(...args);
+        this.selectedAbilities = [];
+    }
+
+    /** @override */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             template: 'systems/ova/templates/sheets/ova-character-sheet.html',
@@ -8,11 +14,20 @@ export default class OVACharacterSheet extends ActorSheet {
 
     /** @override */
     activateListeners(html) {
-        html.find('.item-edit').click(this._onEditItem.bind(this));
-        html.find('.item-value').change(this._onItemValueChange.bind(this));
+        super.activateListeners(html);
+        html.find('.item-edit').click(this._editItem.bind(this));
+        html.find('.item-value').on("keyup paste", this._onItemValueChange.bind(this));
+        html.find('.item-value').keypress(this._itemValueValidator.bind(this));
+        html.find('.ability-description').on("contextmenu", this._editItem.bind(this));
+        html.find('.ability-description').click(this._selectAbility.bind(this));
     }
 
-    _onEditItem(event) {
+    //** allow only numbers */
+    _itemValueValidator(event) {
+        if (event.which < 48 || event.which > 57) event.preventDefault();
+    }
+
+    _editItem(event) {
         event.preventDefault();
         const itemId = this._getItemId(event);
 
@@ -25,8 +40,20 @@ export default class OVACharacterSheet extends ActorSheet {
         item.sheet.render(true, { editable: true });
     }
 
-    _onItemValueChange(event) {
+    _selectAbility(event) {
         event.preventDefault();
+
+        const abilityId = this._getItemId(event);
+        if (this.selectedAbilities.includes(abilityId)) {
+            this.selectedAbilities = this.selectedAbilities.filter(id => id !== abilityId);
+        } else {
+            this.selectedAbilities.push(abilityId);
+        }
+
+        this.render(true);
+    }
+
+    _onItemValueChange(event) {
         const itemId = this._getItemId(event);
 
         const item = this.actor.items.find(i => i.id === itemId);
@@ -35,8 +62,10 @@ export default class OVACharacterSheet extends ActorSheet {
             return;
         }
 
-        const value = event.currentTarget.value;
-        item.data.data.value = value;
+        let value = parseInt(event.currentTarget.innerHTML);
+        value = (isNaN(value) || value == 0) ? 1 : value;
+
+        this.actor.updateEmbeddedDocuments("Item", [{ _id: itemId, "data.level": value }]);
     }
 
     _getItemId(event) {
@@ -52,10 +81,12 @@ export default class OVACharacterSheet extends ActorSheet {
         context.abilities = [];
         context.weaknesses = [];
         for (const item of this.actor.items) {
-            if (item.type === "ability") {
-                context.abilities.push(item);
-            } else if (item.type === "weakness") {
-                context.weaknesses.push(item);
+            const itemData = item.data;
+            itemData.selected = this.selectedAbilities.includes(itemData._id);
+            if (itemData.data.type === "ability") {
+                context.abilities.push(itemData);
+            } else if (itemData.data.type === "weakness") {
+                context.weaknesses.push(itemData);
             }
         }
 

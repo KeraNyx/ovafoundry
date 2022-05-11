@@ -1,0 +1,124 @@
+.ability {
+    line-height: 2em;
+    padding-left: .7em;
+}
+
+.ability-level {
+    display: flex;
+    width: auto;
+    max-width: 2em;
+    text-align: center;
+    border-width: 0px;
+}
+
+.ability-level[contenteditable] {
+    outline: 0px solid transparent;
+}
+
+.ability-description {
+    margin-left: .2em;
+    text-align: left;
+}
+
+.abilities {
+    position: relative;
+    background-color: #ebe1e1;
+    padding: .2em .5em .5em .5em;
+    height: 300px
+}
+
+.ability-card {
+    border-radius: 1em;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.ability-list {
+    min-height: 100%;
+    background-color: #fff;
+    background-image: linear-gradient(#eee .1em, transparent .1em);
+    background-size: 100% 2em;
+}
+
+.separator {
+    width: .5em;
+    height: 100%;
+    background-color: #ebe1e1;
+    position: absolute;
+    left: 3em;
+    top: 0;
+}
+
+.ability-block {
+    background-color: #ebe1e1;
+    margin: 0px 5em 0px -8px;
+    padding-left: 5em;
+    padding-top: .5em;
+    border-radius: 0 1.5em 1.5em 0;
+    overflow: hidden;
+}
+
+.ability-title {
+    margin: 0;
+    margin-left: 1em;
+    text-transform: uppercase
+}
+
+.selected {
+    background-color: #9e9797;
+    color: white;
+}
+
+.window-app .window-content {
+    background: #fff;
+}
+
+.char-sheet-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    margin-right: -8px;
+    margin-left: 3em;
+    margin-bottom: 1em;
+}
+
+.logo {
+    position: relative;
+    border-width: 0;
+    width: 200px;
+    height: 113px;
+    right: -18px;
+    top: -10px;
+}
+
+.character-name-container {
+    background-color: #731d20;
+    color: white;
+    padding: .5em 2em;
+    margin: auto 0px;
+    flex:auto;
+}
+
+input.character-name {
+    border-radius: 0px;
+    background-color: white;
+    height: 1.3em;
+    font-size: 20pt;
+}
+
+.portrait-title {
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: .5em;
+}
+
+.character-portrait {
+    background-color: white;
+    border-radius: 2em;
+    border-color: #731d20;
+    border-width: 3px;
+    border-style: solid;
+}

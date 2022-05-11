@@ -20,6 +20,12 @@
         "Type": "Type",
         "Level": "Level",
         "Active": "Active",
-        "EnduranceCost": "Endurance Cost"
+        "EnduranceCost": "Endurance Cost",
+        "Endurance": {
+            "Name": "Endurance",
+            "Short": "END"
+        },
+        "CharacterName": "Character Name",
+        "Portrait": "Portrait"
     }
 }
