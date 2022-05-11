@@ -17,12 +17,31 @@ export default class OVACharacterSheet extends ActorSheet {
         super.activateListeners(html);
         html.find('.item-edit').click(this._editItem.bind(this));
         html.find('.item-value').on("input", this._onItemValueChange.bind(this));
-        html.find('.item-value').on("focus", () => {console.log("focus");});
-        html.find('.item-value').on("focusout", () => {console.log("focusout");});
         html.find('.item-value').keypress(this._itemValueValidator.bind(this));
         html.find('.ability-description').on("contextmenu", this._editItem.bind(this));
         html.find('.ability-description').click(this._selectAbility.bind(this));
         html.find('.roll-dice').click(this._rollDice.bind(this));
+    }
+
+    async _onSubmit(event, options) {
+        const formData = this._getSubmitData({});
+        this._submitItems(formData);
+        await super._onSubmit(event, options);
+    }
+
+    _submitItems(data) {
+        const changedItems = []
+
+        for (const item in data) {
+            // if it start with "item-"
+            if (!item.startsWith("item-")) continue;
+            const itemId = item.split("-")[1];
+            const itemData = data[item];
+            
+            changedItems.push({ _id: itemId, "data.level": itemData });
+        }
+
+        this.actor.updateEmbeddedDocuments("Item", changedItems);
     }
 
     _rollDice(event) {
@@ -101,7 +120,7 @@ export default class OVACharacterSheet extends ActorSheet {
             return;
         }
 
-        let value = parseInt(event.currentTarget.innerHTML);
+        let value = parseInt(event.currentTarget.value);
         value = (isNaN(value) || value == 0) ? 1 : value;
 
         this.actor.updateEmbeddedDocuments("Item", [{ _id: itemId, "data.level": value }]);

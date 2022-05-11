@@ -6,9 +6,10 @@
 .ability-level {
     display: flex;
     width: auto;
-    max-width: 2em;
+    max-width: 1em;
     text-align: center;
     border-width: 0px;
+    background-color: transparent;
 }
 
 .ability-level[contenteditable] {
@@ -16,7 +17,7 @@
 }
 
 .ability-description {
-    margin-left: .2em;
+    margin-left: 1.2em;
     text-align: left;
 }
 
@@ -66,6 +67,10 @@
 
 .selected {
     background-color: #9e9797;
+    color: white;
+}
+
+.selected > * {
     color: white;
 }
 
