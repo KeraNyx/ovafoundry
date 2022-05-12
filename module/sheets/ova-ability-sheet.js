@@ -51,11 +51,7 @@ export default class OVAAbilitySheet extends ItemSheet {
 
         data.item = itemData;
         data.data = itemData.data;
-        if (this.item.isEmbedded && this.item.type == 'ability') {
-            // get abilities from actor that have this item as a root
-            const abilities = this.item.actor.items.map(i => i.data).filter(i => i.data.rootId === this.item.id);
-            data.abilities = abilities;
-        }
+        data.abilities = itemData.data.abilities;
 
         return data;
     }

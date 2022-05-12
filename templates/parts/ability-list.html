@@ -2,16 +2,31 @@
     <div class="ability-card">
         <div class="ability-list items">
             {{#each items as |item|}}
-            <div class="item ability flexrow {{#if item.selected}}selected{{/if}}" data-item-id="{{item._id}}">
-                {{abilitySign item}}<div class="ability-level item-view" data-item-id="{{item._id}}">{{item.data.level}}
+            <div class="item ability {{#if item.selected}}selected{{/if}} {{#if item.data.level.mod}}modified{{/if}}"
+                data-item-id="{{item._id}}">
+                <div class="flexrow">
+                    {{abilitySign item}}<div class="ability-level item-view" data-item-id="{{item._id}}">
+                        {{item.data.level.total}}
+                    </div>
+                    <input class="ability-level item-value hidden" name="item-{{item._id}}" data-item-id="{{item._id}}"
+                        value="{{item.data.level.value}}" data-dtype="Number" />
+                    <div class="ability-description">{{item.name}} {{printPerks item}}</div>
+                    {{!-- <div class="item-controls">
+                        <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                    </div> --}}
                 </div>
-                <input class="ability-level item-value hidden" name="item-{{item._id}}" data-item-id="{{item._id}}"
-                    value="{{item.data.level}}" data-dtype="Number" />
-                <div class="ability-description">{{item.name}} {{printPerks item}}</div>
-                {{!-- <div class="item-controls">
-                    <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-                </div> --}}
+                <div class="flexcol">
+                    {{#each item.data.abilities as |subability|}}
+                    <div class="sub-ability">
+                        <span class="ability-description">
+                            {{abilitySign subability}}{{subability.data.level.total}} {{subability.name}} {{printPerks
+                            item}}
+                        </span>
+                    </div>
+                    {{/each}}
+                </div>
             </div>
+
             {{/each}}
         </div>
     </div>

@@ -1,5 +1,5 @@
 .ability {
-    line-height: 2em;
+    line-height: 28px;
     padding-left: .7em;
 }
 
@@ -21,6 +21,14 @@
 .ability-description {
     margin-left: 1.2em;
     text-align: left;
+    font-style: italic;
+}
+
+.sub-ability {
+    margin-left: 3em;
+    font-style: italic;
+    font-size: small;
+    line-height: 14px;
 }
 
 .abilities {
@@ -40,7 +48,7 @@
     min-height: 100%;
     background-color: #fff;
     background-image: linear-gradient(#eee .1em, transparent .1em);
-    background-size: 100% 2em;
+    background-size: 100% 28px;
 }
 
 .separator {
@@ -67,12 +75,16 @@
     text-transform: uppercase
 }
 
+.modified {
+    background-color: #dbf0f0;
+}
+
 .selected {
     background-color: #9e9797;
     color: white;
 }
 
-.selected > * {
+.selected>* {
     color: white;
 }
 
@@ -105,7 +117,7 @@
     color: white;
     padding: .5em 2em;
     margin: auto 0px;
-    flex:auto;
+    flex: auto;
 }
 
 input.character-name {

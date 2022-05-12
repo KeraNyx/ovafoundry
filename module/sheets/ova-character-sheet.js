@@ -61,7 +61,7 @@ export default class OVACharacterSheet extends ActorSheet {
             const itemId = item.split("-")[1];
             const itemData = data[item];
             
-            changedItems.push({ _id: itemId, "data.level": itemData });
+            changedItems.push({ _id: itemId, "data.level.value": itemData });
         }
 
         this.actor.updateEmbeddedDocuments("Item", changedItems);
@@ -77,9 +77,9 @@ export default class OVACharacterSheet extends ActorSheet {
         let sum = 0;
         for (const item of selectedItems) {
             if (item.data.data.type === "ability") {
-                sum += item.data.data.level;
+                sum += item.data.data.level.total;
             } else if (item.data.data.type === "weakness") {
-                sum -= item.data.data.level;
+                sum -= item.data.data.level.total;
             }
         }
         let negativeDice = false;
@@ -146,7 +146,7 @@ export default class OVACharacterSheet extends ActorSheet {
         let value = parseInt(event.currentTarget.value);
         value = (isNaN(value) || value == 0) ? 1 : value;
 
-        this.actor.updateEmbeddedDocuments("Item", [{ _id: itemId, "data.level": value }]);
+        this.actor.updateEmbeddedDocuments("Item", [{ _id: itemId, "data.level.value": value }]);
     }
 
     _getItemId(event) {
@@ -162,6 +162,7 @@ export default class OVACharacterSheet extends ActorSheet {
         context.abilities = [];
         context.weaknesses = [];
         for (const item of this.actor.items) {
+            if (item.data.data.rootId != '') continue;
             const itemData = item.data;
             itemData.selected = this.selectedAbilities.includes(itemData._id);
             if (itemData.data.type === "ability") {

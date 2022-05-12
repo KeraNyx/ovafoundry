@@ -34,7 +34,9 @@
         ],
         "ability": {
             "type": "ability",
-            "level": 1,
+            "level": {
+                "value": 1
+            },
             "active": true,
             "isRoot": false,
             "rootType": "modifier",
