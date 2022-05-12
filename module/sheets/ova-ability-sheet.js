@@ -10,7 +10,8 @@ export default class OVAAbilitySheet extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
-        html.find(".item-delete").click(this._onDelete.bind(this));
+        html.find(".perk-delete").click(this._onDelete.bind(this));
+        html.find(".item-delete").click(this._onDeleteSelf.bind(this));
 
         if (this.item.isEmbedded) {
             html.find('.item-view').click(this.actor.sheet._startEditingItem.bind(this));
@@ -36,6 +37,12 @@ export default class OVAAbilitySheet extends ItemSheet {
         const itemId = this._getItemId(event);
 
         this.item.removePerk(itemId);
+    }
+    _onDeleteSelf(event) {
+        event.preventDefault();
+
+        this.actor.deleteEmbeddedDocuments("Item", [this.item.id]);
+
     }
 
     _getItemId(event) {

@@ -1,7 +1,10 @@
 <form class="{{cssClass}}" autocomplete="off">
     <header class="sheet-header">
         <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
-        <h1><input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'OVA.Name' }}" /></h1>
+        <h1 class="flex3"><input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'OVA.Name' }}" /></h1>
+        <div class="item flex0" data-item-id="{{perk._id}}">
+            <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        </div>
     </header>
     {{!-- Ability Fields --}}
     <div>
@@ -43,6 +46,7 @@
                 {{/if}}
             </tr>
         </table>
+        {{#if data.isEmbedded}}
         {{#if data.isRoot}}
         {{> "systems/ova/templates/parts/ability-list.html" items=abilities }}
         {{/if}}
@@ -51,9 +55,10 @@
             {{#each data.perks as |perk|}}
             <div class="item flexrow" data-item-id="{{perk._id}}">
                 <h3>{{perk.name}} ({{localize 'OVA.EnduranceCost'}}: {{perk.data.enduranceCost}})</h3>
-                <a class="item-control item-delete flex0" title="Delete Item"><i class="fas fa-minus"></i></a>
+                <a class="item-control perk-delete flex0" title="Delete Item"><i class="fas fa-minus"></i></a>
             </div>
             {{/each}}
         </div>
+        {{/if}}
     </div>
 </form>

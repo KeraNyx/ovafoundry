@@ -16,12 +16,13 @@ export default class OVAItem extends Item {
 
     /** @override */
     prepareItemData() {
+        const itemData = this.data.data;
+        itemData.level.mod = 0;
+        itemData.isEmbedded = this.isEmbedded;
 
         if (!this.isEmbedded) return;
         if (this.type !== 'ability') return;
 
-        const itemData = this.data.data;
-        itemData.level.mod = 0;
         if (itemData.isRoot) {
             // add chilren abilities
             const abilities = this.actor.items.map(i => i.data).filter(i => i.data.rootId === this.id);
