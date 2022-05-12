@@ -172,6 +172,9 @@ export default class OVACharacterSheet extends ActorSheet {
             }
         }
 
+        context.abilities.sort((a, b) => a.name.localeCompare(b.name));
+        context.weaknesses.sort((a, b) => a.name.localeCompare(b.name));
+
         return context;
     }
 }

@@ -3,6 +3,7 @@ export default class OVAItem extends Item {
     addPerks(perks) {
         const currentPerks = this.data.data.perks || [];
         currentPerks.push(...perks);
+        currentPerks.sort((a, b) => a.name.localeCompare(b.name));
         this.actor.updateEmbeddedDocuments("Item", [{ _id: this.id, "data.perks": currentPerks }]);
     }
 
@@ -27,6 +28,7 @@ export default class OVAItem extends Item {
             // add chilren abilities
             const abilities = this.actor.items.map(i => i.data).filter(i => i.data.rootId === this.id);
             itemData.abilities = abilities;
+            itemData.abilities.sort((a, b) => a.data.name.localeCompare(b.data.name));
         } else if (itemData.rootId == '') {
             // add abilities with the same name
             const modifierRoots = this.actor.items.filter(i => i.data.data.rootType == 'modifier' && i.data.data.active).map(i => i.id);

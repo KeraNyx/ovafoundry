@@ -38,11 +38,11 @@ export default class OVAAbilitySheet extends ItemSheet {
 
         this.item.removePerk(itemId);
     }
+    
     _onDeleteSelf(event) {
         event.preventDefault();
 
         this.actor.deleteEmbeddedDocuments("Item", [this.item.id]);
-
     }
 
     _getItemId(event) {
