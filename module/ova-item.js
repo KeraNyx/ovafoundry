@@ -1,4 +1,5 @@
 export default class OVAItem extends Item {
+
     /** @Param []Item */
     addPerks(perks) {
         const currentPerks = this.data.data.perks || [];

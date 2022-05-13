@@ -34,7 +34,7 @@ export default class OVACharacterSheet extends ActorSheet {
         view.classList.toggle("hidden");
         e.target.classList.toggle("hidden");
     }
-    
+
     _startEditingItem(e) {
         e.stopPropagation();
         e.preventDefault();
@@ -60,7 +60,7 @@ export default class OVACharacterSheet extends ActorSheet {
             if (!item.startsWith("item-")) continue;
             const itemId = item.split("-")[1];
             const itemData = data[item];
-            
+
             changedItems.push({ _id: itemId, "data.level.value": itemData });
         }
 
@@ -72,18 +72,29 @@ export default class OVACharacterSheet extends ActorSheet {
 
         // get all selected items
         const selectedItems = this.actor.items.filter(i => this.selectedAbilities.includes(i.id));
+        this.makeRoll(selectedItems);
+    }
 
-        // sum levels
-        let sum = 0;
-        for (const item of selectedItems) {
-            if (item.data.data.type === "ability") {
-                sum += item.data.data.level.total;
-            } else if (item.data.data.type === "weakness") {
-                sum -= item.data.data.level.total;
+    makeRoll(abilities) {
+        const rollData = {
+            mod: 2
+        };
+        const perks = [];
+        for (const ability of abilities) {
+            const abilityData = ability.data;
+            let sign = 1;
+            if (abilityData.data.type === "weakness") sign = -1;
+            rollData[abilityData.name.toLowerCase()] = sign * abilityData.data.level.value;
+            if (abilityData.data.perks) {
+                perks.push(...abilityData.data.perks);
             }
         }
+
+        // TODO: apply perk modifiers here
+
+        // sum roll modifiers
+        let diceTotal = Object.values(rollData).reduce((a, b) => a + b, 0);
         let negativeDice = false;
-        let diceTotal = sum + 2;
         if (diceTotal <= 0) {
             negativeDice = true;
             diceTotal = 2 - diceTotal;
@@ -97,6 +108,9 @@ export default class OVACharacterSheet extends ActorSheet {
             roll = new Roll(`${diceTotal}d6khs`);
         }
         roll.evaluate({ async: false })
+
+        // TODO: execute perk effects here
+
         roll.toMessage({
             flavor: "OVA",
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),
