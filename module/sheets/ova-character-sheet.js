@@ -24,6 +24,14 @@ export default class OVACharacterSheet extends ActorSheet {
         html.find('.ability-description').on("contextmenu", this._editItem.bind(this));
         html.find('.ability-description').click(this._selectAbility.bind(this));
         html.find('.roll-dice').click(this._rollDice.bind(this));
+
+        html.find('.attack-block').on("contextmenu", this._editItem.bind(this));
+        html.find('.add-attack').click(this._addAttack.bind(this));
+    }
+
+    _addAttack(e) {
+        e.preventDefault();
+        this.actor.createAttack();
     }
 
     _endEditingItem(e) {
@@ -180,8 +188,13 @@ export default class OVACharacterSheet extends ActorSheet {
         context.data = this.actor.data;
         context.abilities = [];
         context.weaknesses = [];
+        context.attacks = [];
         for (const item of this.actor.items) {
             const itemData = item.data;
+            if (itemData.type === "attack") {
+                context.attacks.push(itemData);
+                continue;
+            }
             itemData.selected = this.selectedAbilities.includes(itemData._id);
             if (itemData.data.abilities) {
                 itemData.data.abilities.forEach(a => a.data.selected = this.selectedAbilities.includes(a._id));

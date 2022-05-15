@@ -6,6 +6,7 @@ import OVACharacter from "./module/ova-character.js";
 import OVAPerkSheet from "./module/sheets/ova-perk-sheet.js";
 import OVAItem from "./module/ova-item.js";
 import OVADie from "./module/dice/ova-die.js";
+import OVAAttackSheet from "./module/sheets/ova-attack-sheet.js";
 
 Hooks.once("init", function () {
     console.log("OVA | Initializing OVA System");
@@ -19,6 +20,7 @@ Hooks.once("init", function () {
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("ova", OVAAbilitySheet, { types: ["ability"] });
     Items.registerSheet("ova", OVAPerkSheet, { types: ["perk"] });
+    Items.registerSheet("ova", OVAAttackSheet, { types: ["attack"] });
 
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("ova", OVACharacterSheet, { makeDefault: true });

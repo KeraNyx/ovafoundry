@@ -13,15 +13,38 @@
     <div class="ability-block flexrow">
         <div>
             <h3 class="ability-title">{{ localize 'OVA.Ability.NamePlural' }}</h3>
-            {{> "systems/ova/templates/parts/ability-list.html" items=abilities }}
+            {{> "systems/ova/templates/parts/ability-list.html" items=abilities type="ability" }}
         </div>
         <div>
             <h3 class="ability-title">{{ localize 'OVA.Weakness.NamePlural' }}</h3>
-            {{> "systems/ova/templates/parts/ability-list.html" items=weaknesses }}
+            {{> "systems/ova/templates/parts/ability-list.html" items=weaknesses type="weakness" }}
         </div>
     </div>
-    <div class="combat">
-
+    <div class="combat-block">
+        <div class="title">
+            <span>{{localize 'OVA.CombatStats'}}</span>
+            <span class="add-attack">+</span>
+        </div>
+        <div class="list">
+            {{#each attacks as |attack|}}
+            <div class="item attack-block flexrow" data-item-id="{{attack._id}}">
+                <div class="attack-description">
+                    <div class="attack-name">{{attack.name}}</div>
+                    <div class="attack-perks"></div>
+                    <div class="attack-description"></div>
+                </div>
+                <div class="attack-roll">
+                    <input name="attack-roll" type="text" value="{{attack.roll}}" placeholder="{{localize 'OVA.Roll.Name'}}" />
+                </div>
+                <div class="attack-damage">
+                    <input name="attack-dx" type="text" value="{{attack.dx}}" placeholder="{{localize 'OVA.DX.Name'}}" />
+                </div>
+                <div class="attack-notes">
+                    <input name="attack-notes" type="text" value="{{attack.notes}}" placeholder="{{localize 'OVA.Endurance.Short'}}" />
+                </div>
+            {{/each}}
+        </div>
+        <div class="stats"></div>
     </div>
     <div class="fixed-panel">
         <button class='roll-dice'>ROLL</button>

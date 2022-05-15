@@ -32,6 +32,18 @@
             "Short": "END"
         },
         "CharacterName": "Character Name",
-        "Portrait": "Portrait"
+        "Portrait": "Portrait",
+        "Roll": {
+            "Name": "Arrack Roll",
+            "Short": "Roll"
+        },
+        "DX": {
+            "Name": "Damage Multiplier",
+            "Short": "DX"
+        },
+        "Attack": {
+            "DefaultName": "New Attack"
+        },
+        "CombatStats": "Combat Stats"
     }
 }

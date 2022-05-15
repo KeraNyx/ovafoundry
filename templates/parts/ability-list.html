@@ -3,7 +3,7 @@
         <div class="ability-list items">
             {{#each items as |item|}}
             <div class="item ability {{#if item.selected}}selected{{/if}} {{#if item.data.level.mod}}modified{{/if}}"
-                data-item-id="{{item._id}}">
+                data-item-id="{{item._id}}" data-item-type="{{type}}">
                 <div class="flexrow">
                     {{abilitySign item}}<div class="ability-level item-view" data-item-id="{{item._id}}">
                         {{item.data.level.total}}

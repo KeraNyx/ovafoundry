@@ -1,0 +1,31 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
+        <h1 class="flex3"><input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'OVA.Name' }}" /></h1>
+        <div class="item flex0" data-item-id="{{perk._id}}">
+            <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        </div>
+    </header>
+    {{!-- Ability Fields --}}
+    <div>
+        <div class="ability-block flexrow">
+            <div>
+                <h3 class="ability-title">{{ localize 'OVA.Roll.Short' }}</h3>
+                {{> "systems/ova/templates/parts/ability-list.html" items=rollAbilities type="roll" }}
+            </div>
+            <div>
+                <h3 class="ability-title">{{ localize 'OVA.DX.Short' }}</h3>
+                {{> "systems/ova/templates/parts/ability-list.html" items=dxAbilities type="dx" }}
+            </div>
+        </div>
+        <h1>{{localize "OVA.Perk.NamePlural"}}</h1>
+        <div class="perks content flexcol" style=" min-height: 20px;">
+            {{#each data.perks as |perk|}}
+            <div class="item flexrow" data-item-id="{{perk._id}}">
+                <h3>{{perk.name}} {{#if (gt perk.data.level.value 1)}} X{{perk.data.level.value}} {{/if}} ({{localize 'OVA.EnduranceCost'}}: {{mul perk.data.enduranceCost perk.data.level.value}})</h3>
+                <a class="item-control perk-delete flex0" title="Delete Item"><i class="fas fa-minus"></i></a>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</form>

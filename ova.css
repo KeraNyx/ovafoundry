@@ -69,6 +69,40 @@
     overflow: hidden;
 }
 
+.combat-block {
+    position: relative;
+    max-width: 400px;
+    background-color: #731d20;
+    margin-top: 1em;
+    border-radius: 1.5em;
+    overflow: hidden;
+    border: 3px solid #731d20;
+}
+
+.combat-block>.title {
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    margin: .2em;
+}
+
+.combat-block>.list {
+    background-color: white;
+    min-height: 4em;
+}
+.combat-block>.stats {
+    border-top: 1px solid #731d20;
+    background-color: white;
+    min-height: 4em;
+    padding: 0 2px;
+}
+
+.combat-block>.title>.add-attack {
+    position: absolute;
+    right: .5em;
+    cursor: pointer;
+}
+
 .ability-title {
     margin: 0;
     margin-left: 1em;
