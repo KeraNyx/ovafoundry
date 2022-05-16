@@ -1,3 +1,5 @@
+import Effect from "../effects/effect.js";
+
 export default class OVACharacterSheet extends ActorSheet {
     /** @override */
     constructor(...args) {
@@ -87,6 +89,7 @@ export default class OVACharacterSheet extends ActorSheet {
         const rollData = {
             mod: 2
         };
+
         const perks = [];
         for (const ability of abilities) {
             const abilityData = ability.data;

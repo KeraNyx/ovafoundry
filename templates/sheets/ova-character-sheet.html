@@ -13,11 +13,13 @@
     <div class="ability-block flexrow">
         <div>
             <h3 class="ability-title">{{ localize 'OVA.Ability.NamePlural' }}</h3>
-            {{> "systems/ova/templates/parts/ability-list.html" items=abilities selected=selectedAbilities type="ability"}}
+            {{> "systems/ova/templates/parts/ability-list.html" items=abilities selected=selectedAbilities
+            type="ability"}}
         </div>
         <div>
             <h3 class="ability-title">{{ localize 'OVA.Weakness.NamePlural' }}</h3>
-            {{> "systems/ova/templates/parts/ability-list.html" items=weaknesses selected=selectedAbilities type="weakness"}}
+            {{> "systems/ova/templates/parts/ability-list.html" items=weaknesses selected=selectedAbilities
+            type="weakness"}}
         </div>
     </div>
     <div class="combat-block">
@@ -34,17 +36,21 @@
                     <div class="attack-description"></div>
                 </div>
                 <div class="attack-roll">
-                    <input name="attack-roll" type="text" value="{{attack.roll}}" placeholder="{{localize 'OVA.Roll.Name'}}" />
+                    <input name="attack-roll" type="text" value="{{attack.roll}}"
+                        placeholder="{{localize 'OVA.Roll.Name'}}" />
                 </div>
                 <div class="attack-damage">
-                    <input name="attack-dx" type="text" value="{{attack.dx}}" placeholder="{{localize 'OVA.DX.Name'}}" />
+                    <input name="attack-dx" type="text" value="{{attack.dx}}"
+                        placeholder="{{localize 'OVA.DX.Name'}}" />
                 </div>
                 <div class="attack-notes">
-                    <input name="attack-notes" type="text" value="{{attack.notes}}" placeholder="{{localize 'OVA.Endurance.Short'}}" />
+                    <input name="attack-notes" type="text" value="{{attack.notes}}"
+                        placeholder="{{localize 'OVA.Endurance.Short'}}" />
                 </div>
-            {{/each}}
+                {{/each}}
+            </div>
+            <div class="stats"></div>
         </div>
-        <div class="stats"></div>
     </div>
     <div class="fixed-panel">
         <button class='roll-dice'>ROLL</button>
