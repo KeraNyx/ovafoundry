@@ -19,3 +19,7 @@ OVA.rootAbilityTypes = {
 
 OVA.effectTargets = Effect.TARGETS;
 OVA.effectTypes = Effect.TYPES;
+OVA.activeEffectModes = Object.entries(CONST.ACTIVE_EFFECT_MODES).reduce((obj, e) => {
+    obj[e[1]] = "EFFECT.MODE_" + e[0];
+    return obj;
+}, {});

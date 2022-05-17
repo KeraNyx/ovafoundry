@@ -1,11 +1,11 @@
-<div class="effects">
+<section class="effects">
     <div class="title">
         <span>{{localize 'OVA.Effects.Name'}}</span>
         <span class="add-effect">+</span>
     </div>
     <div class="effect-list">
         {{#each effects as |effect|}}
-        <div class="effect flexrow" data-item-id="{{@index}}">
+        <div class="effect flexrow" data-index="{{@index}}">
             <div class="effect-type">
                 <select name="data.effects[{{@index}}].type">
                     {{#select effect.type}}
@@ -15,13 +15,37 @@
                     {{/select}}
                 </select>
             </div>
-            <div class="effect-value">
+            <div class="effect-target">
+                {{#if (eq effect.type "apply-active-effect")}}
+                <select name="data.effects[{{@index}}].target">
+                    {{#select effect.target}}
+                    {{#each ../config.effectTargets as |name target|}}
+                    <option value="{{target}}">{{localize name}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+                {{/if}}
+            </div>
+            <div class="effect-key flex2">
+                <input name="data.effects[{{@index}}].key" type="text" value="{{effect.key}}" />
+            </div>
+            <div class="effect-mode">
+                <select name="data.effects[{{@index}}].mode">
+                    {{#select effect.mode}}
+                    {{#each ../config.activeEffectModes as |name mode|}}
+                    <option value="{{mode}}">{{localize name}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+            <div class="effect-value flex2">
                 <input name="data.effects[{{@index}}].value" type="text" value="{{effect.value}}" data-dtype="Number" />
             </div>
-            <div class="effect-remove">
-                <span class="remove-effect">-</span>
+
+            <div class="effect-remove flex0">
+                <i class="fas fa-minus"></i>
             </div>
         </div>
         {{/each}}
     </div>
-</div>
+</section>

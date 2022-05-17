@@ -10,11 +10,21 @@ export default class BaseItemSheet extends ItemSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
-        
+
         html.find(".perk-delete").click(this._onDelete.bind(this));
         html.find(".item-delete").click(this._onDeleteSelf.bind(this));
 
         html.find(".add-effect").click(this._onAddEffect.bind(this));
+        html.find(".effect-remove").click(this._onDeleteEffect.bind(this));
+    }
+
+    _onDeleteEffect(event) {
+        event.preventDefault();
+
+        const effectIndex = $(event.currentTarget).closest(".effect").data("index");
+        const effects = this.item.data.data.effects;
+        effects.splice(effectIndex, 1);
+        this.item.update({ "data.effects": effects });
     }
 
     _onAddEffect(event) {
@@ -47,7 +57,7 @@ export default class BaseItemSheet extends ItemSheet {
     async _onSubmit(event) {
         await super._onSubmit(event);
     }
-    
+
     async _updateObject(event, formData) {
         // find formData elements containing [digit] and convert them to list of objects
         const formattedData = Object.entries(formData).reduce((acc, [key, value]) => {

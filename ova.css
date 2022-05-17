@@ -231,3 +231,14 @@ input.character-name {
     right: .5em;
     cursor: pointer;
 }
+
+.effect-remove {
+    cursor: pointer;
+    align-content: center;
+    line-height: 2em;
+    text-align: center;
+}
+
+.effect-list {
+    min-width: 666px;
+}
