@@ -49,7 +49,7 @@ export default class OVAItem extends Item {
         if (this.type !== 'attack') {
             itemData.effects = [];
             itemData.data.effects.forEach(e => {
-                itemData.effects.push(new OVAEffect(this, e));
+                itemData.effects.push(new OVAEffect(this.data, e));
             });
         }
     }
@@ -94,21 +94,24 @@ export default class OVAItem extends Item {
 
         // fill selected abilities from actor
         const selectedAbilities = itemData.data.abilities.
-            map(a => this.actor.getEmbeddedDocument("Item", a._id)?.data).
+            map(a => this.actor.getEmbeddedDocument("Item", a)?.data).
             filter(a => a != undefined);
+
+        selectedAbilities.forEach(a => a.effects.forEach(e => itemData.effects.push(e)));
 
         // apply effects to attack data
 
         // base roll values
         const attackData = {
-            roll: 2,
-            dx: 1,
-            endurance: 0,
+            attack: {
+                roll: 2,
+                dx: 1,
+                endurance: 0,
+            }
         };
 
-        selectedAbilities.forEach(a => a.effects.forEach(e => itemData.effects.push(e)));
         itemData.effects.forEach(e => e.apply(attackData));
-        
-        Object.assign(itemData.data, attackData);
+
+        Object.assign(itemData.data, attackData.attack);
     }
 }

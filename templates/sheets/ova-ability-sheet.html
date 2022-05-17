@@ -1,64 +1,75 @@
 <form class="{{cssClass}}" autocomplete="off">
     <header class="sheet-header">
         <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
-        <h1 class="flex3"><input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'OVA.Name' }}" /></h1>
+        <h1 class="flex3"><input name="name" type="text" value="{{item.name}}"
+                placeholder="{{ localize 'OVA.Name' }}" /></h1>
         <div class="item flex0" data-item-id="{{perk._id}}">
             <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
         </div>
     </header>
+    <nav class="tabs" data-group="primary-tabs">
+        <a class="item" data-tab="properties" data-group="primary-tabs">{{localize 'OVA.Properties'}}</a>
+        <a class="item" data-tab="effects" data-group="primary-tabs">{{ localize 'OVA.Effects.Name' }}</a>
+    </nav>
     {{!-- Ability Fields --}}
-    <div>
-        <table>
-            <tr>
-                <th>{{ localize 'OVA.Type' }}</th>
-                <th>{{ localize 'OVA.Active' }}</th>
-                <th>{{ localize 'OVA.Ability.Root' }}</th>
-                {{#if data.isRoot}}<th>{{ localize 'OVA.Ability.RootTypeName' }}</th>{{/if}}
-            </tr>
-            <tr>
-                <td>
-                    <select name="data.type">
-                        {{#select data.type}}
-                        {{#each config.abilityTypes as |name type|}}
-                        <option value="{{type}}">{{localize name}}</option>
-                        {{/each}}
-                        {{/select}}
-                    </select>
-                </td>
-                <td>
-                    <input name="data.active" type="checkbox" value="{{data.active}}" data-dtype="Boolean" {{checked
-                        data.active}} />
-                </td>
-                <td>
-                    <input name="data.isRoot" type="checkbox" value="{{data.isRoot}}" data-dtype="Boolean" {{checked
-                        data.isRoot}} />
-                </td>
-                {{#if data.isRoot}}
-                <td>
-                    <select name="data.rootType">
-                        {{#select data.type}}
-                        {{#each config.rootAbilityTypes as |name type|}}
-                        <option value="{{type}}">{{localize name}}</option>
-                        {{/each}}
-                        {{/select}}
-                    </select>
-                </td>
-                {{/if}}
-            </tr>
-        </table>
-        {{#if data.isEmbedded}}
-        {{#if data.isRoot}}
-        {{> "systems/ova/templates/parts/ability-list.html" items=abilities }}
-        {{/if}}
-        <h1>{{localize "OVA.Perk.NamePlural"}}</h1>
-        <div class="perks content flexcol" style=" min-height: 20px;">
-            {{#each data.perks as |perk|}}
-            <div class="item flexrow" data-item-id="{{perk._id}}">
-                <h3>{{perk.name}} {{#if (gt perk.data.level.value 1)}} X{{perk.data.level.value}} {{/if}} ({{localize 'OVA.EnduranceCost'}}: {{mul perk.data.enduranceCost perk.data.level.value}})</h3>
-                <a class="item-control perk-delete flex0" title="Delete Item"><i class="fas fa-minus"></i></a>
+    <section class="content">
+        <div class="tab" data-tab="properties" data-group="primary-tabs">
+            <table>
+                <tr>
+                    <th>{{ localize 'OVA.Type' }}</th>
+                    <th>{{ localize 'OVA.Active' }}</th>
+                    <th>{{ localize 'OVA.Ability.Root' }}</th>
+                    {{#if data.isRoot}}<th>{{ localize 'OVA.Ability.RootTypeName' }}</th>{{/if}}
+                </tr>
+                <tr>
+                    <td>
+                        <select name="data.type">
+                            {{#select data.type}}
+                            {{#each config.abilityTypes as |name type|}}
+                            <option value="{{type}}">{{localize name}}</option>
+                            {{/each}}
+                            {{/select}}
+                        </select>
+                    </td>
+                    <td>
+                        <input name="data.active" type="checkbox" value="{{data.active}}" data-dtype="Boolean" {{checked
+                            data.active}} />
+                    </td>
+                    <td>
+                        <input name="data.isRoot" type="checkbox" value="{{data.isRoot}}" data-dtype="Boolean" {{checked
+                            data.isRoot}} />
+                    </td>
+                    {{#if data.isRoot}}
+                    <td>
+                        <select name="data.rootType">
+                            {{#select data.type}}
+                            {{#each config.rootAbilityTypes as |name type|}}
+                            <option value="{{type}}">{{localize name}}</option>
+                            {{/each}}
+                            {{/select}}
+                        </select>
+                    </td>
+                    {{/if}}
+                </tr>
+            </table>
+            {{#if data.isEmbedded}}
+            {{#if data.isRoot}}
+            {{> "systems/ova/templates/parts/ability-list.html" items=abilities }}
+            {{/if}}
+            <h1>{{localize "OVA.Perk.NamePlural"}}</h1>
+            <div class="perks content flexcol" style=" min-height: 20px;">
+                {{#each data.perks as |perk|}}
+                <div class="item flexrow" data-item-id="{{perk._id}}">
+                    <h3>{{perk.name}} {{#if (gt perk.data.level.value 1)}} X{{perk.data.level.value}} {{/if}}
+                        ({{localize 'OVA.EnduranceCost'}}: {{mul perk.data.enduranceCost perk.data.level.value}})</h3>
+                    <a class="item-control perk-delete flex0" title="Delete Item"><i class="fas fa-minus"></i></a>
+                </div>
+                {{/each}}
             </div>
-            {{/each}}
+            {{/if}}
         </div>
-        {{/if}}
-    </div>
+        <div class="tab" data-tab="effects" data-group="primary-tabs">
+            {{> "systems/ova/templates/parts/effects.html" effects=data.effects }}
+        </div>
+    </section>
 </form>
