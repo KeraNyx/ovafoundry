@@ -203,6 +203,10 @@ input.character-name {
     font-style: bold;
 }
 
+.attack-cell {
+    max-width: 4em;
+}
+
 .attack-cell-name {
     color: #731d20;
     text-transform: uppercase;

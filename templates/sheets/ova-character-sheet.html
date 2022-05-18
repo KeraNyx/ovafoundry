@@ -32,18 +32,18 @@
             <div class="attack-block flexrow item" data-item-id="{{attack._id}}">
                 <div class="attack-info">
                     <div class="attack-name">{{attack.name}}</div>
-                    <div class="attack-perks"></div>
+                    <div class="attack-perks">{{printPerks attack}}</div>
                     <div class="attack-description"></div>
                 </div>
-                <div class="attack-roll">
+                <div class="attack-cell attack-roll">
                     <div class="attack-cell-name">{{ localize 'OVA.Roll.Short' }}</div>
                     <div class="attack-cell-value">{{ attack.data.roll }}</div>
                 </div>
-                <div class="attack-damage">
+                <div class="attack-cell attack-damage">
                     <div class="attack-cell-name">{{ localize 'OVA.DX.Short' }}</div>
                     <div class="attack-cell-value">{{ attack.data.dx }}</div>
                 </div>
-                <div class="attack-notes">
+                <div class="attack-cell attack-notes">
                     <div class="attack-cell-name">{{ localize 'OVA.Endurance.Short' }}</div>
                     <div class="attack-cell-value">{{ attack.data.endurance }}</div>
                 </div>

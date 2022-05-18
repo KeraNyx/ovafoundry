@@ -10,7 +10,7 @@
                     </div>
                     <input class="ability-level item-value hidden" name="item-{{item._id}}" data-item-id="{{item._id}}"
                         value="{{item.data.level.value}}" data-dtype="Number" />
-                    <div class="ability-description">{{item.name}} {{printPerks item}}</div>
+                    <div class="ability-description">{{item.name}} {{inlinePerks item}}</div>
                 </div>
             </div>
             <div class="flexcol">
@@ -18,7 +18,7 @@
                 <div class="item sub-ability {{#if (contains ../../selected subability._id)}}selected{{/if}}"
                     data-item-id="{{subability._id}}">
                     <div class="ability-description">
-                        {{abilitySign subability}}{{subability.data.level.total}} {{subability.name}} {{printPerks subability}}
+                        {{abilitySign subability}}{{subability.data.level.total}} {{subability.name}} {{inlinePerks subability}}
                     </div>
                 </div>
                 {{/each}}
