@@ -110,6 +110,10 @@
     text-transform: uppercase
 }
 
+.attack-description {
+    font-weight: bold;
+}
+
 .modified {
     background-color: #dbf0f0;
 }
@@ -219,6 +223,10 @@ input.character-name {
     font-size: 3em;
     text-align: center;
     line-height: .8em;
+}
+
+.attack-perks {
+    font-size: small;
 }
 
 .effects {
