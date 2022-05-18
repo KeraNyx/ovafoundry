@@ -35,22 +35,35 @@
                     <div class="attack-perks">{{printPerks attack}}</div>
                     <div class="attack-description">{{attack.data.description}}</div>
                 </div>
-                <div class="attack-cell attack-roll">
-                    <div class="attack-cell-name">{{ localize 'OVA.Roll.Short' }}</div>
-                    <div class="attack-cell-value">{{ attack.data.roll }}</div>
+                <div class="combat-cell attack-roll small">
+                    <div class="combat-cell-name">{{ localize 'OVA.Roll.Short' }}</div>
+                    <div class="combat-cell-value">{{ attack.data.roll }}</div>
                 </div>
-                <div class="attack-cell attack-damage">
-                    <div class="attack-cell-name">{{ localize 'OVA.DX.Short' }}</div>
-                    <div class="attack-cell-value">{{ attack.data.dx }}</div>
+                <div class="combat-cell attack-damage small">
+                    <div class="combat-cell-name">{{ localize 'OVA.DX.Short' }}</div>
+                    <div class="combat-cell-value">{{ attack.data.dx }}</div>
                 </div>
-                <div class="attack-cell attack-notes">
-                    <div class="attack-cell-name">{{ localize 'OVA.Endurance.Short' }}</div>
-                    <div class="attack-cell-value">{{ attack.data.endurance }}</div>
+                <div class="combat-cell attack-notes small">
+                    <div class="combat-cell-name">{{ localize 'OVA.Endurance.Short' }}</div>
+                    <div class="combat-cell-value">{{ attack.data.endurance }}</div>
                 </div>
             </div>
             {{/each}}
         </div>
-        <div class="stats"></div>
+        <div class="stats flexrow">
+            <div class="combat-cell">
+                <div class="combat-cell-name">{{ localize 'OVA.Defense.Name' }}</div>
+                <div class="combat-cell-value">4/5</div>
+            </div>
+            <div class="combat-cell">
+                <div class="combat-cell-name">{{ localize 'OVA.Health.Name' }}</div>
+                <div class="combat-cell-value">{{ actor.data.hp.value }}({{ actor.data.hp.max }})</div>
+            </div>
+            <div class="combat-cell">
+                <div class="combat-cell-name">{{ localize 'OVA.Endurance.Name' }}</div>
+                <div class="combat-cell-value">{{ actor.data.endurance.value }}({{ actor.data.endurance.max }})</div>
+            </div>
+        </div>
     </div>
     <div class="fixed-panel">
         <button class='roll-dice'>ROLL</button>

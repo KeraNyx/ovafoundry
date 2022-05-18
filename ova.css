@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Oswald';
+    src: url('public/fonts/oswald.ttf') format('truetype');
+}
+
 .ability {
     line-height: 28px;
     padding-left: .7em;
@@ -77,7 +82,8 @@
 }
 
 .combat-block {
-    position: relative;
+    margin-left: auto;
+    position: relative;   
     max-width: 400px;
     background-color: #731d20;
     margin-top: 1em;
@@ -99,10 +105,11 @@
 }
 
 .combat-block>.stats {
+    border-radius: 0 0 1.3em 1.3em;
     border-top: 1px solid #731d20;
     background-color: white;
     min-height: 4em;
-    padding: 0 2px;
+    padding: .2em .5em;
 }
 
 .combat-block>.title>.add-attack {
@@ -199,7 +206,7 @@ input.character-name {
 }
 
 .attack-block>* {
-    padding-left: .2em;
+    /* padding-left: .2em; */
     padding-top: .3em;
     border-right: 1px solid #731d20;
     border-bottom: 1px solid #731d20;
@@ -214,31 +221,42 @@ input.character-name {
     font-style: bold;
 }
 
-.attack-cell {
-    max-width: 4em;
+.combat-cell {
+    padding: .2em;
 }
 
-.attack-cell-name {
+.combat-cell.small {
+    max-width: 3em;
+}
+
+.combat-cell-name {
     color: #731d20;
     text-transform: uppercase;
     font-size: 1.2em;
     text-align: center;
 }
 
-.attack-cell-value {
-    font-family: 'FoundryVTT';
+.combat-cell-value {
+    font-family: 'Oswald';
     font-size: 3em;
     text-align: center;
-    line-height: .8em;
+    line-height: 1em;
+    top: -5px;
+    position: relative;
 }
 
 .attack-perks {
     font-size: small;
 }
 
+.attack-info {
+    padding: .2em;
+}
+
 .effects {
     position: relative;   
 }
+
 .effects>.title {
     font-size: 2em;
     font-weight: bold;

@@ -31,9 +31,10 @@ export default class OVACharacterSheet extends ActorSheet {
         html.find('.add-attack').click(this._addAttack.bind(this));
     }
 
-    _addAttack(e) {
+    async _addAttack(e) {
         e.preventDefault();
-        this.actor.createAttack();
+        const attack = await this.actor.createAttack();
+        attack[0].sheet.render(true, { editable: true });
     }
 
     _endEditingItem(e) {

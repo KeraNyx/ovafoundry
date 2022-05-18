@@ -48,7 +48,7 @@ export default class OVAItem extends Item {
         if (this.type !== 'attack') {
             itemData.effects = [];
             itemData.data.effects.forEach(e => {
-                itemData.effects.push(new OVAEffect(this.data, e));
+                itemData.effects.push(new OVAEffect(itemData, e));
             });
         }
     }
@@ -117,7 +117,6 @@ export default class OVAItem extends Item {
         };
 
         itemData.effects.forEach(e => e.apply(attackData));
-
         Object.assign(itemData.data, attackData.attack);
     }
 }

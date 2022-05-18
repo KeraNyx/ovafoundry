@@ -63,7 +63,7 @@ export default class Effect {
             result = undefined;
         }
         if (!Number.isNumeric(result)) {
-            throw new Error(`Effect.safeEval produced a non-numeric result from expression "${expression}"`);
+            throw new Error(`Effect.safeEval produced a non-numeric result from expression "${expression}" (${result})`);
         }
         return result;
     };
