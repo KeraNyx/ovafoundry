@@ -262,13 +262,17 @@ input.character-name {
     text-align: center;
 }
 
-.combat-cell-value {
+.combat-cell-value,
+input[type="text"].combat-cell-value {
     font-family: 'Oswald';
     font-size: 3em;
     text-align: center;
     line-height: 1em;
-    top: -5px;
+    top: -2x;
     position: relative;
+    background: none;
+    height: 1em;
+    border: none;
 }
 
 .attack-perks {

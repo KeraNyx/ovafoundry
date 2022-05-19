@@ -33,7 +33,13 @@ export default class Effect {
             const current = foundry.utils.getProperty(data, key) || 0;
             let updade = Number.fromString(this._safeEval(data, value));
             if (!data.changes) data.changes = [];
-            data.changes.push({ source: this.item, key: key, mode: mode, value: updade });
+            data.changes.push({
+                source: {
+                    data: this.item.data,
+                    name: this.item.name,
+                    type: this.item.type
+                }, key: key, mode: mode, value: updade
+            });
             switch (parseInt(mode)) {
                 case CONST.ACTIVE_EFFECT_MODES.ADD:
                     updade = current + updade;

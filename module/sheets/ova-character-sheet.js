@@ -32,6 +32,10 @@ export default class OVACharacterSheet extends ActorSheet {
 
         html.find('.attack-block').click(this._makeAttackRoll.bind(this));
         html.find('.defense-value').click(this._makeDefenseRoll.bind(this));
+
+        const inputs = html.find("input");
+        inputs.focus(ev => ev.currentTarget.select());
+        inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
     }
 
     async _addAttack(e) {
@@ -199,6 +203,19 @@ export default class OVACharacterSheet extends ActorSheet {
 
         this.actor.updateEmbeddedDocuments("Item", values);
     }
+
+    /** shamelesly stolen from dnd5e. You have my thanks! */
+    _onChangeInputDelta(event) {
+        const input = event.target;
+        const value = input.value;
+        if (["+", "-"].includes(value[0])) {
+            let delta = parseFloat(value);
+            input.value = getProperty(this.actor.data, input.name) + delta;
+        } else if (value[0] === "=") {
+            input.value = value.slice(1);
+        }
+    }
+
 
     _selectAbility(event) {
         event.preventDefault();

@@ -10,8 +10,11 @@
             },
             "endurance": {
                 "value": 40,
-                "max": 40,
-                "bonus": 0
+                "max": 40
+            },
+            "enduranceReserve": {
+                "value": 40,
+                "max": 40
             },
             "defenses": {
                 "evasion": 0

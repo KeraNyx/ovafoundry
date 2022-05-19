@@ -77,7 +77,7 @@ export default class BaseItemSheet extends ItemSheet {
             return acc;
         }, {});
 
-        return await super._updateObject(event, formattedData);
+        return super._updateObject(event, formattedData);
     }
 
     _onDelete(event) {

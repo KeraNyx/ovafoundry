@@ -59,11 +59,13 @@
             </div>
             <div class="combat-cell">
                 <div class="combat-cell-name">{{ localize 'OVA.Health.Name' }}</div>
-                <div class="combat-cell-value">{{ actor.data.hp.value }}({{ actor.data.hp.max }})</div>
+                <input type="text" class="combat-cell-value" name="data.hp.value" value="{{actor.data.hp.value}}" data-dtype="Number"/>
+                <!-- <div class="combat-cell-value">{{ actor.data.hp.value }}({{ actor.data.hp.max }})</div> -->
             </div>
             <div class="combat-cell">
                 <div class="combat-cell-name">{{ localize 'OVA.Endurance.Name' }}</div>
-                <div class="combat-cell-value">{{ actor.data.endurance.value }}({{ actor.data.endurance.max }})</div>
+                <input type="text" class="combat-cell-value" name="data.endurance.value" value="{{actor.data.endurance.value}}" data-dtype="Number"/>
+                <!-- <div class="combat-cell-value">{{ actor.data.endurance.value }}({{ actor.data.endurance.max }})</div> -->
             </div>
         </div>
     </div>

@@ -12,7 +12,14 @@ export default class OVACharacter extends Actor {
 
         const charData = this.data;
         charData.hp = charData.data.hp;
+        if (charData.hp.value > charData.hp.max) {
+            charData.hp.value = charData.hp.max;
+        }
+
         charData.endurance = charData.data.endurance;
+        if (charData.endurance.value > charData.endurance.max) {
+            charData.endurance.value = charData.endurance.max;
+        }
     }
 
     prepareDerivedData() {
