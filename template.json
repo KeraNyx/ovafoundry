@@ -40,6 +40,7 @@
             "level": {
                 "value": 1
             },
+            "passive": false,
             "active": true,
             "isRoot": false,
             "rootType": "modifier",

@@ -26,6 +26,7 @@
         "Type": "Type",
         "Level": "Level",
         "Active": "Active",
+        "Passive": "Is Passive?",
         "EnduranceCost": "Endurance Cost",
         "Endurance": {
             "Name": "Endurance",

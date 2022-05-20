@@ -148,6 +148,7 @@ export default class OVACharacterSheet extends ActorSheet {
 
         // TODO: add changes to list of changes
         dice += result;
+        dice += this.actor.data.globalMod;
         let negativeDice = false;
         if (dice <= 0) {
             negativeDice = true;
@@ -229,6 +230,8 @@ export default class OVACharacterSheet extends ActorSheet {
         event.preventDefault();
 
         const abilityId = this._getItemId(event);
+        const ability = this.actor.items.find(i => i.id === abilityId);
+        if (ability.data.data.passive) return;
         if (this.selectedAbilities.includes(abilityId)) {
             this.selectedAbilities = this.selectedAbilities.filter(id => id !== abilityId);
         } else {

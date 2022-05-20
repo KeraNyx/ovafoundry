@@ -28,6 +28,7 @@ export default class OVACharacter extends Actor {
         this.items.forEach(item => item.prepareItemData());
         const charData = this.data;
         const data = charData.data;
+        charData.globalMod = 0;
         // apply active ability effects to data
         this.items.forEach(item => {
             if (item.type !== "ability") return;

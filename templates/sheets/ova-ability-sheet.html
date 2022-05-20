@@ -18,6 +18,7 @@
                 <tr>
                     <th>{{ localize 'OVA.Type' }}</th>
                     <th>{{ localize 'OVA.Active' }}</th>
+                    <th>{{ localize 'OVA.Passive' }}</th>
                     <th>{{ localize 'OVA.Ability.Root' }}</th>
                     {{#if data.isRoot}}<th>{{ localize 'OVA.Ability.RootTypeName' }}</th>{{/if}}
                 </tr>
@@ -34,6 +35,10 @@
                     <td>
                         <input name="data.active" type="checkbox" value="{{data.active}}" data-dtype="Boolean" {{checked
                             data.active}} />
+                    </td>
+                    <td>
+                        <input name="data.passive" type="checkbox" value="{{data.passive}}" data-dtype="Boolean" {{checked
+                            data.passive}} />
                     </td>
                     <td>
                         <input name="data.isRoot" type="checkbox" value="{{data.isRoot}}" data-dtype="Boolean" {{checked
