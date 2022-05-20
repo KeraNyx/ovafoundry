@@ -19,6 +19,8 @@ export default class OVAAttackSheet extends BaseItemSheet {
 
         var dataset = event.currentTarget.closest(".item").dataset;
         const selectionId = dataset.itemId;
+        const ability = this.actor.items.find(i => i.id === selectionId);
+        if (ability.data.data.passive) return;
 
         let selected = this.item.data.data.abilities;
 
