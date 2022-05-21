@@ -29,6 +29,7 @@ export default class OVACharacter extends Actor {
         const charData = this.data;
         const data = charData.data;
         charData.globalMod = 0;
+        charData.armor = 0;
         // apply active ability effects to data
         this.items.forEach(item => {
             if (item.type !== "ability") return;
@@ -43,5 +44,15 @@ export default class OVACharacter extends Actor {
         }
 
         Object.assign(charData, data);
+    }
+
+    async applyDamage({ roll, dx, ignoreArmor= 0}) {
+        const armor = this.data.armor || 0;
+        const piercing = ignoreArmor || 0
+        const effectiveArmor = Math.max(armor - piercing, 0);
+        const damage = roll * (Math.max(dx - effectiveArmor, 0.5));
+
+        let newHp = Math.max(this.data.hp.value - damage, 0);
+        this.update({ "data.hp.value": newHp });
     }
 }

@@ -106,8 +106,7 @@ export default class OVACharacterSheet extends ActorSheet {
             return;
         }
 
-        const roll = attack.data.roll;
-        this._makeRoll({ roll: roll, type: "attack", attack: attack });
+        this._makeRoll({ ...attack.data, type: "attack", attack: attack });
     }
 
     _makeManualRoll(event) {
@@ -142,7 +141,7 @@ export default class OVACharacterSheet extends ActorSheet {
         this._makeRoll({ roll: diceTotal, changes: perks});
     }
 
-    async _makeRoll({ roll = 2, dx = 1, type = "manual", changes = [], attack = null }) {
+    async _makeRoll({ roll = 2, dx = 1, ignoreArmor = 0, type = "manual", changes = [], attack = null }) {
         const result = await RollPrompt.RenderPrompt("");
         if (result === false) return;
 
@@ -167,6 +166,8 @@ export default class OVACharacterSheet extends ActorSheet {
         const rollData = {
             roll: roll,
             dx: dx,
+            result: dice.result,
+            ignoreArmor: ignoreArmor,
             type: type,
             changes: changes,
         };

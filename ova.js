@@ -124,3 +124,5 @@ Hooks.on("renderChatMessage", (message, html, data) => {
         chat.listenToAttackRoll(message, html, data);
     }
 });
+
+Hooks.on("renderChatLog", chat.chatListeners);
