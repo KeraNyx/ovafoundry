@@ -14,7 +14,7 @@ export const listenToAttackRoll = function (message, html, data) {
         return;
     }
 
-    if (rollData.type !== "attack" && !lastAttack) {
+    if (rollData.type !== "attack" && !lastAttack || lastAttack.user.id === message.user.id) {
         html.find(".flavor-text").html(game.i18n.localize(`OVA.Roll.${rollData.type.capitalize()}`));
         return;
     }
@@ -39,10 +39,4 @@ export const listenToAttackRoll = function (message, html, data) {
     lastAttackHtml = null;
 
     return rollData;
-}
-
-export const createRollMessage = async function (data) {
-    const template = await renderTemplate("systems/ova/templates/chat/roll-message.html", data);
-
-
 }
