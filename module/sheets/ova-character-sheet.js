@@ -93,7 +93,7 @@ export default class OVACharacterSheet extends ActorSheet {
         const defense = event.currentTarget.dataset.deftype;
 
         const dice = this.actor.data.defenses[defense];
-        this._makeRoll(dice, []);
+        this._makeRoll({ roll: dice, type: "defense" });
     }
 
     _makeAttackRoll(event) {
@@ -107,7 +107,7 @@ export default class OVACharacterSheet extends ActorSheet {
         }
 
         const roll = attack.data.roll;
-        this._makeRoll(roll, []);
+        this._makeRoll({ roll: roll, type: "attack", attack: attack });
     }
 
     _makeManualRoll(event) {
@@ -139,40 +139,60 @@ export default class OVACharacterSheet extends ActorSheet {
         // sum roll modifiers
         let diceTotal = Object.values(rollData).reduce((a, b) => a + b, 0);
 
-        this._makeRoll(diceTotal, []);
+        this._makeRoll({ roll: diceTotal, changes: perks});
     }
 
-    async _makeRoll(dice, changes = []) {
+    async _makeRoll({ roll = 2, dx = 1, type = "manual", changes = [], attack = null }) {
         const result = await RollPrompt.RenderPrompt("");
         if (result === false) return;
 
         // TODO: add changes to list of changes
-        dice += result;
-        dice += this.actor.data.globalMod;
+        roll += result;
+        roll += this.actor.data.globalMod;
         let negativeDice = false;
-        if (dice <= 0) {
+        if (roll <= 0) {
             negativeDice = true;
-            dice = 2 - dice;
+            roll = 2 - roll;
         }
 
         // roll dice
-        let roll;
+        let dice;
         if (negativeDice) {
-            roll = new Roll(`${dice}d6kl`);
+            dice = new Roll(`${roll}d6kl`);
         } else {
-            roll = new Roll(`${dice}d6khs`);
+            dice = new Roll(`${roll}d6khs`);
         }
-        roll.evaluate({ async: false })
+        dice.evaluate({ async: false })
+
+        const rollData = {
+            roll: roll,
+            dx: dx,
+            type: type,
+            changes: changes,
+        };
+        const templateData = { 
+            attack: attack, 
+            changes: changes,
+            rollResults: await dice.render({isPrivate: false})
+        };
+
+        let html = await renderTemplate("systems/ova/templates/chat/attack-message.html", templateData);
+
+        const msgData = {
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            user: game.user.data._id,
+            flavor: type,
+            roll: dice,
+            content: html,
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            flags: { "roll-data": rollData },
+        };
 
         // TODO: execute perk effects here
+        ChatMessage.applyRollMode(msgData, game.settings.get("core", "rollMode"));
 
-        roll.toMessage({
-            flavor: "OVA",
-            changes: changes,
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        })
-    }
-
+        ChatMessage.create(msgData);
+    };
     //** allow only numbers */
     _itemValueValidator(event) {
         if (event.which < 48 || event.which > 57) event.preventDefault();

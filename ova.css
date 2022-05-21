@@ -310,3 +310,22 @@ input[type="text"].combat-cell-value {
 .effect-list {
     min-width: 666px;
 }
+
+.chat-attack-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    justify-content: space-around;
+}
+
+.attack-buttons {
+    margin-top: 5px;
+}
+.attack-buttons > * {
+    color: white;
+    background: #731d20;
+}
+.hidden {
+    display: none;
+}

@@ -40,14 +40,19 @@
         "Portrait": "Portrait",
         "Roll": {
             "Name": "Arrack Roll",
-            "Short": "Roll"
+            "Short": "Roll",
+            "Attack": "Attack",
+            "Defense": "Defense",
+            "Manual": "Manual"
         },
         "DX": {
             "Name": "Damage Multiplier",
             "Short": "DX"
         },
         "Attack": {
-            "DefaultName": "New Attack"
+            "DefaultName": "New Attack",
+            "Hit": "Hit",
+            "Miss": "Miss"
         },
         "CombatStats": "Combat Stats",
         "Effects": {
@@ -78,6 +83,8 @@
         },
         "Modifier": {
             "Name": "Modifier"
-        }
+        },
+        "ApplyDamage": "Apply Damage",
+        "ApplyEffect": "Apply Effect"
     }
 }

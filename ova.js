@@ -8,6 +8,8 @@ import OVAItem from "./module/ova-item.js";
 import OVADie from "./module/dice/ova-die.js";
 import OVAAttackSheet from "./module/sheets/ova-attack-sheet.js";
 
+import * as chat from "./module/chat/chat.js";
+
 Hooks.once("init", function () {
     console.log("OVA | Initializing OVA System");
 
@@ -116,3 +118,9 @@ async function preloadTemplates() {
         "systems/ova/templates/parts/effects.html"
     ]);
 }
+
+Hooks.on("renderChatMessage", (message, html, data) => {
+    if (message.roll) {
+        chat.listenToAttackRoll(message, html, data);
+    }
+});

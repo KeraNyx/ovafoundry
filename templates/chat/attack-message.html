@@ -1,0 +1,12 @@
+{{#if attack}}
+<div class="chat-attack-info">
+    <div class="attack-name">{{attack.name}}</div>
+    <div class="attack-perks">{{printPerks attack.data}}</div>
+    <div class="attack-description">{{{attack.data.data.description}}}</div>
+</div>
+{{{rollResults}}}
+<div class="attack-buttons">
+    <button class="hidden" data-action="apply-damage">{{localize "OVA.ApplyDamage"}}</button>
+    <button class="hidden" data-action="apply-effect">{{localize "OVA.ApplyEffect"}}</button>
+</div>
+{{/if}}
