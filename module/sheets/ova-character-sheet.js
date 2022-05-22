@@ -36,6 +36,8 @@ export default class OVACharacterSheet extends ActorSheet {
         html.find('.attack-block').click(this._makeAttackRoll.bind(this));
         html.find('.defense-value').click(this._makeDefenseRoll.bind(this));
 
+        html.find('.effect-delete').click(this._removeEffect.bind(this));
+
         const inputs = html.find("input");
         inputs.focus(ev => ev.currentTarget.select());
         inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
@@ -71,6 +73,13 @@ export default class OVACharacterSheet extends ActorSheet {
         const formData = this._getSubmitData({});
         this._submitItems(formData);
         await super._onSubmit(event, options);
+    }
+
+    _removeEffect(event) {
+        event.preventDefault();
+
+        const effectId = this._getItemId(event);
+        this.actor.deleteEmbeddedDocuments("ActiveEffect", [effectId]);
     }
 
     _submitItems(data) {
@@ -133,15 +142,14 @@ export default class OVACharacterSheet extends ActorSheet {
         }
         let enduranceCost = perks.reduce((cost, perk) => cost + perk.data.level.value * perk.data.enduranceCost, 0);
         if (enduranceCost < 0) enduranceCost = 0;
-        // TODO: apply perk modifiers here
 
         // sum roll modifiers
         let diceTotal = Object.values(rollData).reduce((a, b) => a + b, 0);
 
-        this._makeRoll({ roll: diceTotal, changes: perks});
+        this._makeRoll({ roll: diceTotal, changes: perks, enduranceCost: enduranceCost});
     }
 
-    async _makeRoll({ roll = 2, dx = 1, ignoreArmor = 0, type = "manual", changes = [], attack = null }) {
+    async _makeRoll({ roll = 2, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null }) {
         const result = await RollPrompt.RenderPrompt("");
         if (result === false) return;
 
@@ -162,7 +170,7 @@ export default class OVACharacterSheet extends ActorSheet {
             dice = new Roll(`${roll}d6khs`);
         }
         dice.evaluate({ async: false })
-
+        this.actor.addActiveEffects(effects.filter(e => e.target === 'self'));
         const rollData = {
             roll: roll,
             dx: dx,
@@ -189,7 +197,6 @@ export default class OVACharacterSheet extends ActorSheet {
             flags: { "roll-data": rollData },
         };
 
-        // TODO: execute perk effects here
         ChatMessage.applyRollMode(msgData, game.settings.get("core", "rollMode"));
 
         ChatMessage.create(msgData);

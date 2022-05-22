@@ -2,7 +2,7 @@ export default class OVACharacter extends Actor {
     createAttack() {
         const attackData = {
             name: game.i18n.localize("OVA.Attack.DefaultName"),
-            type: "attack"
+            type: "attack",
         };
         return this.createEmbeddedDocuments("Item", [attackData]);
     }
@@ -22,14 +22,23 @@ export default class OVACharacter extends Actor {
         }
     }
 
+    prepareBaseData() {
+        const charData = this.data;
+
+        charData.globalMod = 0;
+        charData.globalDefMod = 2;
+        charData.armor = 0;
+        charData.resistances = {};
+        charData.attacks = [];
+    }
+
     prepareDerivedData() {
         super.prepareDerivedData();
 
         this.items.forEach(item => item.prepareItemData());
         const charData = this.data;
         const data = charData.data;
-        charData.globalMod = 0;
-        charData.armor = 0;
+
 
         // apply active ability effects to data
         this.items.forEach(item => {
@@ -41,7 +50,7 @@ export default class OVACharacter extends Actor {
 
         // increase all defense valuses by 2 (base modifier)
         for (const defense in data.defenses) {
-            data.defenses[defense] += 2;
+            data.defenses[defense] += charData.globalDefMod;
         }
 
         Object.assign(charData, data);
@@ -52,7 +61,7 @@ export default class OVACharacter extends Actor {
         const piercing = ignoreArmor || 0
         const effectiveArmor = Math.max(armor - piercing, 0);
         const damage = roll * (Math.max(dx - effectiveArmor, 0.5));
-        
+
         // negative damage is healing
         let newHp = Math.max(this.data.hp.value - damage, 0);
         this.update({ "data.hp.value": newHp });
@@ -69,5 +78,23 @@ export default class OVACharacter extends Actor {
                 jitter: 0.25
             });
         }
+    }
+
+    async addActiveEffects(effects) {
+        const afs = []
+        for (let effect of effects) {
+            afs.push({
+                label: effect.source.name,
+                origin: effect.source.uuid,
+                changes: [{
+                    key: effect.key,
+                    mode: effect.mode,
+                    value: effect.value,
+                    priority: effect.priority
+                }]
+            })
+        }
+
+        this.createEmbeddedDocuments("ActiveEffect", afs);
     }
 }

@@ -22,50 +22,84 @@
             type="weakness"}}
         </div>
     </div>
-    <div class="combat-block">
-        <div class="title">
-            <span>{{localize 'OVA.CombatStats'}}</span>
-            <span class="add-attack">+</span>
+    <div class="combat flexrow">
+        <div class="combat-effects">
+            <h3 class="ability-title">{{localize 'OVA.CombatEffects'}}</h3>
+            <div class="ability-card">
+                <div class="ability-list">
+                    {{#each actor.data.effects as |effect|}}
+                    <div class="ability flexrow item" data-item-id="{{effect.data._id}}">
+                        <div class="ability-name">
+                            {{effect.data.label}}
+                        </div>
+                        <a class="item-control effect-delete flex0" title="Delete Item"><i class="fas fa-minus"></i></a>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
         </div>
-        <div class="list">
-            {{#each attacks as |attack|}}
-            <div class="attack-block flexrow item" data-item-id="{{attack._id}}">
-                <div class="attack-info">
-                    <div class="attack-name">{{attack.name}}</div>
-                    <div class="attack-perks">{{printPerks attack}}</div>
-                    <div class="attack-description">{{attack.data.description}}</div>
-                </div>
-                <div class="combat-cell attack-roll small">
-                    <div class="combat-cell-name">{{ localize 'OVA.Roll.Short' }}</div>
-                    <div class="combat-cell-value">{{ attack.roll }}</div>
-                </div>
-                <div class="combat-cell attack-damage small">
-                    <div class="combat-cell-name">{{ localize 'OVA.DX.Short' }}</div>
-                    <div class="combat-cell-value">{{ attack.dx }}</div>
-                </div>
-                <div class="combat-cell attack-notes small">
-                    <div class="combat-cell-name">{{ localize 'OVA.Endurance.Short' }}</div>
-                    <div class="combat-cell-value">{{ attack.enduranceCost }}</div>
-                </div>
+        <div class="combat-block">
+            <div class="title">
+                <span>{{localize 'OVA.CombatStats'}}</span>
+                <span class="add-attack">+</span>
             </div>
-            {{/each}}
-        </div>
-        <div class="stats flexrow">
-            <div class="combat-cell">
-                <div class="combat-cell-name">{{ localize 'OVA.Defense.Name' }}</div>
-                <div class="combat-cell-value">
-                    {{#each actor.data.defenses as |defense type|}}<span class="defense-value" data-deftype="{{type}}">{{defense}}</span>{{#if (not @last)}}/{{/if}}{{/each}}
+            <div class="list">
+                {{#each attacks as |attack|}}
+                <div class="attack-block flexrow item" data-item-id="{{attack._id}}">
+                    <div class="attack-info">
+                        <div class="attack-name">{{attack.name}}</div>
+                        <div class="attack-perks">{{printPerks attack}}</div>
+                        <div class="attack-description">{{attack.data.description}}</div>
+                    </div>
+                    <div class="combat-cell attack-roll small">
+                        <div class="combat-cell-name">{{ localize 'OVA.Roll.Short' }}</div>
+                        <div class="combat-cell-value">{{ attack.roll }}</div>
+                    </div>
+                    <div class="combat-cell attack-damage small">
+                        <div class="combat-cell-name">{{ localize 'OVA.DX.Short' }}</div>
+                        <div class="combat-cell-value">{{ attack.dx }}</div>
+                    </div>
+                    <div class="combat-cell attack-notes small">
+                        <div class="combat-cell-name">{{ localize 'OVA.Endurance.Short' }}</div>
+                        <div class="combat-cell-value">{{ attack.enduranceCost }}</div>
+                    </div>
                 </div>
+                {{/each}}
             </div>
-            <div class="combat-cell">
-                <div class="combat-cell-name">{{ localize 'OVA.Health.Name' }}</div>
-                <input type="text" class="combat-cell-value" name="data.hp.value" value="{{actor.data.hp.value}}" data-dtype="Number"/>
-                <!-- <div class="combat-cell-value">{{ actor.data.hp.value }}({{ actor.data.hp.max }})</div> -->
-            </div>
-            <div class="combat-cell">
-                <div class="combat-cell-name">{{ localize 'OVA.Endurance.Name' }}</div>
-                <input type="text" class="combat-cell-value" name="data.endurance.value" value="{{actor.data.endurance.value}}" data-dtype="Number"/>
-                <!-- <div class="combat-cell-value">{{ actor.data.endurance.value }}({{ actor.data.endurance.max }})</div> -->
+            <div class="stats flexrow">
+                <div class="combat-cell">
+                    <div class="combat-cell-name">{{ localize 'OVA.Defense.Name' }}</div>
+                    <div class="combat-cell-value">
+                        {{#each actor.data.defenses as |defense type|}}<span class="defense-value"
+                            data-deftype="{{type}}">{{defense}}</span>{{#if (not @last)}}/{{/if}}{{/each}}
+                    </div>
+                </div>
+                <div class="combat-side-cell flex0">
+                    {{#if actor.data.armor}}
+                    <div class="combat-side-value combat-cell-name">{{ localize 'OVA.Armor.Name'}}</div>
+                    <div class="combat-side-value combat-cell-value">{{ actor.data.armor }}</div>
+                    {{/if}}
+                    {{#if actor.data.resistances.length}}
+                    <div class="combat-side-value combat-cell-name">{{ localize 'OVA.Resistance.NamePlural'}}</div>
+                    {{#each actor.data.resistances as |name resistance|}}
+                    <div class="combat-side-value combat-cell-value">{{name}}: {{resistance}}</div>
+                    {{/each}}
+                    {{/if}}
+                </div>
+
+                <div class="combat-cell">
+                    <div class="combat-cell-name">{{ localize 'OVA.Health.Name' }}</div>
+                    <input type="text" class="combat-cell-value" name="data.hp.value" value="{{actor.data.hp.value}}"
+                        data-dtype="Number" />
+                    <!-- <div class="combat-cell-value">{{ actor.data.hp.value }}({{ actor.data.hp.max }})</div> -->
+                </div>
+                <div class="combat-cell">
+                    <div class="combat-cell-name">{{ localize 'OVA.Endurance.Name' }}</div>
+                    <input type="text" class="combat-cell-value" name="data.endurance.value"
+                        value="{{actor.data.endurance.value}}" data-dtype="Number" />
+                    <!-- <div class="combat-cell-value">{{ actor.data.endurance.value }}({{ actor.data.endurance.max }})</div> -->
+                </div>
+                <div class="flex1"></div>
             </div>
         </div>
     </div>

@@ -28,33 +28,43 @@ export default class Effect {
 
     apply(data) {
         const { type, target, key, mode, priority, value } = this.data;
+        data.item = this.item.data;
+        if (!data.changes) data.changes = [];
+        let evaluatedValue = Number.fromString(this._safeEval(data, value));
         if (type === 'apply-changes') {
-            data.item = this.item.data;
             const current = foundry.utils.getProperty(data, key) || 0;
-            let updade = Number.fromString(this._safeEval(data, value));
-            if (!data.changes) data.changes = [];
             data.changes.push({
                 source: {
                     data: this.item.data,
                     name: this.item.name,
                     type: this.item.type
-                }, key: key, mode: mode, value: updade
+                }, key: key, mode: mode, value: evaluatedValue
             });
             switch (parseInt(mode)) {
                 case CONST.ACTIVE_EFFECT_MODES.ADD:
-                    updade = current + updade;
+                    evaluatedValue = current + evaluatedValue;
                     break;
                 case CONST.ACTIVE_EFFECT_MODES.MULTIPLY:
-                    updade = current * updade;
+                    evaluatedValue = current * evaluatedValue;
                     break;
                 case CONST.ACTIVE_EFFECT_MODES.DOWGRADE:
-                    updade = Math.min(current, updade);
+                    evaluatedValue = Math.min(current, evaluatedValue);
                     break;
                 case CONST.ACTIVE_EFFECT_MODES.UPGRADE:
-                    updade = Math.max(current, updade);
+                    evaluatedValue = Math.max(current, evaluatedValue);
                     break;
             }
-            foundry.utils.setProperty(data, key, updade);
+            foundry.utils.setProperty(data, key, evaluatedValue);
+        } else if (type === 'apply-active-effect') {
+            if (!data.effects) data.effects = [];
+            data.effects.push({
+                source: {
+                    uuid: this.item.uuid,
+                    data: this.item.data,
+                    name: this.item.name,
+                    type: this.item.type
+                }, target: target, key: key, mode: mode, value: evaluatedValue, priority: priority
+            });
         }
     }
 

@@ -18,7 +18,7 @@
             {{> "systems/ova/templates/parts/ability-list.html" items=abilities selected=selected }}
         </div>
         <h2>{{localize "OVA.Perk.NamePlural"}}</h2>
-        <div class="perks content flexcol" style=" min-height: 20px;">
+        <div class="perks content flexcol" style="min-height: 20px;">
             {{#each data.perks as |perk|}}
             <div class="item flexrow" data-item-id="{{perk._id}}">
                 <h3>{{perk.name}} {{#if (gt perk.data.level.value 1)}} X{{perk.data.level.value}} {{/if}} ({{localize

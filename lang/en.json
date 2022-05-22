@@ -85,6 +85,14 @@
             "Name": "Modifier"
         },
         "ApplyDamage": "Apply Damage",
-        "ApplyEffect": "Apply Effect"
+        "ApplyEffect": "Apply Effect",
+        "Armor": {
+            "Name": "Armor"
+        },
+        "Resistance": {
+            "Name": "Resistance",
+            "NamePlural": "Resistances"
+        },
+        "CombatEffects": "Combat Effects"
     }
 }
