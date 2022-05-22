@@ -70,7 +70,7 @@ export default class OVAItem extends Item {
         data.isEmbedded = this.isEmbedded;
 
         if (data.isRoot) {
-            // add chilren abilities
+            // add child abilities
             const abilities = this.actor.items.map(i => i.data).filter(i => i.data.rootId === this.id);
             data.abilities = abilities;
             data.abilities.sort((a, b) => {
