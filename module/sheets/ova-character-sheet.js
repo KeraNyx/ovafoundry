@@ -155,7 +155,6 @@ export default class OVACharacterSheet extends ActorSheet {
 
         // TODO: add changes to list of changes
         roll += result;
-        roll += this.actor.data.globalMod;
         let negativeDice = false;
         if (roll <= 0) {
             negativeDice = true;

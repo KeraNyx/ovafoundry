@@ -29,6 +29,7 @@ export default class Effect {
     apply(data) {
         const { type, target, key, mode, priority, value } = this.data;
         data.item = this.item.data;
+        data.level = this.item.data.level.value;
         if (!data.changes) data.changes = [];
         let evaluatedValue = Number.fromString(this._safeEval(data, value));
         if (type === 'apply-changes') {
@@ -74,9 +75,9 @@ export default class Effect {
         try {
             // replacing all @ symbols with "data"
             expression = expression.replace(/@/g, 'data.');
-            const src = 'with (sandbox) { return ' + expression + '}';
+            const src = 'with (sandbox) { return ' + expression + '; }';
             const evl = new Function('sandbox', 'data', src);
-            result = evl({ ...data, ...Roll.MATH_PROXY }, data);
+            result = evl({...Roll.MATH_PROXY }, data);
         } catch {
             result = undefined;
         }

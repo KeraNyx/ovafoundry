@@ -110,14 +110,14 @@ export default class OVAItem extends Item {
 
         selectedAbilities.forEach(a => a.effects.forEach(e => itemData.effects.push(e)));
 
-        // apply effects to attack data
-
         // base roll values
         const attackData = {
-            roll: 2,
+            roll: this.actor.data.globalMod + this.actor.data.globalRollMod,
             dx: 1
         };
 
+
+        // apply effects to attack data
         itemData.effects.forEach(e => e.apply(attackData));
         Object.assign(itemData, attackData);
     }

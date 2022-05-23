@@ -30,7 +30,7 @@
                     {{#each actor.data.effects as |effect|}}
                     <div class="ability flexrow item" data-item-id="{{effect.data._id}}">
                         <div class="ability-description">
-                            {{effect.data.label}}
+                            {{effect.data.label}} ({{effect.data.changes.0.key}} {{effect.data.changes.0.value}})
                         </div>
                         <a class="item-control effect-delete flex0" title="Delete Item"><i class="fas fa-minus"></i></a>
                     </div>

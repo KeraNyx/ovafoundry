@@ -11,14 +11,20 @@ export default class OVACharacter extends Actor {
         super.prepareData();
 
         const charData = this.data;
-        charData.hp = charData.data.hp;
         if (charData.hp.value > charData.hp.max) {
             charData.hp.value = charData.hp.max;
         }
 
-        charData.endurance = charData.data.endurance;
         if (charData.endurance.value > charData.endurance.max) {
             charData.endurance.value = charData.endurance.max;
+        }
+        for (const defense in charData.defenses) {
+            if (charData.defenses[defense] < 0) {
+                charData.defenses[defense] = 0;
+            }
+        }
+        if (charData.armor < 0) {
+            charData.armor = 0;
         }
     }
 
@@ -26,10 +32,14 @@ export default class OVACharacter extends Actor {
         const charData = this.data;
 
         charData.globalMod = 0;
+        charData.globalRollMod = 2;
         charData.globalDefMod = 2;
         charData.armor = 0;
         charData.resistances = {};
         charData.attacks = [];
+        charData.defenses = charData.data.defenses;
+        charData.hp = charData.data.hp;
+        charData.endurance = charData.data.endurance;
     }
 
     prepareDerivedData() {
@@ -37,23 +47,19 @@ export default class OVACharacter extends Actor {
 
         this.items.forEach(item => item.prepareItemData());
         const charData = this.data;
-        const data = charData.data;
-
 
         // apply active ability effects to data
         this.items.forEach(item => {
             if (item.type !== "ability") return;
             if (!item.data.data.active) return;
 
-            item.data.effects.forEach(e => e.apply(data));
+            item.data.effects.forEach(e => e.apply(charData));
         });
 
         // increase all defense valuses by 2 (base modifier)
-        for (const defense in data.defenses) {
-            data.defenses[defense] += charData.globalDefMod;
+        for (const defense in charData.defenses) {
+            charData.defenses[defense] += (charData.globalDefMod + charData.globalMod);
         }
-
-        Object.assign(charData, data);
     }
 
     async applyDamage({ result, dx, effects = [], ignoreArmor = 0 }) {
@@ -72,6 +78,7 @@ export default class OVACharacter extends Actor {
         const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
         for (let t of tokens) {
             t.hud.createScrollingText((-damage).signedString(), {
+                icon: "icons/svg/aura.svg",
                 anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
                 direction: damage < 0 ? CONST.TEXT_ANCHOR_POINTS.TOP : CONST.TEXT_ANCHOR_POINTS.BOTTOM,
                 fill: damage < 0 ? "green" : "red",
