@@ -62,6 +62,14 @@ export default class OVAItem extends Item {
         if (!this.isEmbedded) return;
         if (this.type === 'ability') this._prepareAbilittyData();
         if (this.type === 'attack') this._prepareAttackData();
+        if (this.type === 'spell') this._prepareSpellData();
+    }
+
+    _prepareSpellData() {
+        const data = this.data.data;
+        const abilities = this.actor.items.map(i => i.data).filter(i => i.data.rootId === this.id);
+        data.abilities = abilities;
+        this.sheet == null || this.sheet.render(false);
     }
 
     _prepareAbilittyData() {

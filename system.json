@@ -6,9 +6,50 @@
     "version": "0.0.1",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "9.269",
-    "esmodules": ["ova.js"],
-    "styles": ["ova.css"],
-    "packs": [],
+    "esmodules": [
+        "ova.js"
+    ],
+    "styles": [
+        "ova.css"
+    ],
+    "packs": [
+        {
+            "label": "Abilities",
+            "type": "Item",
+            "name": "abilities",
+            "path": "packs/abilities.db",
+            "system": "ova",
+            "package": "ova",
+            "entity": "Item"
+        },
+        {
+            "label": "Weaknesses",
+            "type": "Item",
+            "name": "weaknesses",
+            "path": "packs/weaknesses.db",
+            "system": "ova",
+            "package": "ova",
+            "entity": "Item"
+        },
+        {
+            "label": "Perks",
+            "type": "Item",
+            "name": "perks",
+            "path": "packs/perks.db",
+            "system": "ova",
+            "package": "ova",
+            "entity": "Item"
+        },
+        {
+            "label": "Flaws",
+            "type": "Item",
+            "name": "flaws",
+            "path": "packs/flaws.db",
+            "system": "ova",
+            "package": "ova",
+            "entity": "Item"
+        }
+    ],
     "languages": [
         {
             "lang": "en",
