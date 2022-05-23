@@ -94,6 +94,10 @@
             "NamePlural": "Resistances"
         },
         "CombatEffects": "Combat Effects",
-        "Magic": "Magic"
+        "Magic": "Magic",
+        "Spell": {
+            "Name": "Spell",
+            "DefaultName": "New Spell"
+        }
     }
 }

@@ -109,7 +109,7 @@
     border-top: 1px solid #731d20;
     background-color: white;
     min-height: 4em;
-    padding: .2em .5em;
+    padding: .2em 0;
 }
 
 .combat-block .title .add-attack {
@@ -248,7 +248,8 @@ input.character-name {
 }
 
 .combat-cell {
-    padding: .2em;
+    margin-left: .5em;
+    padding: .2em 0;
 }
 
 .combat-cell.small {

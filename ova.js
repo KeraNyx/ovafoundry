@@ -7,6 +7,7 @@ import OVAPerkSheet from "./module/sheets/ova-perk-sheet.js";
 import OVAItem from "./module/ova-item.js";
 import OVADie from "./module/dice/ova-die.js";
 import OVAAttackSheet from "./module/sheets/ova-attack-sheet.js";
+import OVASpellSheet from "./module/sheets/ova-spell-sheet.js";
 
 import * as chat from "./module/chat/chat.js";
 
@@ -23,6 +24,7 @@ Hooks.once("init", function () {
     Items.registerSheet("ova", OVAAbilitySheet, { types: ["ability"] });
     Items.registerSheet("ova", OVAPerkSheet, { types: ["perk"] });
     Items.registerSheet("ova", OVAAttackSheet, { types: ["attack"] });
+    Items.registerSheet("ova", OVASpellSheet, { types: ["spell"] });
 
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("ova", OVACharacterSheet, { makeDefault: true });
@@ -62,15 +64,7 @@ function registerHelper() {
         let perks = ability.data.perks;
         if (!perks) return "";
 
-        let perkString = formatPerks(ability);
-        let enduranceCost = 0;
-        for (let i = 0; i < perks.length; i++) {
-            enduranceCost += perks[i].data.enduranceCost * perks[i].data.level.value;
-        }
-
-        if (enduranceCost > 0) {
-            perkString += "; " + enduranceCost + " " + game.i18n.format("OVA.Endurance.Short");
-        }
+        let perkString = formatPerks(ability, true);
 
         // add brackets
         if (perkString !== "") {
@@ -83,7 +77,7 @@ function registerHelper() {
     Handlebars.registerHelper("printPerks", formatPerks);
 }
 
-function formatPerks(ability) {
+function formatPerks(ability, printEndurance = false) {
     let perks = ability.data.perks;
     if (!perks) return "";
 
@@ -96,6 +90,7 @@ function formatPerks(ability) {
     });
 
     let perkString = "";
+    let enduranceCost = 0;
     for (let i = 0; i < perks.length; i++) {
         perkString += perks[i].name.toUpperCase();
         if (perks[i].data.level.value > 1) {
@@ -106,8 +101,15 @@ function formatPerks(ability) {
         } else {
             perkString += ", ";
         }
+        enduranceCost += perks[i].data.enduranceCost * perks[i].data.level.value;
     }
     perkString = perkString.substring(0, perkString.length - 2);
+
+    if (enduranceCost < 0) enduranceCost = 0;
+    if (enduranceCost > 0 && printEndurance) {
+        perkString += "; " + enduranceCost + " " + game.i18n.format("OVA.Endurance.Short");
+    }
+
 
     return perkString;
 }

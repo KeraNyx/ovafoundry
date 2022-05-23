@@ -1,4 +1,4 @@
-export default class Effect {
+export default class OVAEffect {
     data = {};
     item = null;
     constructor(item, data) {

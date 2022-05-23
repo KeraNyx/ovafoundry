@@ -38,7 +38,7 @@ export default class OVAItem extends Item {
 
         itemData.effects = [];
         let enduranceCost = 0;
-        if (itemData.type !== 'perk') {
+        if (itemData.type === 'attack' || itemData.type === 'ability') {
             itemData.data.perks.forEach(p => {
                 enduranceCost += p.data.level.value * p.data.enduranceCost;
                 p.data.effects.forEach(e => {
@@ -49,7 +49,7 @@ export default class OVAItem extends Item {
         if (enduranceCost < 0) enduranceCost = 0;
         itemData.enduranceCost = enduranceCost;
 
-        if (this.type !== 'attack') {
+        if (this.type === 'perk' || this.type === 'ability') {
             itemData.effects = [];
             itemData.data.effects.forEach(e => {
                 itemData.effects.push(new OVAEffect(itemData, e));

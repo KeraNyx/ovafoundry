@@ -28,12 +28,16 @@
         "types": [
             "ability",
             "perk",
-            "attack"
+            "attack",
+            "spell"
         ],
         "attack": {
             "description": "",
             "abilities": [],
             "perks": []
+        },
+        "spell": {
+            "description": ""
         },
         "ability": {
             "type": "ability",

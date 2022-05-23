@@ -1,10 +1,18 @@
 export default class OVACharacter extends Actor {
-    createAttack() {
+    async createAttack() {
         const attackData = {
             name: game.i18n.localize("OVA.Attack.DefaultName"),
             type: "attack",
         };
         return this.createEmbeddedDocuments("Item", [attackData]);
+    }
+
+    async createSpell() {
+        const spellData = {
+            name: game.i18n.localize("OVA.Spell.DefaultName"),
+            type: "spell",
+        };
+        return this.createEmbeddedDocuments("Item", [spellData]);
     }
 
     prepareData() {

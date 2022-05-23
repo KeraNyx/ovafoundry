@@ -1,7 +1,7 @@
 {{#if attack}}
 <div class="chat-attack-info">
     <div class="attack-name">{{attack.name}}</div>
-    <div class="attack-perks">{{printPerks attack.data}}</div>
+    <div class="attack-perks">{{printPerks attack.data true}}</div>
     <div class="attack-description">{{{attack.data.data.description}}}</div>
 </div>
 {{{rollResults}}}

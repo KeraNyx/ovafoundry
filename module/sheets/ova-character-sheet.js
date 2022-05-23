@@ -46,8 +46,13 @@ export default class OVACharacterSheet extends ActorSheet {
 
     async _addAttack(e) {
         e.preventDefault();
-        const attack = await this.actor.createAttack();
-        attack[0].sheet.render(true, { editable: true });
+        if (this._tabs[0].active === "combat-stats") {
+            const attack = await this.actor.createAttack();
+            attack[0].sheet.render(true, { editable: true });
+        } else {
+            const spell = await this.actor.createSpell();
+            spell[0].sheet.render(true, { editable: true });
+        }
     }
 
     _endEditingItem(e) {
@@ -296,14 +301,21 @@ export default class OVACharacterSheet extends ActorSheet {
         context.config = CONFIG.OVA;
         context.actor = this.actor;
         context.data = this.actor.data;
+
+        // TODO: move to character object?
         context.abilities = [];
         context.weaknesses = [];
         context.attacks = [];
+        context.spells = [];
         context.selectedAbilities = this.selectedAbilities;
         for (const item of this.actor.items) {
             const itemData = item.data;
             if (itemData.type === "attack") {
                 context.attacks.push(itemData);
+                continue;
+            }
+            if (itemData.type === "spell") {
+                context.spells.push(itemData);
                 continue;
             }
             if (itemData.data.rootId != '') continue;
