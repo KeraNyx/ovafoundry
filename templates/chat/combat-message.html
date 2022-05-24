@@ -4,9 +4,9 @@
     <div class="attack-perks">{{printPerks attack.data true}}</div>
     <div class="attack-description">{{{attack.data.data.description}}}</div>
 </div>
+{{/if}}
 {{{rollResults}}}
 <div class="attack-buttons">
     <button class="hidden" data-action="apply-damage">{{localize "OVA.ApplyDamage"}}</button>
     <button class="hidden" data-action="apply-effect">{{localize "OVA.ApplyEffect"}}</button>
 </div>
-{{/if}}

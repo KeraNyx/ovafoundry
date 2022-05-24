@@ -78,26 +78,20 @@ export default class OVACharacter extends Actor {
         this.items.forEach(item => item.prepareItemData());
     }
 
-    async applyDamage({ result, dx, effects = [], ignoreArmor = 0 }) {
-        const armor = this.data.armor || 0;
-        const piercing = ignoreArmor || 0
-        const effectiveArmor = Math.max(armor - piercing, 0);
-        const damage = result * (Math.max(dx - effectiveArmor, 0.5));
+    changeHP(amount) {
+        if (amount === 0) return;
+        let newHp = Math.max(this.data.hp.value + amount, 0);
 
-        // negative damage is healing
-        let newHp = Math.max(this.data.hp.value - damage, 0);
         this.update({ "data.hp.value": newHp });
-
-        this.addActiveEffects(effects)
 
         // displaying text
         const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
         for (let t of tokens) {
-            t.hud.createScrollingText((-damage).signedString(), {
+            t.hud.createScrollingText(amount.signedString(), {
                 icon: "icons/svg/aura.svg",
                 anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
-                direction: damage < 0 ? CONST.TEXT_ANCHOR_POINTS.TOP : CONST.TEXT_ANCHOR_POINTS.BOTTOM,
-                fill: damage < 0 ? "green" : "red",
+                direction: amount > 0 ? CONST.TEXT_ANCHOR_POINTS.TOP : CONST.TEXT_ANCHOR_POINTS.BOTTOM,
+                fill: amount > 0 ? "green" : "red",
                 stroke: 0x000000,
                 strokeThickness: 4,
                 jitter: 0.25
@@ -116,7 +110,8 @@ export default class OVACharacter extends Actor {
                     mode: effect.mode,
                     value: effect.value,
                     priority: effect.priority
-                }]
+                }],
+                data: data
             })
         }
 

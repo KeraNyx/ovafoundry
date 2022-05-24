@@ -1,4 +1,4 @@
-import Effect from "../effects/effect.js";
+import Effect from "../effects/ova-effect.js";
 
 export default class BaseItemSheet extends ItemSheet {
     static get defaultOptions() {

@@ -1,4 +1,4 @@
-import Effect from "./effects/effect.js";
+import Effect from "./effects/ova-effect.js";
 
 export const OVA = {};
 

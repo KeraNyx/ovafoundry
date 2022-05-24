@@ -112,7 +112,7 @@ export default class OVACharacterSheet extends ActorSheet {
         const defense = event.currentTarget.dataset.deftype;
 
         const dice = this.actor.data.defenses[defense];
-        this._makeRoll({ roll: dice, type: "defense" });
+        this._makeRoll({ roll: dice, type: "defense", flavor: `Defense (${defense})` });
     }
 
     _makeAttackRoll(event) {
@@ -125,7 +125,7 @@ export default class OVACharacterSheet extends ActorSheet {
             return;
         }
 
-        this._makeRoll({ ...attack.data, type: "attack", attack: attack });
+        this._makeRoll({ ...attack.data.attack, type: "attack", attack: attack });
     }
 
     _makeManualRoll(event) {
@@ -155,7 +155,7 @@ export default class OVACharacterSheet extends ActorSheet {
         this._makeRoll({ roll: diceTotal, changes: [], enduranceCost: enduranceCost });
     }
 
-    async _makeRoll({ roll = 2, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null }) {
+    async _makeRoll({ roll = 2, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '' }) {
         const result = await RollPrompt.RenderPrompt("");
         if (result === false) return;
 
@@ -175,13 +175,12 @@ export default class OVACharacterSheet extends ActorSheet {
             dice = new Roll(`${roll}d6khs`);
         }
         dice.evaluate({ async: false })
-        this.actor.addActiveEffects(effects.filter(e => e.target === 'self'));
         const rollData = {
             roll: roll,
             dx: dx,
             result: dice.result,
             ignoreArmor: ignoreArmor,
-            effects: effects.filter(e => e.target === 'target'),
+            effects: effects,
             type: type,
             changes: changes,
         };
@@ -191,12 +190,12 @@ export default class OVACharacterSheet extends ActorSheet {
             rollResults: await dice.render({ isPrivate: false })
         };
 
-        let html = await renderTemplate("systems/ova/templates/chat/attack-message.html", templateData);
+        let html = await renderTemplate("systems/ova/templates/chat/combat-message.html", templateData);
 
         const msgData = {
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             user: game.user.data._id,
-            flavor: type,
+            flavor: flavor || type,
             roll: dice,
             content: html,
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),

@@ -1,4 +1,5 @@
-import OVAEffect from './effects/effect.js';
+import OVAEffect from './effects/ova-effect.js';
+
 export default class OVAItem extends Item {
     /** @Param []Item */
     addPerks(perks) {
@@ -108,47 +109,47 @@ export default class OVAItem extends Item {
         }
     }
 
-    static async createDialog(data={}, {parent=null, pack=null, ...options}={}) {
+    static async createDialog(data = {}, { parent = null, pack = null, ...options } = {}) {
 
         // Collect data
         const documentName = this.metadata.name;
         const types = ["ability", "perk"];
         const folders = parent ? [] : game.folders.filter(f => (f.data.type === documentName) && f.displayed);
         const label = game.i18n.localize(this.metadata.label);
-        const title = game.i18n.format("DOCUMENT.Create", {type: label});
-    
+        const title = game.i18n.format("DOCUMENT.Create", { type: label });
+
         // Render the document creation form
         const html = await renderTemplate(`templates/sidebar/document-create.html`, {
-          name: data.name || game.i18n.format("DOCUMENT.New", {type: label}),
-          folder: data.folder,
-          folders: folders,
-          hasFolders: folders.length >= 1,
-          type: data.type || types[0],
-          types: types.reduce((obj, t) => {
-            const label = CONFIG[documentName]?.typeLabels?.[t] ?? t;
-            obj[t] = game.i18n.has(label) ? game.i18n.localize(label) : t;
-            return obj;
-          }, {}),
-          hasTypes: types.length > 1
+            name: data.name || game.i18n.format("DOCUMENT.New", { type: label }),
+            folder: data.folder,
+            folders: folders,
+            hasFolders: folders.length >= 1,
+            type: data.type || types[0],
+            types: types.reduce((obj, t) => {
+                const label = CONFIG[documentName]?.typeLabels?.[t] ?? t;
+                obj[t] = game.i18n.has(label) ? game.i18n.localize(label) : t;
+                return obj;
+            }, {}),
+            hasTypes: types.length > 1
         });
-    
+
         // Render the confirmation dialog window
         return Dialog.prompt({
-          title: title,
-          content: html,
-          label: title,
-          callback: html => {
-            const form = html[0].querySelector("form");
-            const fd = new FormDataExtended(form);
-            foundry.utils.mergeObject(data, fd.toObject(), {inplace: true});
-            if ( !data.folder ) delete data["folder"];
-            if ( types.length === 1 ) data.type = types[0];
-            return this.create(data, {parent, pack, renderSheet: true});
-          },
-          rejectClose: false,
-          options: options
+            title: title,
+            content: html,
+            label: title,
+            callback: html => {
+                const form = html[0].querySelector("form");
+                const fd = new FormDataExtended(form);
+                foundry.utils.mergeObject(data, fd.toObject(), { inplace: true });
+                if (!data.folder) delete data["folder"];
+                if (types.length === 1) data.type = types[0];
+                return this.create(data, { parent, pack, renderSheet: true });
+            },
+            rejectClose: false,
+            options: options
         });
-      }
+    }
 
     _prepareAttackData() {
         const itemData = this.data;
@@ -168,8 +169,13 @@ export default class OVAItem extends Item {
 
         // base roll values
         const attackData = {
-            roll: this.actor.data.globalMod + this.actor.data.globalRollMod,
-            dx: 1
+            attack: {
+                roll: this.actor.data.globalMod + this.actor.data.globalRollMod,
+                dx: 1,
+                ignoreArmor: 0
+            },
+            defense: {},
+            result: {},
         };
 
 

@@ -64,7 +64,12 @@ export default class OVAEffect {
                     data: this.item.data,
                     name: this.item.name,
                     type: this.item.type
-                }, target: target, key: key, mode: mode, value: evaluatedValue, priority: priority
+                },
+                target: target, 
+                key: key, 
+                mode: mode, 
+                value: evaluatedValue, 
+                priority: priority
             });
         }
     }
@@ -77,7 +82,7 @@ export default class OVAEffect {
             expression = expression.replace(/@/g, 'data.');
             const src = 'with (sandbox) { return ' + expression + '; }';
             const evl = new Function('sandbox', 'data', src);
-            result = evl({...Roll.MATH_PROXY }, data);
+            result = evl({ ...Roll.MATH_PROXY }, data);
         } catch {
             result = undefined;
         }
