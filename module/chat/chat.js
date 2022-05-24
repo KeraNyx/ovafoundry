@@ -55,22 +55,35 @@ function _onAttackButtonClick(e) {
     const messageId = e.currentTarget.closest(".chat-message").dataset.messageId;
     const message = game.messages.get(messageId)
 
+    const target = _getMessageAuthor(message);
+
     const attackRoll = message.data.flags["attack-roll-data"];
     const defenseRoll = message.data.flags["roll-data"];
-    let target = null;
-    if (message.data.speaker.token) {
-        const tokenId = message.data.speaker.token;
-        target = game.scenes.active?.tokens.get(tokenId)?.actor;
-    }
-    if (!target) {
-        const targetId = message.data.speaker.actor;
-        target = game.actors.get(targetId);
-    }
-
     const damage = _calculateDamage(target, attackRoll, defenseRoll);
-    attackRoll.effects;
-
     target.changeHP(-damage);
+
+    const rollData = {
+        attack: {
+            roll: attackRoll.roll,
+            dx: attackRoll.dx,
+            result: attackRoll.result,
+            ignoreArmor: attackRoll.ignoreArmor,
+        },
+        defense: {
+            roll: defenseRoll.roll,
+            result: defenseRoll.result,
+        },
+        result: {
+            damage: _calculateDamage(target, attackRoll, defenseRoll),
+        }
+    }
+
+    const attacker = _getMessageAuthor(lastAttack);
+    attackRoll.effects.forEach(effect => {
+        const actor = effect.target === "self" ? attacker : target;
+        actor.addAttackEffects(effect, rollData);
+    });
+
 
     // const targets = canvas.tokens.controlled;
     // targets.forEach(t => {
@@ -79,6 +92,20 @@ function _onAttackButtonClick(e) {
     //     attackRoll.effects;
     //     targetActor.changeHP(-damage);
     // })
+}
+
+function _getMessageAuthor(message) {
+    let author = null;
+    if (message.data.speaker.token) {
+        const authorId = message.data.speaker.token;
+        author = game.scenes.active?.tokens.get(authorId)?.actor;
+    }
+    if (!target) {
+        const authorId = message.data.speaker.actor;
+        author = game.actors.get(authorId);
+    }
+
+    return target;
 }
 
 function _calculateDamage(actor, attackRoll, defenseRoll) {

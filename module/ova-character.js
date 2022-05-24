@@ -1,3 +1,5 @@
+import OVAEffect from "./effects/ova-effect.js";
+
 export default class OVACharacter extends Actor {
     async createAttack() {
         const attackData = {
@@ -99,20 +101,10 @@ export default class OVACharacter extends Actor {
         }
     }
 
-    async addActiveEffects(effects) {
+    async addAttackEffects(effects, data) {
         const afs = []
         for (let effect of effects) {
-            afs.push({
-                label: effect.source.name,
-                origin: effect.source.uuid,
-                changes: [{
-                    key: effect.key,
-                    mode: effect.mode,
-                    value: effect.value,
-                    priority: effect.priority
-                }],
-                data: data
-            })
+            afs.push(OVAEffect.createActiveEffect(effect, data));
         }
 
         this.createEmbeddedDocuments("ActiveEffect", afs);

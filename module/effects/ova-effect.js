@@ -63,14 +63,32 @@ export default class OVAEffect {
                     uuid: this.item.uuid,
                     data: this.item.data,
                     name: this.item.name,
-                    type: this.item.type
+                    type: this.item.type,
+                    level: this.item.data.level.value
                 },
                 target: target, 
                 key: key, 
                 mode: mode, 
-                value: evaluatedValue, 
+                value: value, 
                 priority: priority
             });
+        }
+    }
+
+    static createActiveEffect(effect, data) {
+        data.item = effect.source.data;
+        data.level = effect.source.level;
+        
+        const evaluatedValue = Number.fromString(this._safeEval(data, effect.value));
+        return {
+            label: effect.source.name,
+            origin: effect.source.uuid,
+            changes: [{
+                key: effect.key,
+                mode: effect.mode,
+                value: evaluatedValue,
+                priority: effect.priority
+            }]
         }
     }
 
