@@ -73,12 +73,14 @@
                     <b>{{name}} {{signedValue resistance}}</b>
                 </td>
                 <td class="center">
-                    <input type="checkbox" data-res-name="{{name}}" class="affected" data-dtype="Boolean" {{checked
-                        (get (get ../resistances name) "affected")}} />
+                    <input type="checkbox" data-res-name="{{name}}" class="affected" data-dtype="Boolean" {{checked (get
+                        (get ../resistances name) "affected" )}} />
                 </td>
-                <td  class="center">
-                    <input type="checkbox" data-res-name="{{name}}" class="can-heal {{#if (lt resistance 0)}}hidden{{/if}}" data-dtype="Boolean" {{disabled (not (get (get ../resistances name) "affected"))}} {{checked
-                        (get (get ../resistances name) "canHeal")}} />
+                <td class="center">
+                    <input type="checkbox" data-res-name="{{name}}"
+                        class="can-heal {{#if (lt resistance 0)}}hidden{{/if}}" data-dtype="Boolean" {{disabled (not
+                        (get (get ../resistances name) "affected" ))}} {{checked (get (get ../resistances
+                        name) "canHeal" )}} />
                 </td>
             </tr>
             {{/each}}
@@ -86,11 +88,14 @@
     </table>
     {{/if}}
     <div class="dialog-buttons">
-        {{#each buttons as |button id|}}
-        <button class="dialog-button {{cssClass}}" data-button="{{id}}">
-            {{{button.icon}}}
-            {{{button.label}}}
+        {{#if (gte damage 0)}}
+        <button class="apply-damage damage-color" data-button="apply">
+            Apply Damage <b>({{damage}})</b>
         </button>
-        {{/each}}
-    </div>    
+        {{else}}
+        <button class="apply-damage heal-color" data-button="apply">
+            Apply Heal <b>({{abs damage}})</b>
+        </button>
+        {{/if}}
+    </div>
 </body>

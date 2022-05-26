@@ -2,13 +2,7 @@ export default class ApplyDamagePrompt extends Dialog {
     constructor({ effects, rollData, target, attacker }) {
         const dialogData = {
             title: game.i18n.localize('OVA.ApplyDamage'),
-            buttons: {
-                apply: {
-                    label: game.i18n.localize('OVA.ApplyDamage'),
-                    callback: html => this._applyDamage(html, data)
-                }
-            },
-            default: "apply",
+            buttons: {},
             close: () => false,
         };
 
@@ -40,6 +34,7 @@ export default class ApplyDamagePrompt extends Dialog {
         html.find('.effect-duration').on('change', this._onSelfEffectDurationChange.bind(this));
         html.find('.affected').on('change', this._onAffectedChange.bind(this));
         html.find('.can-heal').on('change', this._onCanHealChange.bind(this));
+        html.find('.apply-damage').on('click', this._applyDamage.bind(this));
     }
 
     _onAffectedChange(e) {
@@ -73,20 +68,17 @@ export default class ApplyDamagePrompt extends Dialog {
         const effectType = e.currentTarget.dataset.effectType;
         const effectIndex = e.currentTarget.dataset.effectIndex;
 
-        this.effects[effectType][effectIndex].duration.rounds = e.currentTarget.value;
-    }
-
-    prepareDerivedData() {
-        super.prepareDerivedData();
-
-        this.damage = this._calculateDamage(this.target, this.rollData.attack, this.rollData.defense);
+        this.effects[effectType][effectIndex].duration.rounds = Number.parseInt(e.currentTarget.value);
     }
 
     getData() {
         const context = super.getData();
+        this.damage = this._calculateDamage(this.target, this.rollData.attack, this.rollData.defense);
+
         context.effects = this.effects;
         context.target = this.target;
         context.resistances = this.resistances;
+        context.damage = this.damage;
 
         return context;
     }
@@ -97,7 +89,7 @@ export default class ApplyDamagePrompt extends Dialog {
         const armor = actor.data.armor || 0;
         const piercing = attackRoll.ignoreArmor || 0
         const effectiveArmor = Math.max(armor - piercing, 0);
-        const dx = Math.max(attackRoll.dx - effectiveArmor, 0.5)
+        let dx = Math.max(attackRoll.dx - effectiveArmor, 0.5)
 
         let canHeal = false;
         let totalVulnerability = 0;
@@ -125,7 +117,16 @@ export default class ApplyDamagePrompt extends Dialog {
         return damage + bonusDamage;
     }
 
-    _applyDamage() {
-        this.target.changeHP(-this.rollData.result.damage);
+    async _applyDamage(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.target.changeHP(-this.damage);
+
+        // apply activated effects to self
+        const activeSelfEffects = this.effects.self.filter(effect => effect.active);
+        const activeTargetEffects = this.effects.target.filter(effect => effect.active);
+
+        await this.attacker.addAttackEffects(activeSelfEffects);
+        await this.target.addAttackEffects(activeTargetEffects);
     }
 }

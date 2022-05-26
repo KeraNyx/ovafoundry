@@ -367,3 +367,13 @@ input[type="text"].combat-cell-value {
 .center {
     text-align: center;
 }
+
+.damage-color {
+    background-color: #731d20 !important;
+    color: white;
+}
+
+.heal-color {
+    background-color: #1d732e !important;
+    color: white;
+}

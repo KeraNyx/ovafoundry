@@ -64,6 +64,10 @@ function registerHelper() {
         return v1 * v2;
     });
 
+    Handlebars.registerHelper("abs", (v) => {
+        return Math.abs(v);
+    });
+
     Handlebars.registerHelper("contains", (list, el) => {
         if (!list) return false;
         return list.includes(el);
