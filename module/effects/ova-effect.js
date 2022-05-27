@@ -35,7 +35,7 @@ export default class OVAEffect {
 
     apply(data) {
         // do not remove all of them are used in ActiveEffecs!
-        const { type, target, key, mode, duration, value } = this.data;
+        const { type, target, key, mode, keyValue, duration, value } = this.data;
         data.item = this.item.data || {};
         data.level = this.item.data.level?.value || 0;
         if (!data.changes) data.changes = [];
@@ -50,7 +50,7 @@ export default class OVAEffect {
                     type: this.item.type
                 }, key: key, mode: mode, value: evaluatedValue
             });
-            OVAEffect.applyEffectChanges({ key, mode, value: evaluatedValue }, data);
+            OVAEffect.applyEffectChanges({ key, mode, value: evaluatedValue, keyValue }, data);
         } else if (type === 'apply-active-effect') {
             if (!data.effects) data.effects = [];
             data.effects.push({
@@ -67,8 +67,10 @@ export default class OVAEffect {
     }
 
     static applyEffectChanges(effect, data) {
-        const { key, mode, value } = effect;
-        let current = foundry.utils.getProperty(data, key) || 0;
+        const { key, mode, value, keyValue = '' } = effect;
+        const fullKey = key.replace(/\?/g, effect.keyValue);
+
+        let current = foundry.utils.getProperty(data, fullKey) || 0;
         switch (parseInt(mode)) {
             case CONST.ACTIVE_EFFECT_MODES.ADD:
                 current = current + value;
@@ -83,7 +85,7 @@ export default class OVAEffect {
                 current = Math.max(current, value);
                 break;
         }
-        foundry.utils.setProperty(data, key, current);
+        foundry.utils.setProperty(data, fullKey, current);
     }
 
     static createActiveEffect(effect, data) {
