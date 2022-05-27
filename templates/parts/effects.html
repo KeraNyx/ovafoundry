@@ -56,7 +56,7 @@
                 </div>
                 {{/if}}
                 <div class="effect-mode flex0">
-                    <select name="data.effects[{{@index}}].mode">
+                    <select name="data.effects[{{@index}}].mode" data-dtype="Number">
                         {{#select effect.mode}}
                         {{#each ../config.activeEffectModes as |name target|}}
                         <option value="{{target}}">{{localize name}}</option>
@@ -68,6 +68,41 @@
                     <input name="data.effects[{{@index}}].value" type="text" value="{{effect.value}}" />
                 </div>
             </div>
+            {{#if (eq effect.type "apply-active-effect")}}
+            <div class="form-group">
+                <label>Over Time Effect:</label>
+                <div class="over-time-when">
+                    <select name="data.effects[{{@index}}].overTime.when">
+                        {{#select effect.overTime.when}}
+                        {{#each ../config.overTimeModes as |name value|}}
+                        <option value="{{value}}">{{localize name}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+                <div class="over-time-key">
+                    <select name="data.effects[{{@index}}].overTime.key">
+                        {{#select effect.overTime.key}}
+                        {{#each ../config.overTimeEffect as |name key|}}
+                        <option value="{{key}}">{{localize name}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+                <div class="over-time-mode flex0">
+                    <select name="data.effects[{{@index}}].overTime.mode" data-dtype="Number">
+                        {{#select effect.overTime.mode}}
+                        {{#each ../config.activeEffectModes as |name value|}}
+                        <option value="{{value}}">{{localize name}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+                <div class="over-time-value">
+                    <input name="data.effects[{{@index}}].overTime.value" type="text" value="{{effect.overTime.value}}" />
+                </div>
+            </div>
+            {{/if}}
         </div>
         {{/each}}
     </div>

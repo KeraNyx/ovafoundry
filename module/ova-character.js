@@ -52,8 +52,12 @@ export default class OVACharacter extends Actor {
         charData.resistances = {};
         charData.attacks = [];
         charData.defenses = charData.data.defenses;
-        charData.hp = charData.data.hp;
-        charData.endurance = charData.data.endurance;
+        if (charData.hp && charData.hp.value != charData.data.hp.value) { 
+            this._showHPChangeText(charData.data.hp.value-charData.hp.value);
+        }
+        // copy data from template
+        charData.hp = {...charData.data.hp};
+        charData.endurance = {...charData.data.endurance};
         charData.speed = 0;
     }
 
@@ -92,6 +96,10 @@ export default class OVACharacter extends Actor {
         this.update({ "data.hp.value": newHp });
 
         // displaying text
+        this._showHPChangeText(amount);
+    }
+
+    _showHPChangeText(amount) {
         const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
         for (let t of tokens) {
             t.hud.createScrollingText(amount.signedString(), {

@@ -367,6 +367,10 @@ input[type="text"].combat-cell-value {
     padding: 5px;
 }
 
+.effect label {
+    white-space: nowrap;
+}
+
 .effect.active-effect {
     background-color: cornsilk;
 }

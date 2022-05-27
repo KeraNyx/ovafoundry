@@ -1,4 +1,4 @@
-import Effect from "../effects/ova-effect.js";
+import OVAEffect from "../effects/ova-effect.js";
 
 export default class BaseItemSheet extends ItemSheet {
     static get defaultOptions() {
@@ -31,7 +31,7 @@ export default class BaseItemSheet extends ItemSheet {
         event.preventDefault();
 
         const currentEffects = this.item.data.data.effects;
-        const newEffect = Effect.degaultObject();
+        const newEffect = OVAEffect.degaultObject();
 
         currentEffects.push(newEffect);
         this.item.update({ "data.effects": currentEffects });
@@ -67,9 +67,10 @@ export default class BaseItemSheet extends ItemSheet {
                 const keyName = key.split(`[${index}].`)[1];
                 if (!acc[objectName]) acc[objectName] = [];
                 if (acc[objectName][index]) {
-                    acc[objectName][index][keyName] = value;
+                    foundry.utils.setProperty(acc[objectName][index], keyName, value);
                 } else {
-                    acc[objectName][index] = { [keyName]: value };
+                    acc[objectName][index] = { };
+                    foundry.utils.setProperty(acc[objectName][index], keyName, value);
                 }
             } else {
                 acc[key] = value;

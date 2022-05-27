@@ -73,14 +73,24 @@
                 "Self": "Self",
                 "Target": "Target"
             },
+            "OverTimeModes": {
+                "Once": "Once",
+                "EachRound": "Each Round"
+            },
             "List": {
                 "GlobalMod": "All Actions",
                 "GlobalRollMod": "All Attack Rolls",
                 "GlobalDefMod": "All Defense Rolls",
                 "Armor": "Armor",
                 "Speed": "Speed",
-                "HP": "Maximum HP",
-                "Endurance": "Maximum Endurance",
+                "HP": {
+                    "Max": "Maximum HP",
+                    "Value": "Current HP"
+                },
+                "Endurance": {
+                    "Max": "Maximum Endurance",
+                    "Value": "Current Endurance"
+                },
                 "Attack": {
                     "DX": "Damage Multiplier",
                     "Roll": "Attack Roll"

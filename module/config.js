@@ -30,8 +30,8 @@ OVA.activeEffectKeys = {
     "globalDefMod": "OVA.Effects.List.GlobalDefMod",
     "armor": "OVA.Effects.List.Armor",
     "speed": "OVA.Effects.List.Speed",
-    "hp.max": "OVA.Effects.List.HP",
-    "endurance.max": "OVA.Effects.List.Endurance",
+    "hp.max": "OVA.Effects.List.HP.Max",
+    "endurance.max": "OVA.Effects.List.Endurance.Max",
     "resistances.?": "OVA.Effects.List.Resistances",
     "defenses.?": "OVA.Effects.List.Defenses",
 }
@@ -41,3 +41,10 @@ OVA.effectChangeKeys = {
     "attack.roll": "OVA.Effects.List.Attack.Roll",
     ...OVA.activeEffectKeys,
 };
+
+OVA.overTimeEffect = {
+    "hp.value": "OVA.Effects.List.HP.Value",
+    "endurance.value": "OVA.Effects.List.Endurance.Value",
+}
+
+OVA.overTimeModes = OVAEffect.OVER_TIME_MODES;

@@ -77,7 +77,7 @@ export default class ApplyDamagePrompt extends Dialog {
 
     _prepareData() {
         const damage = this._calculateDamage(this.target, this.rollData.attack, this.rollData.defense);
-        this.rollData.attack.damage = damage;
+        this.rollData.attack.damage = -damage;
         this.effects = {
             self: this.rawEffects.self.map(e => OVAEffect.createActiveEffect(e, this.rollData)),
             target: this.rawEffects.target.map(e => OVAEffect.createActiveEffect(e, this.rollData)),
@@ -135,7 +135,7 @@ export default class ApplyDamagePrompt extends Dialog {
     async _applyDamage(e) {
         e.preventDefault();
         e.stopPropagation();
-        this.target.changeHP(-this.rollData.attack.damage);
+        this.target.changeHP(this.rollData.attack.damage);
 
         // apply activated effects to self
         const activeSelfEffects = this.effects.self.filter(effect => effect.active);
@@ -143,5 +143,7 @@ export default class ApplyDamagePrompt extends Dialog {
 
         await this.attacker.addAttackEffects(activeSelfEffects);
         await this.target.addAttackEffects(activeTargetEffects);
+
+        this.close();
     }
 }

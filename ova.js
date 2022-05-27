@@ -12,6 +12,7 @@ import OVACombatant from "./module/combat/ova-combatant.js";
 
 import * as chat from "./module/chat/chat.js";
 import registerHandlebarsHelpers from "./ova-handlebars-helpers.js";
+import OVAEffect from "./module/effects/ova-effect.js";
 
 Hooks.once("init", function () {
     console.log("OVA | Initializing OVA System");
@@ -51,15 +52,33 @@ Hooks.on("renderChatMessage", (message, html, data) => {
 
 Hooks.on("renderChatLog", chat.chatListeners);
 
-Hooks.on('preUpdateCombat', function preUpdateCombat(combat, updateData, context) {
+Hooks.on('preUpdateCombat', preUpdateCombat);
+
+Hooks.on('updateCombat', function updateCombat(combat, updateData, context, userId) {
+
+});
+async function preUpdateCombat(combat, updateData, context) {
     // removing expired effects
     for (let turn of combat.turns) {
         const turnActor = turn.actor ? turn.actor : turn.token.actor;
         if (!turnActor) continue;
-        
+
         for (let effect of turnActor.data.effects) {
             if (effect.data.duration.startTurn == updateData.turn && (updateData.turn > combat.turn || updateData.round > combat.round)) {
-                console.log("Activate");
+                let overTimeEffect;
+                let once = false;
+                if (effect.data.flags["once"]) {
+                    overTimeEffect = effect.data.flags["once"];
+                    once = true;
+                } else if (effect.data.flags["each-round"]) {
+                    overTimeEffect = effect.data.flags["each-round"];
+                }
+
+                if (overTimeEffect) {
+                    OVAEffect.applyEffectChanges(overTimeEffect, turnActor.data.data)
+                    await turnActor.update({data:turnActor.data.data});
+                    if (once) effect.duration.remaining = 0;
+                }
             }
         }
 
@@ -67,9 +86,4 @@ Hooks.on('preUpdateCombat', function preUpdateCombat(combat, updateData, context
         const expiredEffects = turnActor.effects.filter(e => e.duration.remaining === 0);
         turnActor.deleteEmbeddedDocuments("ActiveEffect", expiredEffects.map(e => e.id));
     }
-});
-
-Hooks.on('updateCombat', function updateCombat(combat, updateData, context, userId) {
-    
-});
-
+}

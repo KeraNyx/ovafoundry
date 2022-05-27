@@ -27,15 +27,22 @@ export default class OVAEffect {
         "target": "OVA.Effects.Targets.Target",
     }
 
+    static OVER_TIME_MODES = {
+        "each-round": "OVA.Effects.OverTimeModes.EachRound",
+        "once": "OVA.Effects.OverTimeModes.Once",
+    }
+
+
     apply(data) {
+        // do not remove all of them are used in ActiveEffecs!
         const { type, target, key, mode, duration, value } = this.data;
-        data.item = this.item.data;
-        data.level = this.item.data.level.value;
+        data.item = this.item.data || {};
+        data.level = this.item.data.level?.value || 0;
         if (!data.changes) data.changes = [];
         if (type === 'apply-changes') {
+            if (!value) return;
             let evaluatedValue = Number.fromString(OVAEffect._safeEval(data, value));
 
-            const current = foundry.utils.getProperty(data, key) || 0;
             data.changes.push({
                 source: {
                     data: this.item.data,
@@ -43,21 +50,7 @@ export default class OVAEffect {
                     type: this.item.type
                 }, key: key, mode: mode, value: evaluatedValue
             });
-            switch (parseInt(mode)) {
-                case CONST.ACTIVE_EFFECT_MODES.ADD:
-                    evaluatedValue = current + evaluatedValue;
-                    break;
-                case CONST.ACTIVE_EFFECT_MODES.MULTIPLY:
-                    evaluatedValue = current * evaluatedValue;
-                    break;
-                case CONST.ACTIVE_EFFECT_MODES.DOWGRADE:
-                    evaluatedValue = Math.min(current, evaluatedValue);
-                    break;
-                case CONST.ACTIVE_EFFECT_MODES.UPGRADE:
-                    evaluatedValue = Math.max(current, evaluatedValue);
-                    break;
-            }
-            foundry.utils.setProperty(data, key, evaluatedValue);
+            OVAEffect.applyEffectChanges({ key, mode, value: evaluatedValue }, data);
         } else if (type === 'apply-active-effect') {
             if (!data.effects) data.effects = [];
             data.effects.push({
@@ -73,11 +66,31 @@ export default class OVAEffect {
         }
     }
 
+    static applyEffectChanges(effect, data) {
+        const { key, mode, value } = effect;
+        let current = foundry.utils.getProperty(data, key) || 0;
+        switch (parseInt(mode)) {
+            case CONST.ACTIVE_EFFECT_MODES.ADD:
+                current = current + value;
+                break;
+            case CONST.ACTIVE_EFFECT_MODES.MULTIPLY:
+                current = current * value;
+                break;
+            case CONST.ACTIVE_EFFECT_MODES.DOWGRADE:
+                current = Math.min(current, value);
+                break;
+            case CONST.ACTIVE_EFFECT_MODES.UPGRADE:
+                current = Math.max(current, value);
+                break;
+        }
+        foundry.utils.setProperty(data, key, current);
+    }
+
     static createActiveEffect(effect, data) {
         data.item = effect.source.data;
         data.level = effect.source.level;
 
-        const evaluatedValue = Number.fromString(OVAEffect._safeEval(data, effect.value));
+        const evaluatedValue = effect.value ? Number.fromString(OVAEffect._safeEval(data, effect.value)) : "";
         // replace ? in key with keyValue
         const key = effect.key.replace(/\?/g, effect.keyValue);
         const effectData = {
@@ -95,14 +108,15 @@ export default class OVAEffect {
             }
         }
 
-        if (effect.timed && effect.timed.when) {
-            const evaluatedTimedValue = Number.fromString(OVAEffect._safeEval(data, effect.timed.value));
-            const timedKey = effect.timed.key?.replace(/\?/g, effect.timed.keyValue);
-
-            effectData.flags[effect.timed.when] = {
-                key: timedKey,
-                mode: effect.timed.mode,
-                value: evaluatedTimedValue,
+        // checking if all overTime values are present
+        if (effect.overTime && effect.overTime.when && effect.overTime.key && effect.overTime.value) {
+            const evaluatedoverTimeValue = effect.overTime.value ? Number.fromString(OVAEffect._safeEval(data, effect.overTime.value)) : "";
+            const overTimeKey = effect.overTime.key?.replace(/\?/g, effect.overTime.keyValue);
+            effectData.flags = {};
+            effectData.flags[effect.overTime.when] = {
+                key: overTimeKey,
+                mode: effect.overTime.mode,
+                value: evaluatedoverTimeValue,
             }
         }
 
@@ -134,7 +148,13 @@ export default class OVAEffect {
             key: "",
             mode: CONST.ACTIVE_EFFECT_MODES.ADD,
             priority: 0,
-            value: "1",
+            value: "",
+            overTime: {
+                when: "each-round",
+                key: "",
+                mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+                value: "",
+            }
         }
     }
 }
