@@ -65,22 +65,14 @@ async function preUpdateCombat(combat, updateData, context) {
 
         for (let effect of turnActor.data.effects) {
             if (effect.data.duration.startTurn == updateData.turn && (updateData.turn > combat.turn || updateData.round > combat.round)) {
-                let overTimeEffect;
-                let once = false;
-                if (effect.data.flags["once"]) {
-                    overTimeEffect = effect.data.flags["once"];
-                    once = true;
-                } else if (effect.data.flags["each-round"]) {
-                    overTimeEffect = effect.data.flags["each-round"];
-                }
-
-                if (overTimeEffect) {
+                if (effect.data.flags["each-round"]) {
+                    const overTimeEffect = effect.data.flags["each-round"];
                     OVAEffect.applyEffectChanges(overTimeEffect, turnActor.data.data)
-                    await turnActor.update({data:turnActor.data.data});
-                    if (once) effect.duration.remaining = 0;
+                    await turnActor.update({ data: turnActor.data.data });
                 }
             }
         }
+
 
         // == 0 to end effect on turn end, < 1 to end effect on turn start
         const expiredEffects = turnActor.effects.filter(e => e.duration.remaining === 0);

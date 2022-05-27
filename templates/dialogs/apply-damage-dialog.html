@@ -19,8 +19,10 @@
                 </td>
                 <td>{{effect.label}} ({{effect.changes.0.key}} {{effect.changes.0.value}})</td>
                 <td>
+                    {{#if (not effect.flags.once)}}
                     <input class="effect-duration flex0" type="text" id="duration" data-effect-type="self"
                         data-effect-index="{{@index}}" data-dtype="Number" value="{{effect.duration.rounds}}" />
+                    {{/if}}
                 </td>
             </tr>
             {{/each}}

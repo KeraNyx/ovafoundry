@@ -51,11 +51,11 @@ export default class OVACharacter extends Actor {
         charData.armor = 0;
         charData.resistances = {};
         charData.attacks = [];
-        charData.defenses = charData.data.defenses;
         if (charData.hp && charData.hp.value != charData.data.hp.value) { 
             this._showHPChangeText(charData.data.hp.value-charData.hp.value);
         }
         // copy data from template
+        charData.defenses = {...charData.data.defenses};
         charData.hp = {...charData.data.hp};
         charData.endurance = {...charData.data.endurance};
         charData.speed = 0;
@@ -115,6 +115,16 @@ export default class OVACharacter extends Actor {
     }
 
     async addAttackEffects(effects) {
-        await this.createEmbeddedDocuments("ActiveEffect", effects);
+        const oneTimeEffects = effects.filter(e => !!e.flags["once"]);
+        for ( const e of oneTimeEffects) {
+            const oneTimeEffect = e.flags["once"];
+            OVAEffect.applyEffectChanges(oneTimeEffect, this.data.data)
+        };
+
+        const persistantEffect = effects.find(e => !e.flags["once"]);
+
+        await this.update({ data: this.data.data });
+
+        await this.createEmbeddedDocuments("ActiveEffect", persistantEffect);
     }
 }
