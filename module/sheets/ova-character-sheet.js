@@ -125,12 +125,12 @@ export default class OVACharacterSheet extends ActorSheet {
             return;
         }
 
-        // find child ability using rootId
-        const ability = this.actor.items.find(i => i.data.data.rootId === attack.id);
-
         let effects = [];
         let type;
         if (attack.type === "spell") {
+            // find child ability using rootId
+            const ability = this.actor.items.find(i => i.data.data.rootId === attack.id);
+
             type = "spell";
             effects = [{
                 label: attack.name,

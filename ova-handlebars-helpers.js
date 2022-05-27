@@ -1,5 +1,6 @@
 export default function registerHandlebarsHelpers() {
     Handlebars.registerHelper("abilitySign", (ability) => {
+        if (!ability) return "";
         return ability.data.type === "ability" ? "+" : "-";
     });
 

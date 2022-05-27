@@ -77,11 +77,12 @@ export default class OVACharacter extends Actor {
 
         // copy data from template
         charData.defenses = { ...charData.data.defenses };
+        charData.hp = { ...charData.data.hp };
+        charData.endurance = { ...charData.data.endurance };
         charData.data.attributes = {
-            hp: { ...charData.data.hp },
-            endurance: { ...charData.data.endurance },
-        };
-        Object.assign(charData, charData.data.attributes);
+            hp : charData.hp,
+            endurance : charData.endurance,
+        }
     }
 
     prepareDerivedData() {

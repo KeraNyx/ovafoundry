@@ -2,7 +2,7 @@
     <div class="ability-card">
         <div class="ability-list items">
             {{#each items as |item|}}
-            <div class="item ability {{#if (contains ../selected item._id)}}selected{{/if}} {{#if item.data.level.mod}}modified{{/if}}"
+            <div class="item ability {{#if (contains ../selected item._id)}}selected{{/if}} {{#if item.data.level.mod}}modified{{/if}} {{#if item.data.temporary}}temporary{{/if}}"
                 data-item-id="{{item._id}}">
                 <div class="flexrow">
                     {{abilitySign item}}<div class="ability-level item-view" data-item-id="{{item._id}}">
