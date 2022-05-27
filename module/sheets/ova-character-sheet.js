@@ -141,7 +141,7 @@ export default class OVACharacterSheet extends ActorSheet {
                     }
                 ],
                 flags: {
-                    "create-item": ability.toObject(),
+                    "create-item": this._packAbility(ability),
                 }
             }];
         } else {
@@ -150,6 +150,18 @@ export default class OVACharacterSheet extends ActorSheet {
         }
 
         this._makeRoll({ ...attack.data.attack, effects: effects, type: type, attack: attack });
+    }
+
+    _packAbility(ability) {
+        // find child ability using rootId
+        const rootAbility = ability.toObject();
+        rootAbility.data.rootId = "";
+        rootAbility.data.temporary = true;
+        const children = this.actor.items.
+            filter(i => i.data.data.rootId === ability.id).
+            map(i => i.toObject());
+
+        return [rootAbility, ...children];
     }
 
     _makeManualRoll(event) {

@@ -20,7 +20,7 @@
             </div>
             <div class="flexcol">
                 {{#each item.data.abilities as |subability|}}
-                <div class="item sub-ability {{#if (contains ../../selected subability._id)}}selected{{/if}}"
+                <div class="item sub-ability {{#if (contains ../../selected subability._id)}}selected{{/if}} {{#if item.data.temporary}}temporary{{/if}}"
                     data-item-id="{{subability._id}}">
                     <div class="ability-description">
                         <div class="ability-name">
