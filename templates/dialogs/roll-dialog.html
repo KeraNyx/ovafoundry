@@ -2,7 +2,7 @@
     <label for="roll-modifier">{{localize 'OVA.Modifier.Name'}}:</label>
     <input id="roll-modifier" class="dialog-input" value="0" data-dtype="Number" />
     {{#if enduranceCost}}
-    {{#if (gt actor.data.data.attributes.enduranceReserve.value 0)}}
+    {{#if (gt actor.data.data.attributes.enduranceReserve.max 0)}}
     <table class="ova">
         <thead>
             <tr>

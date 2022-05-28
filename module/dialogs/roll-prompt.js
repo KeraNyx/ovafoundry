@@ -83,8 +83,8 @@ export default class RollPrompt extends Dialog {
     _makeRoll(html, adv) {
         const mod = html.find('#roll-modifier').val();
 
-        this.resolve && this.resolve(adv + parseInt(mod));
-        this.actor.changeEndurance(-this.enduranceCost);
+        this.resolve && this.resolve(adv + parseInt(mod));            
+        this.actor.changeEndurance(-this.enduranceCost, this.selection.reserve);
     }
 
     async show() {

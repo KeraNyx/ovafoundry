@@ -132,16 +132,21 @@ export default class OVACharacter extends Actor {
 
     changeHP(amount) {
         if (amount === 0) return;
-        let newHp = Math.max(this.data.data.hp.value + amount, 0);
+        let newHp = this.data.data.hp.value + amount;
 
         this.update({ "data.hp.value": newHp });
     }
 
-    changeEndurance(amount) {
+    changeEndurance(amount, reserve=false) {
         if (amount === 0) return;
-        let newEndurance = Math.max(this.data.data.endurance.value + amount, 0);
 
-        this.update({ "data.endurance.value": newEndurance });
+        if (reserve) {
+            let newEndurance =this.data.data.endurance.value + amount;
+            this.update({ "data.enduranceReserve.value": newEndurance });
+        } else {
+            let newEndurance = this.data.data.endurance.value + amount;
+            this.update({ "data.endurance.value": newEndurance });
+        }
     }
 
     _showHPChangeText(amount) {
