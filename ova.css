@@ -133,7 +133,8 @@
 }
 
 .selected {
-    background-color: #9e9797;
+    /* background-color: #9e9797; */
+    background-color: #731d2080 !important;
     color: white;
 }
 
@@ -223,16 +224,16 @@ input.character-name {
     display: none;
 }
 
-.attack-block {
+.clickable {
     cursor: pointer;
 }
 
 .attack-block.active{
     background-color: blanchedalmond;
 }
-
-.defense-value {
-    cursor: pointer;
+table.ova thead {
+    background-color: #731d20;
+    color: white;
 }
 
 .attack-block>* {

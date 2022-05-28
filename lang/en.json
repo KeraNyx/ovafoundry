@@ -31,7 +31,8 @@
         "EnduranceCost": "Endurance Cost",
         "Endurance": {
             "Name": "Endurance",
-            "Short": "END"
+            "Short": "END",
+            "Pool": "Endurance Pool"
         },
         "Duration": {
             "Rounds": "Duration (Rounds)"
@@ -130,7 +131,7 @@
             "Name": "Normal"
         },
         "Modifier": {
-            "Name": "Modifier"
+            "Name": "Roll Modifier"
         },
         "ApplyDamage": "Apply Damage",
         "ApplyDamageDialog": {

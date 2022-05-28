@@ -39,7 +39,7 @@
         "spell": {
             "description": "",
             "abilities": [],
-            "active": false
+            "active": []
         },
         "ability": {
             "type": "ability",

@@ -168,10 +168,6 @@ export default class OVACharacterSheet extends ActorSheet {
         let effects = [];
         let type;
         if (attack.type === "spell") {
-            if (attack.data.data.active) {
-                attack.update({ "data.active": false });
-                return;
-            }
             // find child ability using rootId
             const ability = this.actor.items.find(i => i.data.data.rootId === attack.id);
 
@@ -193,7 +189,7 @@ export default class OVACharacterSheet extends ActorSheet {
             effects = attack.data.effects;
         }
 
-        this._makeRoll({ ...attack.data.attack, effects: effects, type: type, attack: attack });
+        this._makeRoll({ ...attack.data.attack, effects: effects, type: type, attack: attack, enduranceCost: attack.data.enduranceCost });
     }
 
     _makeManualRoll(event) {
@@ -224,7 +220,8 @@ export default class OVACharacterSheet extends ActorSheet {
     }
 
     async _makeRoll({ roll = 2, dv = 0, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '' }) {
-        const result = await RollPrompt.RenderPrompt("");
+        // const result = await RollPrompt.RenderPrompt("", this.actor);
+        const result = await new RollPrompt(flavor, type, this.actor, enduranceCost).show();
         if (result === false) return;
 
         // TODO: add changes to list of changes

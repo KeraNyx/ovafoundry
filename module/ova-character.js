@@ -59,6 +59,10 @@ export default class OVACharacter extends Actor {
         if (charData.data.endurance.value > charData.endurance.max) {
             charData.data.endurance.value = charData.endurance.max;
         }
+
+        if (charData.data.enduranceReserve.value > charData.enduranceReserve.max) {
+            charData.data.enduranceReserve.value = charData.enduranceReserve.max;
+        }
     }
 
     prepareBaseData() {
@@ -66,6 +70,7 @@ export default class OVACharacter extends Actor {
 
         if (charData.data.hp.value < 0) charData.data.hp.value = 0;
         if (charData.data.endurance.value < 0) charData.data.endurance.value = 0;
+        if (charData.data.enduranceReserve.value < 0) charData.data.enduranceReserve.value = 0;
 
         charData.globalMod = 2;
         charData.globalRollMod = 0;
@@ -79,9 +84,11 @@ export default class OVACharacter extends Actor {
         charData.defenses = { ...charData.data.defenses };
         charData.hp = { ...charData.data.hp };
         charData.endurance = { ...charData.data.endurance };
+        charData.enduranceReserve = { ...charData.data.enduranceReserve };
         charData.data.attributes = {
             hp : charData.hp,
             endurance : charData.endurance,
+            enduranceReserve : charData.enduranceReserve,
         }
 
         if (charData.data.hp.value <= 0 || charData.data.endurance.value <= 0) {
@@ -128,6 +135,13 @@ export default class OVACharacter extends Actor {
         let newHp = Math.max(this.data.data.hp.value + amount, 0);
 
         this.update({ "data.hp.value": newHp });
+    }
+
+    changeEndurance(amount) {
+        if (amount === 0) return;
+        let newEndurance = Math.max(this.data.data.endurance.value + amount, 0);
+
+        this.update({ "data.endurance.value": newEndurance });
     }
 
     _showHPChangeText(amount) {

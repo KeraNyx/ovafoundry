@@ -1,5 +1,39 @@
 <body>
     <label for="roll-modifier">{{localize 'OVA.Modifier.Name'}}:</label>
     <input id="roll-modifier" class="dialog-input" value="0" data-dtype="Number" />
+    {{#if enduranceCost}}
+    {{#if (gt actor.data.data.attributes.enduranceReserve.value 0)}}
+    <table class="ova">
+        <thead>
+            <tr>
+                <th>{{localize 'OVA.Endurance.Pool'}}</th>
+                <th>Cost ({{enduranceCost}})</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="base-end clickable {{#if selection.base}}selected{{/if}}">
+                <td><b>Base Endurance</b></td>
+                <td class="center">
+                    <b>{{actor.data.data.attributes.endurance.value}}/{{actor.data.data.attributes.endurance.max}}</b>
+                </td>
+            </tr>
+            <tr class="end-reserve clickable {{#if selection.reserve}}selected{{/if}}">
+                <td><b>Endurance Reserve</b></td>
+                <td class="center">
+                    <b>{{actor.data.data.attributes.enduranceReserve.value}}/{{actor.data.data.attributes.enduranceReserve.max}}</b>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {{/if}}
+    {{/if}}
     <h2>Size:</h2>
+    <div class="end-res clickable dialog-buttons">
+        {{#each buttons as |button id|}}
+        <button class="dialog-button {{cssClass}}" data-button="{{id}}">
+            {{{button.icon}}}
+            {{{button.label}}}
+        </button>
+        {{/each}}
+    </div>
 </body>
