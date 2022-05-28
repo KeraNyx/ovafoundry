@@ -118,9 +118,6 @@ export default class OVACharacter extends Actor {
         let newHp = Math.max(this.data.data.hp.value + amount, 0);
 
         this.update({ "data.hp.value": newHp });
-
-        // displaying text
-        this._showHPChangeText(amount);
     }
 
     _showHPChangeText(amount) {

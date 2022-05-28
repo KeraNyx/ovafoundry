@@ -178,7 +178,7 @@ export default class OVACharacterSheet extends ActorSheet {
         this._makeRoll({ roll: diceTotal, changes: [], enduranceCost: enduranceCost });
     }
 
-    async _makeRoll({ roll = 2, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '' }) {
+    async _makeRoll({ roll = 2, dv = 0, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '' }) {
         const result = await RollPrompt.RenderPrompt("");
         if (result === false) return;
 
@@ -205,9 +205,10 @@ export default class OVACharacterSheet extends ActorSheet {
             ignoreArmor: ignoreArmor,
             effects: effects,
             type: type,
+            dv: dv,
         };
 
-        CombatMessage.create({ flavor: flavor || type, roll: dice, rollData: rollData, attack: attack});
+        CombatMessage.create({roll: dice, rollData: rollData, speaker: this.actor, attack: attack});
     }
 
     _packAbility(ability) {

@@ -48,7 +48,8 @@ async function preloadTemplates() {
 
 Hooks.on("renderChatMessage", (message, html, data) => {
     if (message.roll) {
-        chat.listenToAttackRoll(message, html, data);
+        // chat.listenToAttackRoll(message, html, data);
+        chat.listenToCombatRolls(message, html, data);
     }
 });
 

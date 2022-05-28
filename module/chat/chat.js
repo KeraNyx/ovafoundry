@@ -1,40 +1,36 @@
 import ApplyDamagePrompt from "../dialogs/apply-damage-prompt.js";
 
 let lastAttack = null;
+let combatInfo = {
 
-export const listenToAttackRoll = function (message, html, data) {
+}
+
+export const chatListeners = function (message, html, data) {
+    html.on("click", "button[data-action='apply-damage']", _onApplyDamageClick);
+    html.on("click", "button[data-action='apply-effect']", _onApplyEffectClick);
+}
+
+export const listenToCombatRolls = function (message, html, data) {
     if (!message.isRoll) return;
     const rollData = data.message.flags["roll-data"];
     if (!rollData) return;
+    _updateCombatData();
 
-    // record the last attack roll
-    if (rollData.type === "attack") {
-        html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Attack"));
+    if (rollData.type === "attack") _onAttackRoll(message, html, data);
+    if (rollData.type === "manual" && lastAttack) rollData.type = "defense";
+    if (rollData.type === "defense") _onDefenseRoll(message, html, data);
+    if (rollData.type === "spell") _onSpellRoll(message, html, data);
+}
 
-        lastAttack = message;
-        return;
-    }
+function _onAttackRoll(message, html, data) {
+    html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Attack"));
+    lastAttack = message;
+}
 
-    if (rollData.type === "spell") {
-        html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Spell"));
-        html.find("button[data-action='apply-effect']").removeClass("hidden");
-
-        return;
-    }
-
-    // || lastAttack.user.id === message.user.id
-    if (rollData.type !== "attack" && !lastAttack) {
-        html.find(".flavor-text").html(game.i18n.localize(`OVA.Roll.${rollData.type.capitalize()}`));
-        return;
-    }
-    if (rollData.type !== "defense") {
-        // replace flavor text
-        html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Defense"));
-    }
+function _onDefenseRoll(message, html, data) {
+    html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Defense"));
     const attackRollData = lastAttack.data.flags["roll-data"];
 
-    // compare attack and defense rolls
-    // if the attack roll is higher, show the attack roll
     const result = lastAttack.roll.result - message.roll.result;
     message.data.flags["attack-roll-data"] = attackRollData;
 
@@ -49,19 +45,40 @@ export const listenToAttackRoll = function (message, html, data) {
     if (result > 0) {
         html.find("button[data-action='apply-damage']").removeClass("hidden");
     }
-
-    return rollData;
 }
 
-export const chatListeners = function (message, html, data) {
-    html.on("click", "button[data-action='apply-damage']", _onApplyDamageClick);
-    html.on("click", "button[data-action='apply-effect']", _onApplyEffectClick);
+function _onSpellRoll(message, html, data) {
+    html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Spell"));
+
+    const spellRoll = message.data.flags["roll-data"];
+    const result = spellRoll.result - spellRoll.dv;
+
+    if (spellRoll.dv > 0) {
+        let resultText = result > 0 ? "Success" : "Failure";
+        resultText = game.i18n.localize(`OVA.Attack.${resultText}`);
+        const attackName = game.i18n.localize("OVA.DV.Short");
+        html.
+            find(".dice-total").
+            append(`<br/><span style="color: ${result > 0 ? "green" : "red"}">${resultText}</span> (${attackName} ${spellRoll.dv})`);
+    }
+    if (result > 0) {
+        html.find("button[data-action='apply-effect']").removeClass("hidden");
+    }
+}
+
+function _onManualRoll(message, html, data) {
+    html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Manual"));
+    html.find("button[data-action='apply-effect']").removeClass("hidden");
+}
+
+function _updateCombatData() {
+
 }
 
 async function _onApplyEffectClick(e) {
     const messageId = e.currentTarget.closest(".chat-message").dataset.messageId;
     const message = game.messages.get(messageId)
-    
+
     const spellRoll = message.data.flags["roll-data"];
 
     const targets = canvas.tokens.controlled;

@@ -105,7 +105,7 @@ export default class OVAItem extends Item {
         const selectedAbilities = this._getRollAbilities();
         const magicAbility = selectedAbilities.find(i => i.data.data.magic)
 
-        const spellDV = 0;
+        let spellDV = 0;
         spellData.enduranceCost = 0;
 
         if (magicAbility) {
@@ -122,9 +122,7 @@ export default class OVAItem extends Item {
         }
         spellData.attack = {
             roll: this.actor.data.globalMod,
-        }
-        spellData.defense = {
-            result: spellDV,
+            dv: spellDV,
         }
         spellData.attack.roll += selectedAbilities.reduce((sum, a) => sum + a.data.data.level.value, 0);
         spellData.enduranceCost += selectedAbilities.reduce((sum, a) => sum + a.data.enduranceCost, 0);

@@ -54,10 +54,16 @@
             "Name": "Damage Multiplier",
             "Short": "DX"
         },
+        "DV": {
+            "Name": "Difficulty Value",
+            "Short": "DV"
+        },
         "Attack": {
             "DefaultName": "New Attack",
             "Hit": "Hit",
-            "Miss": "Miss"
+            "Miss": "Miss",
+            "Success": "Success",
+            "Failure": "Failure"
         },
         "CombatStats": "Combat Stats",
         "Effects": {
