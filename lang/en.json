@@ -58,6 +58,10 @@
             "Name": "Difficulty Value",
             "Short": "DV"
         },
+        "Status": {
+            "NoHP": "No HP left",
+            "NoEndurance": "No Endurance left"
+        },
         "Attack": {
             "DefaultName": "New Attack",
             "Hit": "Hit",

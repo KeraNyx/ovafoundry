@@ -83,6 +83,16 @@ export default class OVACharacter extends Actor {
             hp : charData.hp,
             endurance : charData.endurance,
         }
+
+        if (charData.data.hp.value <= 0 || charData.data.endurance.value <= 0) {
+            charData.globalMod -= 1;
+            charData.changes.push({
+                source: {
+                    name: game.i18n.localize("OVA.Status.No"+ charData.data.hp.value <= 0 ? "HP" : "Endurance"),
+                    type: "status",
+                }, key: "globalMod", mode: 2, value: -1
+            })
+        }
     }
 
     prepareDerivedData() {
