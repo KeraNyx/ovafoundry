@@ -39,6 +39,7 @@ export default class OVAItem extends Item {
 
         itemData.effects = [];
         let enduranceCost = 0;
+        // calculalte endurance cost from perks
         if (itemData.type === 'attack' || itemData.type === 'ability') {
             itemData.data.perks.forEach(p => {
                 enduranceCost += p.data.level.value * p.data.enduranceCost;
@@ -50,6 +51,7 @@ export default class OVAItem extends Item {
         if (enduranceCost < 0) enduranceCost = 0;
         itemData.enduranceCost = enduranceCost;
 
+        // prepare effect data 
         if (this.type === 'perk' || this.type === 'ability') {
             itemData.effects = [];
             itemData.data.effects.forEach(e => {
@@ -67,30 +69,81 @@ export default class OVAItem extends Item {
     }
 
     static SPELL_COST = [
-// Spell  1   2   3   4   5   // Magic
+        // Spell  1   2   3   4   5   // Magic
         [20, 30, 40, 50, 60], // 1
         [10, 20, 30, 40, 50], // 2
-        [ 5, 10, 20, 30, 40], // 3
-        [ 2,  5, 10, 20, 30], // 4
-        [ 0,  2,  5, 10, 20], // 5
+        [5, 10, 20, 30, 40], // 3
+        [2, 5, 10, 20, 30], // 4
+        [0, 2, 5, 10, 20], // 5
     ]
 
+    _getRollAbilities() {
+        const itemData = this.data;
+
+        // fill selected abilities from actor
+        const selectedAbilities = itemData.data.abilities.
+            map(a => this.actor.getEmbeddedDocument("Item", a)).
+            filter(a => a != undefined && a.data.data.active);
+
+        // add abilities selected on sheet abilities
+        if (this.actor.sheet) {
+            const additionalAbilities = this.actor.sheet._getSelectedAbilities();
+            selectedAbilities.push(...additionalAbilities.filter(a => !itemData.data.abilities.includes(a.id)));
+        }
+
+        return selectedAbilities;
+    }
+
     _prepareSpellData() {
-        const data = this.data.data;
+        const spellData = this.data;
+        const data = spellData.data;
         const spellEffects = this.actor.items.map(i => i.data).filter(i => i.data.rootId === this.id);
         data.spellEffects = spellEffects;
 
         // find magic in selected abilities
-        const selectedAbilities = data.abilities;
-        const magicAbility = this.actor.items.find(i => i.data.data.magic && selectedAbilities.includes(i.id))
+        // get selected abilities from actor
+        const selectedAbilities = this._getRollAbilities();
+        spellData.attack = {
+            roll: this.actor.data.globalMod,
+        }
+        spellData.attack.roll += selectedAbilities.reduce((sum, a) => sum + a.data.data.level.value, 0);
+        const magicAbility = selectedAbilities.find(i => i.data.data.magic)
         if (magicAbility) {
             data.magicLevel = magicAbility.data.data.level.value;
+            data.effectName = magicAbility.name;
             // sum effect levels
             data.effectLevel = spellEffects.reduce((sum, e) => sum + e.data.level.value, 0);
-            data.enduranceCost = OVAItem.SPELL_COST[data.magicLevel - 1][data.effectLevel - 1];
+            spellData.enduranceCost = OVAItem.SPELL_COST[data.magicLevel - 1][data.effectLevel - 1];
         }
 
         this.sheet == null || this.sheet.render(false);
+    }
+
+    _prepareAttackData() {
+        const itemData = this.data;
+
+        // get selected abilities from actor
+        const selectedAbilities = this._getRollAbilities();
+
+        // transfer effects from selected abilities to attack
+        selectedAbilities.forEach(a => a.data.effects.forEach(e => itemData.effects.push(e)));
+
+        // add cost of selected abilities
+        itemData.enduranceCost += selectedAbilities.reduce((sum, a) => sum + a.data.enduranceCost, 0);
+
+        // base roll values
+        const attackData = {
+            attack: {
+                roll: this.actor.data.globalMod + this.actor.data.globalRollMod,
+                dx: 1,
+                ignoreArmor: 0
+            },
+            defense: {}
+        };
+
+        // apply effects to attack data
+        itemData.effects.forEach(e => e.apply(attackData));
+        Object.assign(itemData, attackData);
     }
 
     _prepareAbilittyData() {
@@ -169,38 +222,5 @@ export default class OVAItem extends Item {
             rejectClose: false,
             options: options
         });
-    }
-
-    _prepareAttackData() {
-        const itemData = this.data;
-
-        // fill selected abilities from actor
-        const selectedAbilities = itemData.data.abilities.
-            map(a => this.actor.getEmbeddedDocument("Item", a)?.data).
-            filter(a => a != undefined && a.data.active);
-
-        // add selected on sheet abilities
-        if (this.actor.sheet) {
-            const additionalAbilities = this.actor.sheet._getSelectedAbilities();
-            selectedAbilities.push(...additionalAbilities.filter(a => !itemData.data.abilities.includes(a.id)));
-        }
-
-        selectedAbilities.forEach(a => a.effects.forEach(e => itemData.effects.push(e)));
-
-        // base roll values
-        const attackData = {
-            attack: {
-                roll: this.actor.data.globalMod + this.actor.data.globalRollMod,
-                dx: 1,
-                ignoreArmor: 0
-            },
-            defense: {},
-            result: {},
-        };
-
-
-        // apply effects to attack data
-        itemData.effects.forEach(e => e.apply(attackData));
-        Object.assign(itemData, attackData);
     }
 }

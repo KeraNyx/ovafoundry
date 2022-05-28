@@ -67,9 +67,9 @@ export default class OVACharacter extends Actor {
         if (charData.data.hp.value < 0) charData.data.hp.value = 0;
         if (charData.data.endurance.value < 0) charData.data.endurance.value = 0;
 
-        charData.globalMod = 0;
-        charData.globalRollMod = 2;
-        charData.globalDefMod = 2;
+        charData.globalMod = 2;
+        charData.globalRollMod = 0;
+        charData.globalDefMod = 0;
         charData.armor = 0;
         charData.resistances = {};
         charData.attacks = [];

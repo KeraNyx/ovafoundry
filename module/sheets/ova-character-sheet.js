@@ -136,8 +136,8 @@ export default class OVACharacterSheet extends ActorSheet {
                 label: attack.name,
                 changes: [
                     {
-                        key: ability.name,
-                        value: ability.data.data.level.value,
+                        key: attack.data.data.effectName,
+                        value: ability.data.data.effectLevel,
                     }
                 ],
                 flags: {
@@ -152,26 +152,14 @@ export default class OVACharacterSheet extends ActorSheet {
         this._makeRoll({ ...attack.data.attack, effects: effects, type: type, attack: attack });
     }
 
-    _packAbility(ability) {
-        // find child ability using rootId
-        const rootAbility = ability.toObject();
-        rootAbility.data.rootId = "";
-        rootAbility.data.temporary = true;
-        const children = this.actor.items.
-            filter(i => i.data.data.rootId === ability.id).
-            map(i => i.toObject());
-
-        return [rootAbility, ...children];
-    }
-
     _makeManualRoll(event) {
         event.preventDefault();
 
         const rollData = {
-            mod: 2,
             globalMod: this.actor.data.globalMod,
         };
         const abilities = this._getSelectedAbilities();
+        let enduranceCost = 0;
         for (const ability of abilities) {
             const abilityData = ability.data;
             let sign = 1;
@@ -241,7 +229,20 @@ export default class OVACharacterSheet extends ActorSheet {
         ChatMessage.applyRollMode(msgData, game.settings.get("core", "rollMode"));
 
         ChatMessage.create(msgData);
-    };
+    }
+
+    _packAbility(ability) {
+        // find child ability using rootId
+        const rootAbility = ability.toObject();
+        rootAbility.data.rootId = "";
+        rootAbility.data.temporary = true;
+        const children = this.actor.items.
+            filter(i => i.data.data.rootId === ability.id).
+            map(i => i.toObject());
+
+        return [rootAbility, ...children];
+    }
+
     //** allow only numbers */
     _itemValueValidator(event) {
         if (event.which < 48 || event.which > 57) event.preventDefault();
@@ -307,7 +308,7 @@ export default class OVACharacterSheet extends ActorSheet {
             this.selectedAbilities.push(abilityId);
         }
 
-        await this.actor.update({});
+        await this.actor.prepareData();
         this.render(false);
     }
 

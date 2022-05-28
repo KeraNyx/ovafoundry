@@ -78,6 +78,14 @@
                             <div class="attack-perks">{{spell.data.spellEffects.0.name}} {{abilitySign spell.data.spellEffects.[0]}}{{spell.data.spellEffects.0.data.level.value}}</div>
                             <div class="attack-description">{{spell.data.description}}</div>
                         </div>
+                        <div class="combat-cell attack-roll small">
+                            <div class="combat-cell-name">{{ localize 'OVA.Roll.Short' }}</div>
+                            <div class="combat-cell-value">{{ spell.attack.roll }}</div>
+                        </div>
+                        <div class="combat-cell attack-notes small">
+                            <div class="combat-cell-name">{{ localize 'OVA.Endurance.Short' }}</div>
+                            <div class="combat-cell-value">{{ spell.enduranceCost }}</div>
+                        </div>
                     </div>
                     {{/each}}
                 </div>

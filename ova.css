@@ -197,7 +197,7 @@ input.character-name {
 
 .fixed-panel {
     position: absolute;
-    top: 15em;
+    top: 12em;
     right: .6em;
 }
 
@@ -248,12 +248,15 @@ input.character-name {
 }
 
 .combat-cell {
-    margin-left: .5em;
     padding: .2em 0;
 }
 
 .combat-cell.small {
-    max-width: 3em;
+    max-width: 3.5em;
+}
+
+.combat-cell:not(.small) {
+    padding-left: .3em;
 }
 
 .combat-cell-name {
@@ -351,6 +354,10 @@ input[type="text"].combat-cell-value {
     padding-left: .5em;
     padding-bottom: 2em;
     padding-top: .5em;
+}
+
+.actor-sheet {
+    position: relative;
 }
 
 .item-control {
