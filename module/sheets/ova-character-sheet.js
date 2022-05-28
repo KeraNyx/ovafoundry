@@ -72,7 +72,7 @@ export default class OVACharacterSheet extends ActorSheet {
         event.preventDefault();
         event.currentTarget.value = this.actor.data.data.hp.max;
     }
-    
+
     _onFieldSubmit(event) {
         if (event.key === "Enter") {
             event.preventDefault();
@@ -168,6 +168,10 @@ export default class OVACharacterSheet extends ActorSheet {
         let effects = [];
         let type;
         if (attack.type === "spell") {
+            if (attack.data.data.active) {
+                attack.update({ "data.active": false });
+                return;
+            }
             // find child ability using rootId
             const ability = this.actor.items.find(i => i.data.data.rootId === attack.id);
 

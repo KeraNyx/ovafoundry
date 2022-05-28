@@ -72,7 +72,7 @@
                 </div>
                 <div class="list tab" data-tab="magic" data-group="combat-tabs">
                     {{#each spells as |spell|}}
-                    <div class="attack-block flexrow item" data-item-id="{{spell._id}}">
+                    <div class="attack-block flexrow item {{#if spell.data.active}}active{{/if}}" data-item-id="{{spell._id}}">
                         <div class="attack-info">
                             <div class="attack-name">{{spell.name}}</div>
                             <div class="attack-perks">{{spell.data.spellEffects.0.name}} {{abilitySign spell.data.spellEffects.[0]}}{{spell.data.spellEffects.0.data.level.value}}</div>

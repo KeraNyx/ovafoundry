@@ -62,6 +62,9 @@ function _onSpellRoll(message, html, data) {
             append(`<br/><span style="color: ${result > 0 ? "green" : "red"}">${resultText}</span> (${attackName} ${spellRoll.dv})`);
     }
     if (result > 0) {
+        const attackObj = message.data.flags["attack"];
+        const attack = _getMessageAuthor(message).items.find(i => i.id === attackObj._id);
+        attack?.update({"data.active": true});
         html.find("button[data-action='apply-effect']").removeClass("hidden");
     }
 }

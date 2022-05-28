@@ -102,6 +102,10 @@
                     "Max": "Maximum Endurance",
                     "Value": "Current Endurance"
                 },
+                "EnduranceReserve": {
+                    "Max": "Maximum Endurance Reserve",
+                    "Value": "Current Endurance Reserve"
+                },
                 "Attack": {
                     "DX": "Damage Multiplier",
                     "Roll": "Attack Roll"

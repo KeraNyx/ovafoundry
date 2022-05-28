@@ -227,6 +227,10 @@ input.character-name {
     cursor: pointer;
 }
 
+.attack-block.active{
+    background-color: blanchedalmond;
+}
+
 .defense-value {
     cursor: pointer;
 }

@@ -14,7 +14,7 @@ export default class OVACombatMessage extends ChatMessage {
             roll: roll,
             content: html,
             speaker: ChatMessage.getSpeaker({ actor: speaker }),
-            flags: { "roll-data": rollData },
+            flags: { "roll-data": rollData, "attack": attack },
         };
         super.applyRollMode(msgData, game.settings.get("core", "rollMode"));
         return super.create(msgData);

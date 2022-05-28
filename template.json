@@ -13,8 +13,8 @@
                 "max": 40
             },
             "enduranceReserve": {
-                "value": 40,
-                "max": 40
+                "value": 0,
+                "max": 0
             },
             "defenses": {
                 "evasion": 0
@@ -38,7 +38,8 @@
         },
         "spell": {
             "description": "",
-            "abilities": []
+            "abilities": [],
+            "active": false
         },
         "ability": {
             "type": "ability",

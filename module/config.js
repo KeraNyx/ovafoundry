@@ -34,6 +34,7 @@ OVA.activeEffectKeys = {
     "endurance.max": "OVA.Effects.List.Endurance.Max",
     "resistances.?": "OVA.Effects.List.Resistances",
     "defenses.?": "OVA.Effects.List.Defenses",
+    "enduranceReserve.max": "OVA.Effects.List.EnduranceReserve.Max",
 }
 
 OVA.effectChangeKeys = {
@@ -45,6 +46,7 @@ OVA.effectChangeKeys = {
 OVA.overTimeEffect = {
     "data.hp.value": "OVA.Effects.List.HP.Value",
     "data.endurance.value": "OVA.Effects.List.Endurance.Value",
+    "data.enduranceReserve.value": "OVA.Effects.List.EnduranceReserve.Value",
 }
 
 OVA.overTimeModes = OVAEffect.OVER_TIME_MODES;
