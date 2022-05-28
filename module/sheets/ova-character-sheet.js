@@ -38,9 +38,25 @@ export default class OVACharacterSheet extends ActorSheet {
 
         html.find('.effect-delete').click(this._removeEffect.bind(this));
 
+        html.find('.endurance-max-value').on("focus", this._onEnduranceMaxFocus.bind(this));
+        html.find('input[data-dtype="Number"]').on("keypress", this._onFieldEnter.bind(this));
+
         const inputs = html.find("input");
         inputs.focus(ev => ev.currentTarget.select());
         inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
+    }
+    _onEnduranceMaxFocus(event) {
+        event.preventDefault();
+        
+        event.currentTarget.value = this.actor.data.data.endurance.max;
+    }
+
+    _onFieldEnter(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            event.currentTarget.blur();
+            this.actor.prepareData();
+        }
     }
 
     async _addAttack(e) {

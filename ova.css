@@ -340,6 +340,8 @@ input[type="text"].combat-cell-value {
 .combat-cell-name.combat-side-value,
 .combat-cell-value.combat-side-value {
     font-size: x-small;
+    padding: 0;
+    max-width: 2em;
 }
 
 .combat-effects {
