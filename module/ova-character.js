@@ -34,9 +34,17 @@ export default class OVACharacter extends Actor {
         const currentHP = data.data?.hp?.value || charData.data.hp.value;
         const currentEndurance = data.data?.endurance?.value || charData.data.endurance.value;
 
-        if (data.data?.hp?.value < 0) foundry.utils.setProperty(data, "data.endurance.value", currentEndurance + data.data.hp.value);
-        if (data.data?.endurance?.value < 0) foundry.utils.setProperty(data, "data.hp.value", currentHP + data.data.endurance.value);
-
+        if (data.data?.hp?.value < 0) {
+            foundry.utils.setProperty(data, "data.endurance.value", currentEndurance + data.data.hp.value)
+            foundry.utils.setProperty(data, "data.hp.value", 0)
+        };
+        if (data.data?.endurance?.value < 0) {
+            foundry.utils.setProperty(data, "data.hp.value", currentHP + data.data.endurance.value);
+            foundry.utils.setProperty(data, "data.endurance.value", 0);
+        }
+        if (data.data?.enduranceReserve?.value < 0) {
+            foundry.utils.setProperty(data, "data.enduranceReserve.value", 0);
+        }
 
         // show text notifications
         if (data.data?.hp?.value && data.data.hp.value != charData.data.hp.value) {
@@ -84,10 +92,6 @@ export default class OVACharacter extends Actor {
 
     prepareBaseData() {
         const charData = this.data;
-
-        if (charData.data.hp.value < 0) charData.data.hp.value = 0;
-        if (charData.data.endurance.value < 0) charData.data.endurance.value = 0;
-        if (charData.data.enduranceReserve.value < 0) charData.data.enduranceReserve.value = 0;
 
         charData.globalMod = 2;
         charData.globalRollMod = 0;
