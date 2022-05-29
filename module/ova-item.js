@@ -149,7 +149,7 @@ export default class OVAItem extends Item {
                 ignoreArmor: 0
             },
             defense: {}
-        };
+        };        
 
         // apply effects to attack data
         itemData.ovaEffects.sort((a, b) => a.data.priority - b.data.priority).forEach(e => e.apply(attackData));

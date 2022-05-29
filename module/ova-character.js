@@ -30,7 +30,7 @@ export default class OVACharacter extends Actor {
 
     async _preUpdate(data, options, user) {
         const charData = this.data;
-        
+
         const currentHP = data.data?.hp?.value || charData.data.hp.value;
         const currentEndurance = data.data?.endurance?.value || charData.data.endurance.value;
 
@@ -155,7 +155,7 @@ export default class OVACharacter extends Actor {
 
     changeHP(amount) {
         if (amount === 0) return;
-        let newHp = this.data.data.hp.value + amount;
+        let newHp = this.data.data.hp.value - amount;
 
         this.update({ "data.hp.value": newHp });
     }

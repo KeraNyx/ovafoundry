@@ -112,12 +112,10 @@ async function _onApplyHealClick(e) {
 
     const spellRoll = message.data.flags["roll-data"];
 
-    const targets = canvas.tokens.controlled;
+    const targets = canvas.tokens.controlled.map(t => t.actor);
     targets.forEach(t => {
-        const targetActor = t.actor;
-
-        targetActor.changeHp(spellRoll.result * spellRoll.dx);
-    })
+        t.changeHP(spellRoll.result * spellRoll.dx);
+    });
 }
 
 async function _onApplyDamageClick(e) {

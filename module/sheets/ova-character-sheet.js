@@ -220,19 +220,7 @@ export default class OVACharacterSheet extends ActorSheet {
         // sum roll modifiers
         let diceTotal = Object.values(rollData).reduce((a, b) => a + b, 0);
 
-        const attackData = {
-            attack: {
-                roll: this.actor.data.globalMod + this.actor.data.globalRollMod,
-                dx: 1,
-                ignoreArmor: 0
-            },
-            defense: {}
-        };
-
-        // apply effects to attack data
-        effects.sort((a, b) => a.data.priority - b.data.priority).forEach(e => e.apply(attackData));
-
-        this._makeRoll({ roll: diceTotal, effects: effects, changes: [], enduranceCost: enduranceCost });
+        this._makeRoll({ roll: diceTotal, effects: [], changes: [], enduranceCost: enduranceCost });
     }
 
     async _makeDramaRoll(event) {

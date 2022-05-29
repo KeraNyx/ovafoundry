@@ -77,7 +77,7 @@ export default class ApplyDamagePrompt extends Dialog {
 
     _prepareData() {
         const damage = this._calculateDamage(this.target, this.rollData.attack, this.rollData.defense);
-        this.rollData.attack.damage = -damage;
+        this.rollData.attack.damage = damage;
         this.effects = {
             self: this.rawEffects.self.map(e => OVAEffect.createActiveEffect(e, this.rollData)),
             target: this.rawEffects.target.map(e => OVAEffect.createActiveEffect(e, this.rollData)),
