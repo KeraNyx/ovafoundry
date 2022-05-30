@@ -113,9 +113,21 @@ async function _onApplyHealClick(e) {
     const spellRoll = message.data.flags["roll-data"];
 
     const targets = canvas.tokens.controlled.map(t => t.actor);
-    targets.forEach(t => {
-        t.changeHP(spellRoll.result * spellRoll.dx);
-    });
+    const attacker = _getMessageAuthor(lastAttack);
+
+    const promptData = {
+        effects: {
+            self: spellRoll.effects.filter(e => e.target === "self"),
+            target: spellRoll.effects.filter(e => e.target === "target"),
+        },
+        rollData: { attack: spellRoll },
+        targets: targets,
+        attacker: attacker,
+    };
+
+    if (targets.length === 0) return;
+    const prompt = new ApplyDamagePrompt({ ...promptData, data: {} });
+    prompt.render(true);
 }
 
 async function _onApplyDamageClick(e) {
@@ -151,7 +163,7 @@ async function _onApplyDamageClick(e) {
             target: attackRoll.effects.filter(e => e.target === "target"),
         },
         rollData: rollData,
-        target: target,
+        targets: [target],
         attacker: attacker,
     };
 

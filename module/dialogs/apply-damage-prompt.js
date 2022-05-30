@@ -1,7 +1,7 @@
 import OVAEffect from "../effects/ova-effect.js";
 
 export default class ApplyDamagePrompt extends Dialog {
-    constructor({ effects, rollData, target, attacker }) {
+    constructor({ effects, rollData, targets, attacker }) {
         const dialogData = {
             title: game.i18n.localize('OVA.ApplyDamage'),
             buttons: {},
@@ -12,11 +12,14 @@ export default class ApplyDamagePrompt extends Dialog {
 
         this.rollData = rollData;
         this.rawEffects = effects;
-        this.target = target;
+        this.targets = targets;
         this.attacker = attacker;
 
         // fill resistances from target
         this.resistances = {};
+        
+        if (rollData.attack.dx < 0) return;
+        const target = this.targets[0];
         for (const name in target.data.resistances) {
             this.resistances[name] = {
                 canHeal: target.data.resistances[name].canHeal || false,
@@ -76,7 +79,7 @@ export default class ApplyDamagePrompt extends Dialog {
     }
 
     _prepareData() {
-        const damage = this._calculateDamage(this.target, this.rollData.attack, this.rollData.defense);
+        const damage = this.rollData.attack.dx >= 0 ? this._calculateDamage(this.targets[0], this.rollData.attack, this.rollData.defense) : this._calculateHeal(this.rollData.attack);
         this.rollData.attack.damage = damage;
         this.effects = {
             self: this.rawEffects.self.map(e => OVAEffect.createActiveEffect(e, this.rollData)),
@@ -89,13 +92,20 @@ export default class ApplyDamagePrompt extends Dialog {
         const context = super.getData();
 
         context.effects = this.effects;
-        context.target = this.target;
+
+        if (this.rollData.attack.dx >= 0) {
+            context.target = this.targets[0];
+        }
         context.resistances = this.resistances;
 
         context.rollData = this.rollData;
         context.effects = this.effects;
 
         return context;
+    }
+
+    _calculateHeal(attackRoll) {
+        return -attackRoll.result * attackRoll.dx;
     }
 
     _calculateDamage(actor, attackRoll, defenseRoll) {
@@ -108,16 +118,16 @@ export default class ApplyDamagePrompt extends Dialog {
 
         let canHeal = false;
         let totalVulnerability = 0;
-        for (const resistance in this.target.data.resistances) {
+        for (const resistance in actor.data.resistances) {
             if (!this.resistances[resistance].affected) continue;
 
-            if (this.target.data.resistances[resistance] >= 0) {
-                dx -= this.target.data.resistances[resistance];
+            if (actor.data.resistances[resistance] >= 0) {
+                dx -= actor.data.resistances[resistance];
                 if (this.resistances[resistance].canHeal) {
                     canHeal = true;
                 }
             } else {
-                totalVulnerability += -this.target.data.resistances[resistance];
+                totalVulnerability += -actor.data.resistances[resistance];
             }
         }
         if (!canHeal && dx < 0) dx = 0;
@@ -129,20 +139,21 @@ export default class ApplyDamagePrompt extends Dialog {
             bonusDamage = damage * (.5 * 2 ** (totalVulnerability - 1));
         }
 
-        return damage + bonusDamage;
+        return -(damage + bonusDamage);
     }
 
     async _applyDamage(e) {
         e.preventDefault();
         e.stopPropagation();
-        this.target.changeHP(this.rollData.attack.damage);
-
         // apply activated effects to self
         const activeSelfEffects = this.effects.self.filter(effect => effect.active);
         const activeTargetEffects = this.effects.target.filter(effect => effect.active);
 
         await this.attacker.addAttackEffects(activeSelfEffects);
-        await this.target.addAttackEffects(activeTargetEffects);
+        this.targets.forEach(target => {
+            target.changeHP(this.rollData.attack.damage);
+            target.addAttackEffects(activeTargetEffects);
+        });
 
         this.close();
     }

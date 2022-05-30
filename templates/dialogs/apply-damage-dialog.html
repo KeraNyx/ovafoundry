@@ -90,7 +90,7 @@
     </table>
     {{/if}}
     <div class="dialog-buttons">
-        {{#if (gte rollData.attack.damage 0)}}
+        {{#if (lt rollData.attack.damage 0)}}
         <button class="apply-damage damage-color" data-button="apply">
             Apply Damage <b>({{abs rollData.attack.damage}})</b>
         </button>

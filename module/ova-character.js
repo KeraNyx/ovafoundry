@@ -155,7 +155,7 @@ export default class OVACharacter extends Actor {
 
     changeHP(amount) {
         if (amount === 0) return;
-        let newHp = this.data.data.hp.value - amount;
+        let newHp = this.data.data.hp.value + amount;
 
         this.update({ "data.hp.value": newHp });
     }
