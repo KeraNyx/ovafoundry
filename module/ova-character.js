@@ -94,6 +94,9 @@ export default class OVACharacter extends Actor {
         if (charData.data.enduranceReserve.value > charData.enduranceReserve.max) {
             charData.data.enduranceReserve.value = charData.enduranceReserve.max;
         }
+
+        charData.dramaDice.available = Math.max(charData.dramaDice.free - charData.data.dramaDice.used, 0);
+        charData.dramaDice.used = Math.max(charData.data.dramaDice.used - charData.dramaDice.free, 0);
     }
 
     prepareBaseData() {
@@ -117,6 +120,7 @@ export default class OVACharacter extends Actor {
             endurance: charData.endurance,
             enduranceReserve: charData.enduranceReserve,
         }
+        charData.dramaDice = { ...charData.data.dramaDice };
 
         if (!charData.changes) charData.changes = [];
         if (charData.data.hp.value <= 0 || charData.data.endurance.value <= 0) {

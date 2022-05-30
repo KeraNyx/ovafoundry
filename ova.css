@@ -210,13 +210,15 @@ input.character-name {
 }
 
 /* scale on hover */
-.roll-dice:hover {
+.dice:hover {
     transform: scale(1.1);
+    z-index: 1;
 }
 
 /* flashy effect on click */
-.roll-dice:active {
+.dice:active {
     transform: scale(1.2);
+    z-index: 1;
 }
 
 .hidden {
@@ -385,19 +387,46 @@ input.combat-side-value {
 
 .drama-dice-block {
     max-width: 5em;
+    transition: transform .1s;
+}
+
+.leftbar {
     padding-left: .5em;
 }
 
-.drama-dice {
+.drama-dice-name {
     color: #731d20;
     font-weight: 600;
     text-transform: uppercase;
     font-size: 1.2em;
     text-align: center;
-    white-space: break-spaces;
 }
-.drama-dice:hover {
+
+.free-drama-dice {
+    text-transform: lowercase;
+    font-size: .8em;
+}
+
+.drama-dice {
+    background-image: url('public/images/drama-dice.svg');
+    height: 4em;
+    background-position: center;
+}
+
+.free-drama-dice {
+    margin: 0.5em 0;
+}
+
+.drama-dice-block:hover, .free-drama-dice:hover {
     text-shadow: 0 0 8px var(--color-shadow-primary);
+}
+
+.drama-dice-block:hover .drama-dice {
+    transform: scale(1.1);
+}
+
+.drama-dice-block:active .drama-dice {
+    transform: scale(1.2);
 }
 
 .reserve-data {

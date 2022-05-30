@@ -3,29 +3,41 @@ const TEMPLATE = 'systems/ova/templates/dialogs/roll-dialog.html';
 export default class RollPrompt extends Dialog {
     resolve = null;
     constructor(title, type, actor, enduranceCost) {
+        const advRollButtons = {
+            disadvantage: {
+                icon: '<i class="fas fa-minus-circle"></i>',
+                label: game.i18n.localize('OVA.Disadvantage.Name'),
+                callback: html => this._makeRoll(html, -5)
+            },
+            normal: {
+                icon: '<i class="fas fa-dice"></i>',
+                label: game.i18n.localize('OVA.Normal.Name'),
+                callback: html => this._makeRoll(html, 0)
+            },
+            advantage: {
+                icon: '<i class="fas fa-plus-circle"></i>',
+                label: game.i18n.localize('OVA.Advantage.Name'),
+                callback: html => this._makeRoll(html, 5)
+            }
+        };
+
+        const stdButtons = {
+            roll: {
+                icon: '<i class="fas fa-dice"></i>',
+                label: game.i18n.localize('OVA.MakeRoll'),
+                callback: html => this._makeRoll(html, 0)
+            }
+        }
+
+        const advRoll = type !== 'spell' && type !== 'drama'
+        const buttons = advRoll ? advRollButtons : stdButtons;
+        const defButton =advRoll ? 'normal' : 'roll';
+
         const dialogData = {
             title: title,
             content: "html",
-            buttons: {
-                disadvantage: {
-                    icon: '<i class="fas fa-minus-circle"></i>',
-                    condition: type !== 'spell' && type !== 'drama',
-                    label: game.i18n.localize('OVA.Disadvantage.Name'),
-                    callback: html => this._makeRoll(html, -5)
-                },
-                normal: {
-                    icon: '<i class="fas fa-check-circle"></i>',
-                    label: game.i18n.localize('OVA.Normal.Name'),
-                    callback: html => this._makeRoll(html, 0)
-                },
-                advantage: {
-                    icon: '<i class="fas fa-plus-circle"></i>',
-                    condition: type !== 'spell' && type !== 'drama',
-                    label: game.i18n.localize('OVA.Advantage.Name'),
-                    callback: html => this._makeRoll(html, 5)
-                }
-            },
-            default: "normal",
+            buttons: buttons,
+            default: defButton,
             close: () => this._close,
         };
         super(dialogData, {});
@@ -37,6 +49,7 @@ export default class RollPrompt extends Dialog {
             base: true,
             reserve: false,
         }
+        this.advRoll = advRoll;
     }
 
     get template() {
@@ -74,6 +87,7 @@ export default class RollPrompt extends Dialog {
         data.enduranceCost = this.enduranceCost;
         data.selection = this.selection;
         data.type = this.type;
+        data.advRoll = this.advRoll;
 
         return data;
     }

@@ -35,7 +35,7 @@
             "Pool": "Endurance Pool",
             "Reserve": "E. Reserve"
         },
-        "DramaDice": "Drama Dice",
+        "DramaDice": "Drama",
         "Duration": {
             "Rounds": "Duration (Rounds)"
         },
@@ -55,6 +55,7 @@
             "Drama": "Drama Dice",
             "Miracle": "Miracle"
         },
+        "MakeRoll": "Make Roll",
         "DX": {
             "Name": "Damage Multiplier",
             "Short": "DX"
@@ -116,7 +117,10 @@
                     "Roll": "Attack Roll"
                 },
                 "Resistances": "Resistances",
-                "Defenses": "Defenses"
+                "Defenses": "Defenses",
+                "DramaDice": {
+                    "Free": "Free Drama Dice"
+                }
             }
         },
         "Properties": "Properties",
@@ -162,6 +166,18 @@
             "Name": "Spell",
             "SpellEffect": "Spell Effect",
             "DefaultName": "New Spell"
+        },
+        "Prompt": {
+            "Yes": "Yes",
+            "No": "No"
+        },
+        "ResetDramaDice": {
+            "Title": "Restore Spent Drama Dice",
+            "Description": "Do you want to restore all spent drama dice?"
+        },
+        "GiveDramaDice": {
+            "Title": "Give Drama Dice",
+            "Description": "Do you want to give character free Drama Dice?"
         }
     }
 }

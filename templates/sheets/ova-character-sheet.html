@@ -11,10 +11,14 @@
     </header>
 
     <div class="ability-block flexrow">
-        <div class="drama-dice-block">
-            <div class="title clickable drama-dice">
-                {{localize "OVA.DramaDice"}}
+        <div class="leftbar flexcol flex0">
+            <div class="drama-dice-block">
+                <div class="title clickable drama-dice-name">
+                    {{localize "OVA.DramaDice"}}<div class="drama-dice"></div>
+                </div>
             </div>
+            <div class="drama-dice-name free-drama-dice give-free-dd clickable">Free: {{actor.data.dramaDice.available}}</div>
+            <div class="drama-dice-name free-drama-dice reset-used-dd clickable">Used: {{actor.data.dramaDice.used}}</div>
         </div>
         <div>
             <h3 class="ability-title">{{ localize 'OVA.Ability.NamePlural' }}</h3>
@@ -83,7 +87,8 @@
                         </div>
                         <div class="combat-cell attack-damage small">
                             <div class="combat-cell-name">{{ localize 'OVA.DX.Short' }}</div>
-                            <div class="combat-cell-value {{#if (lt attack.attack.dx 0)}}heal-text-color{{/if}}">{{ abs attack.attack.dx }}</div>
+                            <div class="combat-cell-value {{#if (lt attack.attack.dx 0)}}heal-text-color{{/if}}">{{ abs
+                                attack.attack.dx }}</div>
                         </div>
                         <div class="combat-cell attack-notes small">
                             <div class="combat-cell-name">{{ localize 'OVA.Endurance.Short' }}</div>
@@ -164,6 +169,6 @@
         </div>
     </div>
     <div class="fixed-panel">
-        <div class='roll-dice'></div>
+        <div class='roll-dice dice'></div>
     </div>
 </form>

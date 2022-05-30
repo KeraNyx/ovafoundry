@@ -35,6 +35,7 @@ OVA.activeEffectKeys = {
     "resistances.?": "OVA.Effects.List.Resistances",
     "defenses.?": "OVA.Effects.List.Defenses",
     "enduranceReserve.max": "OVA.Effects.List.EnduranceReserve.Max",
+    "dramaDice.free": "OVA.Effects.List.DramaDice.Free",
 }
 
 OVA.effectChangeKeys = {

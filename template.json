@@ -10,6 +10,7 @@
             },
             "endurance": {
                 "value": 40,
+                "penalty": 0,
                 "max": 40
             },
             "enduranceReserve": {
@@ -22,7 +23,7 @@
             "abilities": [],
             "weaknesses": [],
             "attacks": [],
-            "drama-dice": {
+            "dramaDice": {
                 "used": 0,
                 "free": 0
             }

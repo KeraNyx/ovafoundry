@@ -12,12 +12,21 @@
             </tr>
         </thead>
         <tbody>
+            {{#if (lte actor.data.data.attributes.endurance.value 0)}}
+            <tr class="hp clickable {{#if selection.base}}selected{{/if}}">
+                <td><b>HP</b></td>
+                <td class="center">
+                    <b>{{actor.data.data.attributes.hp.value}}/{{actor.data.data.attributes.hp.max}}</b>
+                </td>
+            </tr>
+            {{else}}
             <tr class="base-end clickable {{#if selection.base}}selected{{/if}}">
                 <td><b>Base Endurance</b></td>
                 <td class="center">
                     <b>{{actor.data.data.attributes.endurance.value}}/{{actor.data.data.attributes.endurance.max}}</b>
                 </td>
             </tr>
+            {{/if}}
             {{#if (ne type "drama")}}
             {{#if (gt actor.data.data.attributes.enduranceReserve.max 0)}}
             <tr class="end-reserve clickable {{#if selection.reserve}}selected{{/if}}">
@@ -31,7 +40,9 @@
         </tbody>
     </table>
     {{/if}}
+    {{#if advRoll}}
     <h2>Size:</h2>
+    {{/if}}
     <div class="end-res clickable dialog-buttons">
         {{#each buttons as |button id|}}
         <button class="dialog-button {{cssClass}}" data-button="{{id}}">
