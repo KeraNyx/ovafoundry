@@ -23,6 +23,7 @@
             "Name": "Flaw",
             "NamePlural": "Flaws"
         },
+        "Flavor": "Flavor",
         "Name": "Name",
         "Type": "Type",
         "Level": "Level",

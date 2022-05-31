@@ -7,9 +7,9 @@
         {{#each effects as |effect|}}
         <div class="effect {{#if (eq effect.type 'apply-active-effect')}}active-effect{{else}}apply-changes{{/if}}"
             data-index="{{@index}}">
-            <div class="form-group">
+            <div class="flexrow">
                 <label>Effect Type:</label>
-                <div class="effect-type">
+                <div class="effect-type flex0">
                     <select name="data.effects[{{@index}}].type">
                         {{#select effect.type}}
                         {{#each ../config.effectTypes as |name type|}}
@@ -18,7 +18,7 @@
                         {{/select}}
                     </select>
                 </div>
-                <div class="effect-target">
+                <div class="effect-target flex0">
                     {{#if (eq effect.type "apply-active-effect")}}
                     <select name="data.effects[{{@index}}].target">
                         {{#select effect.target}}
@@ -33,9 +33,9 @@
                     <i class="fas fa-minus"></i>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="flexrow">
                 <label>Change:</label>
-                <div class="effect-key">
+                <div class="effect-key flex0">
                     <select name="data.effects[{{@index}}].key">
                         {{#select effect.key}}
                         {{#if (eq effect.type "apply-active-effect")}}
@@ -64,14 +64,18 @@
                         {{/select}}
                     </select>
                 </div>
+            </div>
+            <div class="flexrow">
+                <label>Value:</label>
                 <div class="effect-value">
                     <input name="data.effects[{{@index}}].value" type="text" value="{{effect.value}}" />
                 </div>
             </div>
             {{#if (eq effect.type "apply-active-effect")}}
-            <div class="form-group">
+            <hr/>
+            <div class="flexrow">
                 <label>Over Time Effect:</label>
-                <div class="over-time-when">
+                <div class="over-time-when flex0">
                     <select name="data.effects[{{@index}}].overTime.when">
                         {{#select effect.overTime.when}}
                         {{#each ../config.overTimeModes as |name value|}}
@@ -80,7 +84,10 @@
                         {{/select}}
                     </select>
                 </div>
-                <div class="over-time-key">
+            </div>
+            <div class="flexrow">
+                <div></div>
+                <div class="over-time-key flex0">
                     <select name="data.effects[{{@index}}].overTime.key">
                         {{#select effect.overTime.key}}
                         {{#each ../config.overTimeEffect as |name key|}}
@@ -98,12 +105,16 @@
                         {{/select}}
                     </select>
                 </div>
+            </div>
+            <div class="flexrow">
+                <label>Value:</label>
                 <div class="over-time-value">
                     <input name="data.effects[{{@index}}].overTime.value" type="text"
                         value="{{effect.overTime.value}}" />
                 </div>
             </div>
             {{/if}}
+            <hr/>
             <div class="form-group">
                 <label>Priority:</label>
                 <div class="effect-priority">
