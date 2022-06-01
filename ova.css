@@ -228,13 +228,13 @@ input.character-name {
 }
 
 /* scale on hover */
-.dice:hover {
+.roll-dice.dice:hover {
     transform: scale(1.1);
     z-index: 1;
 }
 
 /* flashy effect on click */
-.dice:active {
+.roll-dice.dice:active {
     transform: scale(1.2);
     z-index: 1;
 }
@@ -527,3 +527,4 @@ input.combat-side-value {
 .temporary:not(.selected) {
     background-color: #1d5c7354;
 }
+

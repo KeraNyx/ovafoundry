@@ -25,6 +25,7 @@ Hooks.once("init", function () {
     CONFIG.Dice.terms['d'] = OVADie;
     CONFIG.Combatant.documentClass = OVACombatant;
     CONFIG.ActiveEffect.documentClass = OVAActiveEffect;
+    // CONFIG.debug.hooks = true;
 
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("ova", OVAAbilitySheet, { types: ["ability"] });
