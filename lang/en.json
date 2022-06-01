@@ -185,6 +185,10 @@
             "Title": "Give Drama Dice",
             "Description": "Do you want to give character free Drama Dice?"
         },
+        "ResetAbilityUses": {
+            "Title": "Reset Ability Uses",
+            "Description": "Do you want to reset all ability uses?"
+        },
         "Create": "Create",
         "AddActiveEffect": "Add Active Effect"
     }

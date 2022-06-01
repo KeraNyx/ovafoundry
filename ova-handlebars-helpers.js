@@ -77,9 +77,6 @@ export default function registerHandlebarsHelpers() {
 
     // concatinate perk names with ; separator, combine duplicates (add amount of duplicates)
     Handlebars.registerHelper("inlinePerks", (ability) => {
-        let perks = ability.data.perks;
-        if (!perks) return "";
-
         let perkString = formatPerks(ability, true);
 
         // add brackets
@@ -106,7 +103,7 @@ function formatPerks(ability, printEndurance = false) {
     });
 
     let perkString = "";
-    let enduranceCost = 0;
+    let enduranceCost = ability.enduranceCost;
     for (let i = 0; i < perks.length; i++) {
         perkString += perks[i].name.toUpperCase();
         if (perks[i].data.level.value > 1) {
@@ -117,13 +114,15 @@ function formatPerks(ability, printEndurance = false) {
         } else {
             perkString += ", ";
         }
-        enduranceCost += perks[i].data.enduranceCost * perks[i].data.level.value;
     }
     perkString = perkString.substring(0, perkString.length - 2);
 
     if (enduranceCost < 0) enduranceCost = 0;
     if (enduranceCost > 0 && printEndurance) {
-        perkString += "; " + enduranceCost + " " + game.i18n.format("OVA.Endurance.Short");
+        if (perkString) {
+            perkString += "; ";
+        }
+        perkString += enduranceCost + " " + game.i18n.format("OVA.Endurance.Short");
     }
 
 

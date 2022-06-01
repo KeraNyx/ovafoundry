@@ -57,11 +57,15 @@ export default class OVACharacterSheet extends ActorSheet {
         inputs.focus(ev => ev.currentTarget.select());
         inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
     }
+
     _resetAbilityUses(event) {
         event.preventDefault();
         event.stopPropagation();
 
-        ConfirmDialog.show({ title: "Reset uses", description: "Are you sure?" }).then(() => {
+        ConfirmDialog.show({
+            title: game.i18n.localize("OVA.ResetAbilityUses.Title"),
+            description: game.i18n.localize("OVA.ResetAbilityUses.Description")
+        }).then(() => {
             const abilityId = this._getItemId(event);
             const ability = this.actor.items.find(i => i.id === abilityId);
             if (!ability) {
@@ -142,6 +146,14 @@ export default class OVACharacterSheet extends ActorSheet {
             const spell = await this.actor.createSpell();
             spell[0].sheet.render(true, { editable: true });
         }
+    }
+
+    async _markAbilityUses(abilities) {
+        abilities.forEach(ability => {
+            const uses = ability.data.data.limitedUse.value;
+            if (uses <= 0) return;
+            ability.update({ "data.limitedUse.value": uses-1 });
+        })
     }
 
     _endEditingItem(e) {
