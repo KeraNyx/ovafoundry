@@ -31,6 +31,7 @@ async function _onDramaRoll(message, html, data) {
     if (!lastRoll || !lastRoll.isOwner || !lastRoll.data.flags["roll-data"]) return;
 
     ui.chat.updateMessage(await OVACombatMessage.addDramaDice(lastRoll, message));
+    if (message.data.flags["miracle"]) lastRoll.data.flags["roll-data"].miracle = true;
 }
 
 function _onAttackRoll(message, html, data) {
@@ -66,15 +67,15 @@ function _onSpellRoll(message, html, data) {
     html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Spell"));
 
     const spellRoll = message.data.flags["roll-data"];
-    const result = spellRoll.result - spellRoll.dv;
+    const result = spellRoll.result - spellRoll.dn;
 
-    if (spellRoll.dv > 0) {
+    if (spellRoll.dn > 0) {
         let resultText = result > 0 ? "Success" : "Failure";
         resultText = game.i18n.localize(`OVA.Attack.${resultText}`);
-        const attackName = game.i18n.localize("OVA.DV.Short");
+        const attackName = game.i18n.localize("OVA.DN.Short");
         html.
             find(".dice-total").
-            append(`<br/><span style="color: ${result > 0 ? "green" : "red"}">${resultText}</span> (${attackName} ${spellRoll.dv})`);
+            append(`<br/><span style="color: ${result > 0 ? "green" : "red"}">${resultText}</span> (${attackName} ${spellRoll.dn})`);
     }
     if (result > 0) {
         const attackObj = message.data.flags["attack"];

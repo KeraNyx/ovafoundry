@@ -15,8 +15,10 @@
     {{!-- Ability Fields --}}
     <section class="content">
         <div class="tab" data-tab="description" data-group="primary-tabs">
-            <input name="data.flavor" value="{{item.data.flavor}}" placeholder="{{ localize 'OVA.Flavor' }}" type="text"/>
-            <textarea name="data.description" placeholder="{{ localize 'OVA.Description' }}">{{item.data.description}}</textarea>
+            <input name="data.flavor" value="{{item.data.flavor}}" placeholder="{{ localize 'OVA.Flavor' }}"
+                type="text" />
+            <textarea name="data.description"
+                placeholder="{{ localize 'OVA.Description' }}">{{item.data.description}}</textarea>
         </div>
         <div class="tab" data-tab="properties" data-group="primary-tabs">
             <table>
@@ -64,6 +66,23 @@
                     <td>
                         <input name="data.magic" type="checkbox" value="{{data.magic}}" data-dtype="Boolean" {{checked
                             data.magic}} />
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>{{localize 'OVA.EnduranceCost'}}</td>
+                    <td>
+                        <input type="text" value="{{data.enduranceCost}}" name="data.enduranceCost" data-dtype="Number" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><h3>{{localize 'OVA.LimitedUse'}}</h3></td>
+                    <td>
+                        <div class="flexrow">
+                            <input type="text" value="{{data.limitedUse.value}}" name="data.limitedUse.value" data-dtype="Number" />/
+                            <input type="text" value="{{data.limitedUse.max}}" name="data.limitedUse.max" data-dtype="Number" />
+                        </div>
                     </td>
                 </tr>
             </table>

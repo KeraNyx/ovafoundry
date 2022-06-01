@@ -56,6 +56,7 @@
             "Drama": "Drama Dice",
             "Miracle": "Miracle"
         },
+        "LimitedUse": "Limited Use",
         "MakeRoll": "Make Roll",
         "DX": {
             "Name": "Damage Multiplier",
@@ -64,6 +65,10 @@
         "DV": {
             "Name": "Difficulty Value",
             "Short": "DV"
+        },
+        "DN": {
+            "Name": "Difficulty Number",
+            "Short": "DN"
         },
         "Status": {
             "NoHP": "No HP left",

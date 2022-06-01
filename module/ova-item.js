@@ -38,7 +38,7 @@ export default class OVAItem extends Item {
         const itemData = this.data;
 
         itemData.ovaEffects = [];
-        let enduranceCost = 0;
+        let enduranceCost = itemData.data.enduranceCost || 0;
         // calculalte endurance cost from perks
         if (itemData.type === 'attack' || itemData.type === 'ability') {
             itemData.data.perks.forEach(p => {
@@ -50,7 +50,9 @@ export default class OVAItem extends Item {
         }
         if (enduranceCost < 0) enduranceCost = 0;
         itemData.enduranceCost = enduranceCost;
-
+        if (itemData.data.limitedUse && itemData.data.limitedUse.max > 0) {
+            itemData.limitedUse = itemData.data.limitedUse;
+        }
         // prepare effect data 
         if (this.type === 'perk' || this.type === 'ability') {
             itemData.data.effects.forEach(e => {
@@ -68,12 +70,12 @@ export default class OVAItem extends Item {
     }
 
     static SPELL_COST = [
-// Spell  1   2   3   4   5   // Magic
+        // Spell  1   2   3   4   5   // Magic
         [20, 30, 40, 50, 60], // 1
         [10, 20, 30, 40, 50], // 2
-        [ 5, 10, 20, 30, 40], // 3
-        [ 2,  5, 10, 20, 30], // 4
-        [ 0,  2,  5, 10, 20], // 5
+        [5, 10, 20, 30, 40], // 3
+        [2, 5, 10, 20, 30], // 4
+        [0, 2, 5, 10, 20], // 5
     ]
 
     _getRollAbilities() {
@@ -104,7 +106,7 @@ export default class OVAItem extends Item {
         const selectedAbilities = this._getRollAbilities();
         const magicAbility = selectedAbilities.find(i => i.data.data.magic)
 
-        let spellDV = 0;
+        let spellDN = 0;
         spellData.enduranceCost = 0;
 
         if (magicAbility) {
@@ -116,12 +118,12 @@ export default class OVAItem extends Item {
             spellData.enduranceCost = data.effectLevel ? OVAItem.SPELL_COST[data.magicLevel - 1][data.effectLevel - 1] : 0;
 
             if (data.effectLevel > data.magicLevel) {
-                spellDV = 2 + 2 * data.effectLevel;
+                spellDN = 2 + 2 * data.effectLevel;
             }
         }
         spellData.attack = {
             roll: this.actor.data.globalMod,
-            dv: spellDV,
+            dn: spellDN,
         }
         spellData.attack.roll += selectedAbilities.reduce((sum, a) => sum + a.data.data.level.value, 0);
         spellData.enduranceCost += selectedAbilities.reduce((sum, a) => sum + a.data.enduranceCost, 0);
@@ -149,7 +151,7 @@ export default class OVAItem extends Item {
                 ignoreArmor: 0
             },
             defense: {}
-        };        
+        };
 
         // apply effects to attack data
         itemData.ovaEffects.sort((a, b) => a.data.priority - b.data.priority).forEach(e => e.apply(attackData));

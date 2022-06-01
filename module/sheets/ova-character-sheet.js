@@ -1,6 +1,7 @@
 import RollPrompt from "../dialogs/roll-prompt.js";
 import CombatMessage from "../chat/combat-message.js";
 import AddActiveEffectPrompt from "../dialogs/add-active-effect-dialog.js";
+import ConfirmDialog from "../dialogs/confirm-dialog.js";
 
 export default class OVACharacterSheet extends ActorSheet {
     /** @override */
@@ -49,10 +50,27 @@ export default class OVACharacterSheet extends ActorSheet {
         html.find('.give-free-dd').click(this._giveFreeDramaDice.bind(this));
         html.find('.reset-used-dd').click(this._resetUsedDramaDice.bind(this));
 
+        html.find('.reset-uses').click(this._resetAbilityUses.bind(this));
+
         html.find('input[data-dtype="Number"]').on("keypress", this._onFieldSubmit.bind(this));
         const inputs = html.find("input");
         inputs.focus(ev => ev.currentTarget.select());
         inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
+    }
+    _resetAbilityUses(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        ConfirmDialog.show({ title: "Reset uses", description: "Are you sure?" }).then(() => {
+            const abilityId = this._getItemId(event);
+            const ability = this.actor.items.find(i => i.id === abilityId);
+            if (!ability) {
+                console.log(`Could not find item with id ${abilityId}`);
+                return;
+            }
+
+            ability.update({ "data.limitedUse.value": ability.data.data.limitedUse.max });
+        })
     }
 
     _addActiveEffect(event) {
@@ -64,50 +82,22 @@ export default class OVACharacterSheet extends ActorSheet {
 
     _giveFreeDramaDice(event) {
         event.preventDefault();
-
-        new Dialog({
+        ConfirmDialog.show({
             title: game.i18n.localize("OVA.GiveDramaDice.Title"),
-            content: `<p>${game.i18n.localize("OVA.GiveDramaDice.Description")}</p>`,
-            buttons: {
-                yes: {
-                    icon: '<i class="fas fa-check"></i>',
-                    label: game.i18n.localize("OVA.Prompt.Yes"),
-                    callback: () => {
-                        this.actor.update({ "data.dramaDice.free": this.actor.data.data.dramaDice.free + 1 });
-                    }
-                },
-                no: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: game.i18n.localize("OVA.Prompt.No"),
-                    callback: () => { }
-                }
-            },
-            default: "no"
-        }).render(true);
+            description: game.i18n.localize("OVA.GiveDramaDice.Description")
+        }).then(() => {
+            this.actor.update({ "data.dramaDice.free": this.actor.data.data.dramaDice.free + 1 });
+        });
     }
 
     _resetUsedDramaDice(event) {
         event.preventDefault();
-
-        new Dialog({
+        ConfirmDialog.show({
             title: game.i18n.localize("OVA.ResetDramaDice.Title"),
-            content: `<p>${game.i18n.localize("OVA.ResetDramaDice.Description")}</p>`,
-            buttons: {
-                yes: {
-                    icon: '<i class="fas fa-check"></i>',
-                    label: game.i18n.localize("OVA.Prompt.Yes"),
-                    callback: () => {
-                        this.actor.update({ "data.dramaDice.used": 0 });
-                    }
-                },
-                no: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: game.i18n.localize("OVA.Prompt.No"),
-                    callback: () => { }
-                }
-            },
-            default: "no"
-        }).render(true);
+            description: game.i18n.localize("OVA.ResetDramaDice.Description")
+        }).then(() => {
+            this.actor.update({ "data.dramaDice.used": 0, "data.dramaDice.free": 0 });
+        })
     }
 
     async _onSilentInputChange(event) {
@@ -288,7 +278,7 @@ export default class OVACharacterSheet extends ActorSheet {
         event.preventDefault();
 
         let enduranceCost = 5;
-        if (this.actor.data.dramaDice.available > 0) {
+        if (this.actor.data.dramaDice.free > 0) {
             enduranceCost = 0;
         }
 
@@ -296,14 +286,14 @@ export default class OVACharacterSheet extends ActorSheet {
     }
 
     async _onDramaDiceUse() {
-        if (this.actor.data.data.dramaDice.free > 0) {
+        if (this.actor.data.dramaDice.free > 0) {
             await this.actor.update({ "data.dramaDice.free": this.actor.data.data.dramaDice.free - 1 });
         } else {
             await this.actor.update({ "data.dramaDice.used": this.actor.data.data.dramaDice.used + 1 })
         }
     }
 
-    async _makeRoll({ roll = 2, dv = 0, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '', callback = null }) {
+    async _makeRoll({ roll = 2, dn = 0, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '', callback = null }) {
         const result = await new RollPrompt(flavor, type, this.actor, enduranceCost).show();
         if (result === false) return;
         callback?.bind(this)();
@@ -331,7 +321,7 @@ export default class OVACharacterSheet extends ActorSheet {
             ignoreArmor: ignoreArmor,
             effects: effects,
             type: type,
-            dv: dv,
+            dn: dn,
         };
 
         CombatMessage.create({ roll: dice, rollData: rollData, speaker: this.actor, attack: attack });

@@ -14,7 +14,12 @@
                         <div class="flex0">
                             <i class="ability-active {{#if item.data.active}}fa{{else}}far{{/if}} fa-circle"></i>
                         </div>
-                        <div class="ability-name">{{item.name}} {{#if data.flavor}}({{data.flavor}}){{/if}} <span class="inline-perks">{{inlinePerks item}}</span></div>
+                        <div class="ability-name">
+                            {{item.name}} 
+                            {{#if data.limitedUse}}[{{data.limitedUse.value}}/{{data.limitedUse.max}} <a class="reset-uses"><i hint="reset" class="fas fa-arrows-alt-v"></i></a>]{{/if}}
+                            {{#if data.flavor}}({{data.flavor}}){{/if}} 
+                            <span class="inline-perks">{{inlinePerks item}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
