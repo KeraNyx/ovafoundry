@@ -73,7 +73,7 @@ export default class OVACharacterSheet extends ActorSheet {
                 return;
             }
 
-            ability.update({ "data.limitedUse.value": ability.data.data.limitedUse.max });
+            ability.resetLimitedUse();
         })
     }
 
@@ -90,7 +90,7 @@ export default class OVACharacterSheet extends ActorSheet {
             title: game.i18n.localize("OVA.GiveDramaDice.Title"),
             description: game.i18n.localize("OVA.GiveDramaDice.Description")
         }).then(() => {
-            this.actor.update({ "data.dramaDice.free": this.actor.data.data.dramaDice.free + 1 });
+            this.actor.giveFreeDramaDice();
         });
     }
 
@@ -100,7 +100,7 @@ export default class OVACharacterSheet extends ActorSheet {
             title: game.i18n.localize("OVA.ResetDramaDice.Title"),
             description: game.i18n.localize("OVA.ResetDramaDice.Description")
         }).then(() => {
-            this.actor.update({ "data.dramaDice.used": 0, "data.dramaDice.free": 0 });
+            this.actor.resetUsedDramaDice();
         })
     }
 
@@ -214,7 +214,6 @@ export default class OVACharacterSheet extends ActorSheet {
     _makeDefenseRoll(event) {
         event.preventDefault();
         const defense = event.currentTarget.dataset.deftype;
-
         
         const enduranceCost = Object.values(this.actor.data.defenseAbilities[defense]).reduce((acc, cur) => acc + cur.enduranceCost, 0);
 
@@ -297,15 +296,7 @@ export default class OVACharacterSheet extends ActorSheet {
             enduranceCost = 0;
         }
 
-        this._makeRoll({ roll: 1, type: "drama", enduranceCost: enduranceCost, callback: this._onDramaDiceUse });
-    }
-
-    async _onDramaDiceUse() {
-        if (this.actor.data.dramaDice.free > 0) {
-            await this.actor.update({ "data.dramaDice.free": this.actor.data.data.dramaDice.free - 1 });
-        } else {
-            await this.actor.update({ "data.dramaDice.used": this.actor.data.data.dramaDice.used + 1 })
-        }
+        this._makeRoll({ roll: 1, type: "drama", enduranceCost: enduranceCost, callback: this.actor.useDramaDice.bind(this.actor) });
     }
 
     async _makeRoll({ roll = 2, dn = 0, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '', callback = null }) {

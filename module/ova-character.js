@@ -162,6 +162,22 @@ export default class OVACharacter extends Actor {
         });
     }
 
+    giveFreeDramaDice() {
+        this.update({ "data.dramaDice.free": this.data.data.dramaDice.free + 1 });
+    }
+
+    resetUsedDramaDice() {
+        this.update({ "data.dramaDice.used": 0, "data.dramaDice.free": 0 });
+    }
+
+    async useDramaDice() {
+        if (this.data.dramaDice.free > 0) {
+            await this.update({ "data.dramaDice.free": this.data.data.dramaDice.free - 1 });
+        } else {
+            await this.update({ "data.dramaDice.used": this.data.data.dramaDice.used + 1 })
+        }
+    }
+
     _prepareItemData() {
         this.items.forEach(item => item.prepareItemData());
     }

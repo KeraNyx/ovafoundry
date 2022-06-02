@@ -158,6 +158,10 @@ export default class OVAItem extends Item {
         Object.assign(itemData, attackData);
     }
 
+    resetLimitedUse() {
+        this.update({ "data.limitedUse.value": this.data.data.limitedUse.max });
+    }
+
     _prepareAbilittyData() {
         const data = this.data.data;
         data.level.mod = 0;
