@@ -46,11 +46,23 @@ function _onAttackRoll(message, html, data) {
 function _onDefenseRoll(message, html, data) {
     html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Defense"));
     const attackRollData = lastAttack.data.flags["roll-data"];
+    const defenseRollData = message.data.flags["roll-data"];
 
-    const result = lastAttack.roll.result - message.roll.result;
+    let result = lastAttack.roll.result - message.roll.result;
     message.data.flags["attack-roll-data"] = attackRollData;
+    // miracle calculation first for attacker the defender 
+    if (attackRollData.miracle) result = Math.max(1, result);
+    if (defenseRollData.miracle) result = Math.min(-1, result);
+    if (attackRollData.miracle && defenseRollData.miracle) result = 0;
 
-    let resultText = result > 0 ? "Hit" : "Miss";
+    let resultText = '';
+    if (result > 0) {
+        resultText = "Hit";
+    } else if (result < 0) {
+        resultText = "Miss";
+    } else {
+        resultText = "Tie";
+    }
     resultText = game.i18n.localize(`OVA.Attack.${resultText}`);
     const attackName = game.i18n.localize("OVA.Roll.Attack");
     html.
@@ -67,17 +79,18 @@ function _onSpellRoll(message, html, data) {
     html.find(".flavor-text").html(game.i18n.localize("OVA.Roll.Spell"));
 
     const spellRoll = message.data.flags["roll-data"];
-    const result = spellRoll.result - spellRoll.dn;
+    let result = spellRoll.result - spellRoll.dn;
+    if (spellRoll.miracle) result = Math.max(1, result);
 
     if (spellRoll.dn > 0) {
-        let resultText = result > 0 ? "Success" : "Failure";
+        let resultText = result >= 0 ? "Success" : "Failure";
         resultText = game.i18n.localize(`OVA.Attack.${resultText}`);
         const attackName = game.i18n.localize("OVA.DN.Short");
         html.
             find(".dice-total").
-            append(`<br/><span style="color: ${result > 0 ? "green" : "red"}">${resultText}</span> (${attackName} ${spellRoll.dn})`);
+            append(`<br/><span style="color: ${result >= 0 ? "green" : "red"}">${resultText}</span> (${attackName} ${spellRoll.dn})`);
     }
-    if (result > 0) {
+    if (result >= 0) {
         const attackObj = message.data.flags["attack"];
         const attack = _getMessageAuthor(message).items.find(i => i.id === attackObj._id);
         attack?.update({ "data.active": true });
