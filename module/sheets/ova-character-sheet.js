@@ -30,29 +30,28 @@ export default class OVACharacterSheet extends ActorSheet {
                 console.log(`Could not find item with id ${abilityId}`);
                 return;
             }
-            if (ability.data.data.isRoot) {
-                ability.sheet._onDrop(event);
-            }
+            ability.sheet._onDrop(event);
+            return;
         }
         super._onDrop(event);
     }
 
     _onDragHighlight(event) {
-        event.preventDefault();
-        const abilityBlock = event.target.closest(".item");
-        if (!abilityBlock) return;
-        if (event.type === "dragleave") {
-            abilityBlock.classList.remove("selected");
-            return;
-        }
-        const abilityId = abilityBlock.dataset.itemId;
-        const ability = this.actor.items.find(i => i.id === abilityId);
-        if (!ability) {
-            console.log(`Could not find item with id ${abilityId}`);
-            return;
-        }
-        if (!ability.data.data.isRoot) return;
-        abilityBlock.classList.add("selected");
+        // event.preventDefault();
+        // const abilityBlock = event.target.closest(".item");
+        // if (!abilityBlock) return;
+        // if (event.type === "dragleave") {
+        //     abilityBlock.classList.remove("selected");
+        //     return;
+        // }
+        // const abilityId = abilityBlock.dataset.itemId;
+        // const ability = this.actor.items.find(i => i.id === abilityId);
+        // if (!ability) {
+        //     console.log(`Could not find item with id ${abilityId}`);
+        //     return;
+        // }
+        // if (!ability.data.data.isRoot) return;
+        // abilityBlock.classList.add("selected");
     }
 
     /** @override */
