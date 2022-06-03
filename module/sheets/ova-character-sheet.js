@@ -15,6 +15,9 @@ export default class OVACharacterSheet extends ActorSheet {
         return mergeObject(super.defaultOptions, {
             template: 'systems/ova/templates/sheets/ova-character-sheet.html',
             tabs: [{ navSelector: ".combat-tabs", contentSelector: ".combat-content" }],
+            scrollY: [
+                ".ability-card"
+            ]
         });
     }
 

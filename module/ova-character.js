@@ -118,23 +118,12 @@ export default class OVACharacter extends Actor {
             enduranceReserve: charData.enduranceReserve,
         }
         charData.dramaDice = { ...charData.data.dramaDice };
-
-        if (!charData.changes) charData.changes = [];
-        if (charData.data.hp.value <= 0 || charData.data.endurance.value <= 0) {
-            charData.globalMod -= 1;
-            charData.changes.push({
-                source: {
-                    name: game.i18n.localize("OVA.Status.No" + charData.data.hp.value <= 0 ? "HP" : "Endurance"),
-                    type: "status",
-                }, key: "globalMod", mode: 2, value: -1
-            })
-        }
     }
 
     prepareDerivedData() {
         super.prepareDerivedData();
 
-        this._prepareItemData();
+        this.items.filter(i => i.data.type === "ability").forEach(item => item.prepareItemData());
         const charData = this.data;
 
         // apply active ability effects to data
@@ -152,6 +141,7 @@ export default class OVACharacter extends Actor {
         charData.haveMagic = magicAbilities.length > 0;
 
         // save abilities that have affected defenses for future use
+        if (!charData.changes) charData.changes = [];
         const defenseChanges = charData.changes.filter(change => change.key === "defenses.?" || change.key === "speed");
         charData.defenseAbilities = {}        
         defenseChanges.forEach(change => {
@@ -160,6 +150,19 @@ export default class OVACharacter extends Actor {
             if (!charData.defenseAbilities[defense]) charData.defenseAbilities[defense] = {};
             charData.defenseAbilities[defense][change.source.data._id] = change.source.data;
         });
+
+        if (charData.data.hp.value <= 0 || charData.data.endurance.value <= 0) {
+            charData.globalMod -= 1;
+            charData.changes.push({
+                source: {
+                    name: game.i18n.localize("OVA.Status.No" + charData.data.hp.value <= 0 ? "HP" : "Endurance"),
+                    type: "status",
+                }, key: "globalMod", mode: 2, value: -1
+            })
+        }
+
+        this.items.filter(i => i.data.type !== "ability").forEach(item => item.prepareItemData());
+
     }
 
     giveFreeDramaDice() {
@@ -175,10 +178,6 @@ export default class OVACharacter extends Actor {
         const useFree = Math.min(this.data.dramaDice.free, amount);
         const addUsed = amount - useFree;
         this.update({ "data.dramaDice.free": this.data.data.dramaDice.free- useFree, "data.dramaDice.used": this.data.data.dramaDice.used + addUsed });
-    }
-
-    _prepareItemData() {
-        this.items.forEach(item => item.prepareItemData());
     }
 
     getRollData() {
