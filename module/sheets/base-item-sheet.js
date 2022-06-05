@@ -100,4 +100,11 @@ export default class BaseItemSheet extends ItemSheet {
     _getItemId(event) {
         return event.currentTarget.closest(".item").dataset.itemId;
     }
+
+    getData() {
+        const data = super.getData();
+        data.perks = this.item.data.perks;
+
+        return data;
+    }
 }

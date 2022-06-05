@@ -91,7 +91,7 @@ export default function registerHandlebarsHelpers() {
 }
 
 function formatPerks(ability, printEndurance = false) {
-    let perks = ability.data.perks;
+    let perks = ability.perks;
     if (!perks) return "";
 
     perks.sort((a, b) => {

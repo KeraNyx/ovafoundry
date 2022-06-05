@@ -2,51 +2,90 @@ import OVAEffect from './effects/ova-effect.js';
 
 export default class OVAItem extends Item {
     /** @Param []Item */
-    addPerks(perks) {
-        const currentPerks = this.data.data.perks || [];
+    async addPerks(perks) {
+        const currentPerks = this.data.perks || [];
         // increase level by one or add there is no perk with the same name
+        const newPerkData = [];
+        const updatedPerkData = [];
         perks.forEach(p => {
             const index = currentPerks.findIndex(pk => pk.name === p.name);
             if (index === -1) {
-                currentPerks.push(p);
+                newPerkData.push(p);
             } else {
-                currentPerks[index].data.level.value += 1;
+                updatedPerkData.push({
+                    _id: currentPerks[index]._id,
+                    "data.level.value": currentPerks[index].data.level.value + 1
+                });
             }
         });
         currentPerks.sort((a, b) => a.name.localeCompare(b.name));
-        this.actor.updateEmbeddedDocuments("Item", [{ _id: this.id, "data.perks": currentPerks }]);
+
+        const newPerks = newPerkData.length ? await this.actor.createEmbeddedDocuments("Item", newPerkData) : [];
+        await this.actor.updateEmbeddedDocuments("Item", updatedPerkData);
+
+        this.data.data.perks.push(...newPerks.map(p => p.id));
+        await this.actor.updateEmbeddedDocuments("Item", [{ _id: this.id, "data.perks": this.data.data.perks }]);
     }
 
     // removing single perk with specified id
-    removePerk(perkId) {
-        const currentPerks = this.data.data.perks || [];
+    async removePerk(perkId) {
+        const currentPerks = this.data.perks || [];
 
         // reduce level by one or remove if level is 1
         const index = currentPerks.findIndex(p => p._id === perkId);
         if (currentPerks[index].data.level.value > 1) {
-            currentPerks[index].data.level.value--;
+            await this.actor.updateEmbeddedDocuments("Item", [{
+                _id: currentPerks[index]._id,
+                "data.level.value": currentPerks[index].data.level.value - 1
+            }]);
+
         } else {
             // remove perk at index
-            currentPerks.splice(index, 1);
+            await this.actor.deleteEmbeddedDocuments("Item", [perkId]);
+            await this.actor.updateEmbeddedDocuments("Item", [{ _id: this.id, "data.perks": this.data.data.perks.filter(p => p !== perkId) }]);
         }
-        currentPerks.sort((a, b) => a.name.localeCompare(b.name));
-        this.actor.updateEmbeddedDocuments("Item", [{ _id: this.id, "data.perks": currentPerks }]);
     }
 
     prepareDerivedData() {
         super.prepareDerivedData();
+    }
+
+    /** @override */
+    prepareItemData() {
+        if (!this.isEmbedded) return;
+
+        this._preparePerks();
+        if (this.type === 'ability') this._prepareAbilittyData();
+        if (this.type === 'attack') this._prepareAttackData();
+        if (this.type === 'spell') this._prepareSpellData();
+    }
+
+    static SPELL_COST = [
+        // Spell  1   2   3   4   5   // Magic
+        [20, 30, 40, 50, 60], // 1
+        [10, 20, 30, 40, 50], // 2
+        [5, 10, 20, 30, 40], // 3
+        [2, 5, 10, 20, 30], // 4
+        [0, 2, 5, 10, 20], // 5
+    ]
+
+    _preparePerks() {
         const itemData = this.data;
-        itemData.ovaFlags = {};
+        if (!itemData.data.perks) return;
+
+        const actorData = this.actor.data;
+        const perks = actorData.items.filter(i => i.type === 'perk' && itemData.data.perks.includes(i.id)).map(i => i.data);
+
+        perks.sort((a, b) => a.name.localeCompare(b.name));
+        itemData.perks = perks;
 
         itemData.ovaEffects = [];
         let enduranceCost = itemData.data.enduranceCost || 0;
         // calculalte endurance cost from perks
-        if (itemData.type === 'attack' || itemData.type === 'ability') {
-            itemData.data.perks.forEach(p => {
+        if (itemData.perks) {
+            itemData.perks.forEach(p => {
                 enduranceCost += p.data.level.value * p.data.enduranceCost;
-                p.data.effects.forEach(e => {
-                    itemData.ovaEffects.push(new OVAEffect(p, e));
-                });
+                p.data.effects.forEach(e => itemData.ovaEffects.push(new OVAEffect(p, e)));
             });
         }
         if (enduranceCost < 0) enduranceCost = 0;
@@ -61,23 +100,6 @@ export default class OVAItem extends Item {
             });
         }
     }
-
-    /** @override */
-    prepareItemData() {
-        if (!this.isEmbedded) return;
-        if (this.type === 'ability') this._prepareAbilittyData();
-        if (this.type === 'attack') this._prepareAttackData();
-        if (this.type === 'spell') this._prepareSpellData();
-    }
-
-    static SPELL_COST = [
-        // Spell  1   2   3   4   5   // Magic
-        [20, 30, 40, 50, 60], // 1
-        [10, 20, 30, 40, 50], // 2
-        [5, 10, 20, 30, 40], // 3
-        [2, 5, 10, 20, 30], // 4
-        [0, 2, 5, 10, 20], // 5
-    ]
 
     _getRollAbilities() {
         const itemData = this.data;

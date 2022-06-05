@@ -40,7 +40,7 @@ export default class OVAAbilitySheet extends BaseItemSheet {
         data.item = itemData;
         data.data = itemData.data;
         data.abilities = itemData.data.abilities;
-
+        
         return data;
     }
 
