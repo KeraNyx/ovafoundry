@@ -109,6 +109,9 @@ function formatPerks(ability, printEndurance = false) {
         if (perks[i].data.level.value > 1) {
             perkString += " X" + perks[i].data.level.value;
         }
+        if (perks[i].data.flavor) {
+            perkString += ": "+perks[i].data.flavor;
+        }
         if (i < perks.length - 1 && perks[i].data.type !== perks[i + 1].data.type) {
             perkString += "; ";
         } else {

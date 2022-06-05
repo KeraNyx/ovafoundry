@@ -1,8 +1,9 @@
 <h1>{{localize "OVA.Perk.NamePlural"}}</h1>
 <div class="perks content flexcol" style=" min-height: 20px;">
     {{#each perks as |perk|}}
-    <div class="item flexrow" data-item-id="{{perk._id}}">
-        <h3>{{perk.name}} {{#if (gt perk.data.level.value 1)}} X{{perk.data.level.value}} {{/if}}
+    <div class="item perk flexrow" data-item-id="{{perk._id}}">
+        <h3>{{perk.name}} {{#if (gt perk.data.level.value 1)}} X{{perk.data.level.value}}{{/if}}
+            {{#if perk.data.flavor}}: {{perk.data.flavor}} {{/if}}
             ({{localize 'OVA.EnduranceCost'}}: {{mul perk.data.enduranceCost perk.data.level.value}})</h3>
         <a class="item-control perk-delete flex0" title="Delete Item"><i class="fas fa-minus"></i></a>
     </div>

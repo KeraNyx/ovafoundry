@@ -19,6 +19,7 @@ export default class BaseItemSheet extends ItemSheet {
 
         html.find(".add-effect").click(this._onAddEffect.bind(this));
         html.find(".effect-remove").click(this._onDeleteEffect.bind(this));
+        html.find('.perk').on("contextmenu", this.actor.sheet._editItem.bind(this));
     }
 
     _onDeleteEffect(event) {
