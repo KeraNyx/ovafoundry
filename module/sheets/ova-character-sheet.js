@@ -361,38 +361,23 @@ export default class OVACharacterSheet extends ActorSheet {
     }
 
     async _makeRoll({ roll = 2, dn = 0, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '', callback = null }) {
-        const result = await new RollPrompt(flavor, type, this.actor, enduranceCost).show();
+        const result = await new RollPrompt(flavor, type, this.actor, enduranceCost, roll).show();
         if (result === false) return;
 
         // TODO: add changes to list of changes
-        roll += result;
-        callback?.bind(this)(roll);
+        callback?.bind(this)(result.roll);
 
-        let negativeDice = false;
-        if (roll <= 0) {
-            negativeDice = true;
-            roll = 2 - roll;
-        }
-
-        // roll dice
-        let dice;
-        if (negativeDice) {
-            dice = new Roll(`${roll}d6kl`);
-        } else {
-            dice = new Roll(`${roll}d6khs`);
-        }
-        dice.evaluate({ async: false })
         const rollData = {
-            roll: roll,
+            roll: result.roll,
             dx: dx,
-            result: dice.result,
+            result: result.dice.result,
             ignoreArmor: ignoreArmor,
             effects: effects,
             type: type,
             dn: dn,
         };
 
-        CombatMessage.create({ roll: dice, rollData: rollData, speaker: this.actor, attack: attack });
+        CombatMessage.create({ roll: result.dice, rollData: rollData, speaker: this.actor, attack: attack });
     }
 
     _packAbility(ability) {

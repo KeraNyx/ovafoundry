@@ -1,29 +1,33 @@
+const sizeMods = {
+    'disadvantage': -5,
+    'normal': 0,
+    'advantage': 5,
+}
+
 export default class RollPrompt extends Dialog {
     resolve = null;
-    constructor(title, type, actor, enduranceCost) {
-        const advRollButtons = {
-            disadvantage: {
-                icon: '<i class="fas fa-minus-circle"></i>',
-                label: game.i18n.localize('OVA.Disadvantage.Name'),
-                callback: html => this._makeRoll(html, -5)
+    constructor(title, type, actor, enduranceCost, roll = 2) {
+        const defenseButtons = {
+            '0': {
+                label: '0',
+                callback: html => this._roll(html, 0),
             },
-            normal: {
+            'roll': {
                 icon: '<i class="fas fa-dice"></i>',
-                label: game.i18n.localize('OVA.Normal.Name'),
-                callback: html => this._makeRoll(html, 0)
+                label: game.i18n.localize('OVA.MakeRoll'),
+                callback: html => this._roll(html, 1),
             },
-            advantage: {
-                icon: '<i class="fas fa-plus-circle"></i>',
-                label: game.i18n.localize('OVA.Advantage.Name'),
-                callback: html => this._makeRoll(html, 5)
+            'double': {
+                label: game.i18n.localize('OVA.Roll.DontHurtMe'),
+                callback: html => this._roll(html, 2),
             }
-        };
+        }
 
         const stdButtons = {
             roll: {
                 icon: '<i class="fas fa-dice"></i>',
                 label: game.i18n.localize('OVA.MakeRoll'),
-                callback: html => this._makeRoll(html, 0)
+                callback: html => this._roll(html, 1)
             }
         }
 
@@ -31,21 +35,18 @@ export default class RollPrompt extends Dialog {
             drama: {
                 icon: '<i class="fas fa-dice"></i>',
                 label: game.i18n.localize('OVA.Roll.Drama') + ' (5)',
-                callback: html => this._makeRoll(html, 0)
+                callback: html => this._roll(html, 1)
             },
             miracle: {
                 icon: '<i class="fas fa-dice"></i>',
                 label: game.i18n.localize('OVA.Roll.Miracle') + ' (30)',
-                callback: html => this._makeRoll(html, 5)
+                callback: html => this._roll(html, 6)
             }
         }
 
-        const advRoll = type !== 'spell' && type !== 'drama'
-        let buttons = advRoll ? advRollButtons : stdButtons;
-        let defButton = advRoll ? 'normal' : 'roll';
-
-        buttons = type === 'drama' ? dramaButtons : buttons;
-        defButton = type === 'drama' ? 'drama' : defButton;
+        let buttons = type === 'drama' ? dramaButtons : stdButtons;
+        buttons = type === 'defense' ? defenseButtons : buttons;
+        let defButton = type === 'drama' ? 'drama' : 'roll';
 
         const dialogData = {
             title: title,
@@ -59,11 +60,9 @@ export default class RollPrompt extends Dialog {
         this.actor = actor;
         this.type = type;
         this.enduranceCost = enduranceCost;
-        this.selection = {
-            base: true,
-            reserve: false,
-        }
-        this.advRoll = advRoll;
+        this.roll = roll;
+        this.enduranseSelection = "base";
+        this.sizeSelection = "normal";
     }
 
     get template() {
@@ -73,27 +72,22 @@ export default class RollPrompt extends Dialog {
     activateListeners(html) {
         super.activateListeners(html);
 
-        html.find('.base-end').click(this._baseEnduranceSelect.bind(this));
-        html.find('.end-reserve').click(this._enduranceReserveSelect.bind(this));
+        html.find('.size[data-selection]').click(this._selectSize.bind(this));
+        html.find('.enduranse-pool[data-selection]').click(this._selectEnduransePool.bind(this));
     }
 
-    _baseEnduranceSelect(event) {
-        event.preventDefault();
-        this.selection = {
-            base: true,
-            reserve: false,
-        }
+    _selectSize(e) {
+        e.preventDefault();
+        const size = $(e.currentTarget).data('selection');
+        this.sizeSelection = size;
         this.render(true);
     }
-    _enduranceReserveSelect(event) {
-        event.preventDefault();
-        this.selection = {
-            base: false,
-            reserve: true,
-        }
+    _selectEnduransePool(e) {
+        e.preventDefault();
+        const enduransePool = $(e.currentTarget).data('selection');
+        this.enduranseSelection = enduransePool;
         this.render(true);
     }
-
 
     getData() {
         const data = super.getData();
@@ -102,9 +96,9 @@ export default class RollPrompt extends Dialog {
         if (this.type === 'drama' && data.enduranceCost > 0) {
             data.enduranceCost = `${this.enduranceCost}/${this.enduranceCost * 6}`;
         }
-        data.selection = this.selection;
+        data.enduranseSelection = this.enduranseSelection;
         data.type = this.type;
-        data.advRoll = this.advRoll;
+        data.sizeSelection = this.sizeSelection;
 
         return data;
     }
@@ -113,15 +107,43 @@ export default class RollPrompt extends Dialog {
         this.resolve(false);
     }
 
-    _makeRoll(html, adv) {
+    _roll(html, mul) {
         let mod = parseInt(html.find('#roll-modifier').val());
         if (isNaN(mod)) mod = 0;
-        this.resolve && this.resolve(adv + mod);
 
-        if (this.type === 'drama') {
-            this.enduranceCost += this.enduranceCost * adv;
+        let roll = this.roll + mod + sizeMods[this.sizeSelection];
+        let negativeDice = false;
+        if (roll <= 0) {
+            negativeDice = true;
+            roll = 2 - roll;
         }
-        this.actor.changeEndurance(-this.enduranceCost, this.selection.reserve);
+
+        roll = negativeDice ? Math.ceil(roll / mul) : roll * mul;
+
+        const dice = this._makeRoll(roll, negativeDice);
+
+        this.resolve && this.resolve({
+            dice: dice,
+            roll: roll,
+        });
+        // drama dice enduranse cost set for each die
+        if (this.type === 'drama') {
+            this.enduranceCost = this.enduranceCost * mul;
+        }
+        this.actor.changeEndurance(-this.enduranceCost, this.enduranseSelection === "reserve");
+    }
+
+    _makeRoll(roll, negative = false) {
+        // roll dice
+        let dice;
+        if (negative) {
+            dice = new Roll(`${roll}d6kl`);
+        } else {
+            dice = new Roll(`${roll}d6khs`);
+        }
+        dice.evaluate({ async: false })
+
+        return dice;
     }
 
     async show() {

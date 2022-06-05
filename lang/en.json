@@ -54,7 +54,8 @@
             "Manual": "Manual",
             "Spell": "Spell",
             "Drama": "Drama",
-            "Miracle": "Miracle"
+            "Miracle": "Miracle",
+            "DontHurtMe": "Don't Hurt Me!"
         },
         "LimitedUse": "Limited Use",
         "MakeRoll": "Make Roll",
@@ -137,20 +138,23 @@
             "Name": "Defense",
             "Short": "DEF"
         },
-        "Advantage": {
-            "Name": "Advantage"
-        },
-        "Disadvantage": {
-            "Name": "Disadvantage"
-        },
-        "Normal": {
-            "Name": "Normal"
+        "Size": {
+            "Name": "Size",
+            "Advantage": {
+                "Name": "Advantage"
+            },
+            "Disadvantage": {
+                "Name": "Disadvantage"
+            },
+            "Normal": {
+                "Name": "Normal"
+            }
         },
         "Modifier": {
             "Name": "Roll Modifier"
         },
         "ApplyDamage": "Apply Damage",
-        "DamageSelf": "Damage",
+        "DamageSelf": "Take Damage",
         "ApplyDamageDialog": {
             "ApplySelf": "Apply Effects to Self",
             "ApplyTarget": "Apply Effects to Target",
