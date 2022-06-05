@@ -233,11 +233,14 @@ export default class OVAItem extends Item {
         this.sheet == null || this.sheet.render(false);
     }
 
-    _onDelete() {
+    async _onDelete() {
         super._onDelete();
+        if (this.data.data.perks) {
+            await this.actor.deleteEmbeddedDocuments("Item", this.data.data.perks)
+        }
         if (this.data.data.isRoot) {
             const abilities = this.actor.items.filter(i => i.data.data.rootId === this.id).map(i => i.id);
-            this.actor.deleteEmbeddedDocuments("Item", abilities)
+            await this.actor.deleteEmbeddedDocuments("Item", abilities)
         }
     }
 
