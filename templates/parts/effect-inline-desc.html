@@ -3,6 +3,8 @@
 ({{mapEffectKey effect.changes.0.key}} {{activeEffectMode effect.changes.0.mode}}{{signedValue effect.changes.0.value}})
 {{/if}}
 {{#each effect.flags as |when name|}}
+{{#if (mapEffectTime name)}}
 ({{localize (mapEffectTime name)}}: {{mapEffectKey when.key}} {{activeEffectMode effect.when.key}}{{signedValue when.value}})
+{{/if}}
 {{/each}}
 </span>

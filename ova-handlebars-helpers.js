@@ -57,7 +57,7 @@ export default function registerHandlebarsHelpers() {
     });
 
     Handlebars.registerHelper("mapEffectTime", (value) => {
-        return CONFIG.OVA.overTimeModes[value] || value;
+        return CONFIG.OVA.overTimeModes[value] || "";
     });
 
     Handlebars.registerHelper("activeEffectMode", (mode) => {
