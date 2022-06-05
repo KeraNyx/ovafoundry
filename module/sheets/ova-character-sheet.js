@@ -361,7 +361,7 @@ export default class OVACharacterSheet extends ActorSheet {
     }
 
     async _makeRoll({ roll = 2, dn = 0, dx = 1, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '', callback = null }) {
-        const result = await new RollPrompt(flavor, type, this.actor, enduranceCost, roll).show();
+        const result = await new RollPrompt(flavor, type, this.actor, attack, enduranceCost, roll).show();
         if (result === false) return;
 
         // TODO: add changes to list of changes

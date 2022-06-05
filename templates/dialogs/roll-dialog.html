@@ -1,7 +1,9 @@
 <body>
     {{#if (ne type "drama")}}
-    <label for="roll-modifier">{{localize 'OVA.Modifier.Name'}}:</label>
-    <input id="roll-modifier" class="dialog-input" value="0" data-dtype="Number" />
+    <div class="flex0">
+        <label for="roll-modifier">{{localize 'OVA.Modifier.Name'}}:</label>
+        <input id="roll-modifier" class="dialog-input" value="0" data-dtype="Number" />
+    </div>
     {{#if (ne type "spell")}}
     <table class="ova">
         <thead>
@@ -11,7 +13,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="size clickable {{#if (eq sizeSelection 'disadvantage') }}selected{{/if}}" data-selection="disadvantage">
+            <tr class="size clickable {{#if (eq sizeSelection 'disadvantage') }}selected{{/if}}"
+                data-selection="disadvantage">
                 <td><b>{{localize 'OVA.Size.Disadvantage.Name'}}</b></td>
                 <td class="center">
                     <b>-5</b>
@@ -23,7 +26,8 @@
                     <b>0</b>
                 </td>
             </tr>
-            <tr class="size clickable {{#if (eq sizeSelection 'advantage') }}selected{{/if}}" data-selection="advantage">
+            <tr class="size clickable {{#if (eq sizeSelection 'advantage') }}selected{{/if}}"
+                data-selection="advantage">
                 <td><b>{{localize 'OVA.Size.Advantage.Name'}}</b></td>
                 <td class="center">
                     <b>+5</b>
@@ -32,6 +36,14 @@
         </tbody>
     </table>
     {{/if}}
+    {{/if}}
+    {{#if redirectable}}
+    <div class="flexrow">
+        <label for="roll-redirect">
+            <h3>{{localize 'OVA.Redirect'}}:</h3>
+        </label>
+        <input id="roll-redirect" type="checkbox" class="dialog-input" data-dtype="boolean" {{checked redirect}} />
+    </div>
     {{/if}}
     {{#if enduranceCost}}
     <table class="ova">
@@ -43,14 +55,16 @@
         </thead>
         <tbody>
             {{#if (lte actor.data.data.attributes.endurance.value 0)}}
-            <tr class="enduranse-pool clickable {{#if (eq enduranseSelection 'base')}}selected{{/if}}" data-selection="base">
+            <tr class="enduranse-pool clickable {{#if (eq enduranseSelection 'base')}}selected{{/if}}"
+                data-selection="base">
                 <td><b>HP</b></td>
                 <td class="center">
                     <b>{{actor.data.data.attributes.hp.value}}/{{actor.data.data.attributes.hp.max}}</b>
                 </td>
             </tr>
             {{else}}
-            <tr class="enduranse-pool clickable {{#if (eq enduranseSelection 'base')}}selected{{/if}}" data-selection="base">
+            <tr class="enduranse-pool clickable {{#if (eq enduranseSelection 'base')}}selected{{/if}}"
+                data-selection="base">
                 <td><b>Base Endurance</b></td>
                 <td class="center">
                     <b>{{actor.data.data.attributes.endurance.value}}/{{actor.data.data.attributes.endurance.max}}</b>
@@ -59,7 +73,8 @@
             {{/if}}
             {{#if (ne type "drama")}}
             {{#if (gt actor.data.data.attributes.enduranceReserve.max 0)}}
-            <tr class="enduranse-pool clickable {{#if (eq enduranseSelection 'reserve')}}selected{{/if}}" data-selection="reserve">
+            <tr class="enduranse-pool clickable {{#if (eq enduranseSelection 'reserve')}}selected{{/if}}"
+                data-selection="reserve">
                 <td><b>Endurance Reserve</b></td>
                 <td class="center">
                     <b>{{actor.data.data.attributes.enduranceReserve.value}}/{{actor.data.data.attributes.enduranceReserve.max}}</b>
@@ -70,10 +85,11 @@
         </tbody>
     </table>
     {{/if}}
+    <div></div>
     {{#if advRoll}}
     <h2>Size:</h2>
     {{/if}}
-    <div class="dialog-buttons">
+    <div class="dialog-buttons flex0">
         {{#each buttons as |button id|}}
         <button class="dialog-button {{cssClass}}" data-button="{{id}}">
             {{{button.icon}}}

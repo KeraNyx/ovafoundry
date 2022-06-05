@@ -31,25 +31,27 @@ export default class OVACharacter extends Actor {
     async _preUpdate(data, options, user) {
         const charData = this.data;
 
-        const currentHP = data.data?.hp?.value || charData.data.hp.value;
-        const currentEndurance = data.data?.endurance?.value || charData.data.endurance.value;
+        let currentHP = data.data?.hp?.value || charData.data.hp.value;
+        let currentEndurance = data.data?.endurance?.value || charData.data.endurance.value;
+
+        if (data.data?.hp?.value < 0) {
+            currentEndurance += data.data.hp.value;
+            foundry.utils.setProperty(data, "data.endurance.value", currentEndurance)
+            foundry.utils.setProperty(data, "data.hp.value", 0)
+        };
+        if (data.data?.endurance?.value < 0) {
+            currentHP += data.data.endurance.value;
+            foundry.utils.setProperty(data, "data.hp.value", currentHP);
+            foundry.utils.setProperty(data, "data.endurance.value", 0);
+        }
+        if (data.data?.enduranceReserve?.value < 0) {
+            foundry.utils.setProperty(data, "data.enduranceReserve.value", 0);
+        }
 
         if (currentHP <= 0 && currentEndurance <= 0) {
             foundry.utils.setProperty(data, "data.hp.value", 0)
             foundry.utils.setProperty(data, "data.endurance.value", 0);
             // TODO: death hook
-        }
-
-        if (data.data?.hp?.value < 0) {
-            foundry.utils.setProperty(data, "data.endurance.value", currentEndurance + data.data.hp.value)
-            foundry.utils.setProperty(data, "data.hp.value", 0)
-        };
-        if (data.data?.endurance?.value < 0) {
-            foundry.utils.setProperty(data, "data.hp.value", currentHP + data.data.endurance.value);
-            foundry.utils.setProperty(data, "data.endurance.value", 0);
-        }
-        if (data.data?.enduranceReserve?.value < 0) {
-            foundry.utils.setProperty(data, "data.enduranceReserve.value", 0);
         }
 
         // show text notifications
@@ -126,7 +128,7 @@ export default class OVACharacter extends Actor {
 
         this.items.filter(i => i.data.type === "ability").forEach(item => item.prepareItemData());
         const charData = this.data;
-
+        
         // apply active ability effects to data
         this.items.forEach(item => {
             if (item.type !== "ability") return;
