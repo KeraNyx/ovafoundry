@@ -290,6 +290,7 @@ table.ova thead {
     font-size: 1.2em;
     text-align: center;
     white-space: nowrap;
+    line-height: normal;
 }
 
 .combat-cell-value,
@@ -541,3 +542,43 @@ input.combat-side-value {
     background-color: #1d5c7354;
 }
 
+.msg-roll-data {
+    border-radius: .3em;
+    margin-bottom: .5em;
+    display: flex;
+    justify-content: center;
+    line-height: 4em;
+    text-align: center;
+    overflow: hidden;
+}
+
+.msg-roll-data > * {
+    color: white;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.msg-roll-data .roll {
+    background-color: #1d3573;
+}
+
+.msg-roll-data .dx {
+    background-color: #731d20;
+}
+
+.msg-roll-data .roll-data-name {
+    font-size: 1.4em;
+    font-weight: 200;
+    font-family: 'Oswald';
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.msg-roll-data .roll-data-value {
+    font-size: 2.5em;
+    font-family: 'Oswald';
+    text-align: center;
+    margin: 0px .2em;
+}

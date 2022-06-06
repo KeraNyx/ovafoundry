@@ -6,6 +6,20 @@
     <div class="attack-description">{{{attack.data.description}}}</div>
 </div>
 {{/if}}
+{{#if rollData}}
+<div class="msg-roll-data">
+    <div class="roll">
+        <span class="roll-data-name">{{ localize 'OVA.Roll.Short' }}: </span>
+        <span class="roll-data-value">{{ rollData.roll }}</span>
+    </div>
+    {{#if rollData.dx}}
+    <div class="dx">
+        <span class="roll-data-name">{{ localize 'OVA.DX.Short' }}: </span>
+        <span class="roll-data-value">{{ rollData.dx }}</span>
+    </div>
+    {{/if}}
+</div>
+{{/if}}
 {{{rollResults}}}
 <div class="attack-buttons">
     <button class="hidden damage-color" data-action="apply-damage">{{localize "OVA.DamageSelf"}}</button>

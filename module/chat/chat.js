@@ -8,6 +8,25 @@ export const chatListeners = function (message, html, data) {
     html.on("click", "button[data-action='apply-damage']", _onApplyDamageClick);
     html.on("click", "button[data-action='apply-effect']", _onApplyEffectClick);
     html.on("click", "button[data-action='apply-heal']", _onApplyHealClick);
+    html.on("click", ".msg-roll-data", _onMessageRollDataClick);
+}
+
+function _onMessageRollDataClick(e) {
+    // IT'S JUST AN EXAMPLE
+    // e.preventDefault();
+
+    // // Toggle the message flag
+    // let roll = event.currentTarget;
+    // const message = game.messages.get(roll.closest(".message").dataset.messageId);
+    // message._rollExpanded = !message._rollExpanded;
+
+    // // Expand or collapse tooltips
+    // const tooltips = roll.querySelectorAll(".dice-tooltip");
+    // for ( let tip of tooltips ) {
+    //   if ( message._rollExpanded ) $(tip).slideDown(200);
+    //   else $(tip).slideUp(200);
+    //   tip.classList.toggle("expanded", message._rollExpanded);
+    // }
 }
 
 export const listenToCombatRolls = async function (message, html, data) {
