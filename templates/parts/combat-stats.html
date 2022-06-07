@@ -69,8 +69,8 @@
         <div class="combat-cell">
             <div class="combat-cell-name">{{ localize 'OVA.Defense.Name' }}</div>
             <div class="combat-cell-value">
-                {{#each actor.data.defenses as |defense type|}}<span title="{{type}}"
-                    class="defense-value clickable" data-deftype="{{type}}">{{defense}}</span>{{#if (not
+                {{#each actor.data.defenses as |defense type|}}<span title="{{type}}" class="defense-value clickable"
+                    data-deftype="{{type}}">{{defense}}</span>{{#if (not
                 @last)}}/{{/if}}{{/each}}
             </div>
         </div>
@@ -105,9 +105,14 @@
         </div>
         <div class="combat-side-cell">
             <div class="combat-side-value combat-cell-name">Max</div>
-            <input class="endurance-max-value combat-side-value combat-cell-value"
-                data-sname="data.endurance.max" value="{{ actor.data.endurance.max }}" data-dtype="Number" />
+            <input class="endurance-max-value combat-side-value combat-cell-value" data-sname="data.endurance.max"
+                value="{{ actor.data.endurance.max }}" data-dtype="Number" />
         </div>
         <div class="flex1"></div>
+        <div class="combat-cell tv-cell">
+            <div class="combat-cell-name">{{ localize 'OVA.ThreatValue.Short' }}</div>
+            <input type="text" class="combat-cell-value" name="data.tv"
+                value="{{actor.data.data.tv}}" data-dtype="Number" />
+        </div>
     </div>
 </div>

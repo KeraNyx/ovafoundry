@@ -20,6 +20,10 @@
             "defenses": {
                 "evasion": 0
             },
+            "experience": {
+                "value": 0
+            },
+            "tv": 0,
             "abilities": [],
             "weaknesses": [],
             "attacks": [],

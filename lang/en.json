@@ -58,6 +58,10 @@
             "Miracle": "Miracle",
             "DontHurtMe": "Don't Hurt Me!"
         },
+        "ThreatValue": {
+            "Name":"Threat Value",
+            "Short":"TV"
+        },
         "LimitedUse": {
             "Name":"Limited Use",
             "Short":"Uses"

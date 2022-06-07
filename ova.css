@@ -266,9 +266,10 @@ input.character-name {
     cursor: pointer;
 }
 
-.attack-block.active{
+.attack-block.active {
     background-color: blanchedalmond;
 }
+
 table.ova thead {
     background-color: #731d20;
     color: white;
@@ -391,18 +392,20 @@ input[type="text"].combat-cell-value {
     padding: 0;
     display: inline-block;
 }
+
 input.combat-side-value {
     width: 2em;
 }
 
 .combat-cell-value.small {
-    font-size: 2em;    
+    font-size: 2em;
 }
 
 .combat-cell .reset-uses {
     font-size: small;
     text-align: center;
 }
+
 .reset-uses:hover {
     text-shadow: 0 0 8px var(--color-shadow-primary);
 }
@@ -467,7 +470,8 @@ input.combat-side-value {
     margin: 0.5em 0;
 }
 
-.drama-dice-block:hover, .free-drama-dice:hover {
+.drama-dice-block:hover,
+.free-drama-dice:hover {
     text-shadow: 0 0 8px var(--color-shadow-primary);
 }
 
@@ -483,6 +487,7 @@ input.combat-side-value {
     background-color: white;
     border-radius: 1.2em 0 0 1.2em;
 }
+
 .reserve-data .combat-cell-name {
     color: #1d3573;
 }
@@ -570,7 +575,7 @@ input.combat-side-value {
     overflow: hidden;
 }
 
-.msg-roll-data > * {
+.msg-roll-data>* {
     color: white;
     flex: 1;
     display: flex;
@@ -630,4 +635,18 @@ input.combat-side-value {
     position: relative;
     margin-right: 1em;
     margin-left: -2em;
+}
+
+.tv-cell {
+    min-width: 3.75em;
+    margin: -.2em 0;
+    background-color: #731d20;
+}
+
+.tv-cell>* {
+    color: white;
+}
+
+.tv-cell input {
+    color: white;
 }
