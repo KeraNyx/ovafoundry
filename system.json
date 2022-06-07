@@ -58,7 +58,7 @@
         }
     ],
     "url": "https://gitlab.com/lucius-the-mage/ova",
-    "manifest": "https://gitlab.com/lucius-the-mage/ova/-/blob/master/system.json",
+    "manifest": "https://gitlab.com/lucius-the-mage/ova/-/raw/master/system.json",
     "download": "https://gitlab.com/lucius-the-mage/ova/-/archive/master/ova-master.zip",
     "license": "LICENSE.txt"
 }
