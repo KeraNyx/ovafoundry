@@ -540,6 +540,7 @@ input.combat-side-value {
 
 .center {
     text-align: center;
+    margin: auto;
 }
 
 .damage-color {
@@ -649,4 +650,14 @@ input.combat-side-value {
 
 .tv-cell input {
     color: white;
+}
+
+input.experience {
+    border-radius: 0px;
+    background-color: white;
+    height: 1.2em;
+    font-size: 12pt;
+    margin: 2px;
+    text-align: right;
+    margin: auto;
 }

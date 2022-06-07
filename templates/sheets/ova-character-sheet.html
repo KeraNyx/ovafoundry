@@ -4,7 +4,12 @@
         <div class="character-name-container">
             <input name="name" type="text" class="character-name" value="{{actor.name}}"
                 placeholder="{{ localize 'OVA.Name' }}" />
-            <div>{{ localize 'OVA.CharacterName'}}</div>
+            <div class="flexrow">
+                <div>{{ localize 'OVA.CharacterName'}}</div>
+                <div class="flex0 center">{{ localize 'OVA.Experience.Short'}}:</div>
+                <input name="data.experience.value" type="number" class="experience" value="{{actor.data.data.experience.value}}"
+                    placeholder="{{ localize 'OVA.Experience.Name' }}" />
+            </div>
         </div>
         <img src="{{actor.img}}" class="character-portrait" data-edit="img" title="{{actor.name}}" height="128"
             width="128" />

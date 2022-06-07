@@ -58,6 +58,14 @@
             "Miracle": "Miracle",
             "DontHurtMe": "Don't Hurt Me!"
         },
+        "Sheets": {
+            "Character": "Character Sheet",
+            "NPC": "NPC Sheet"
+        },
+        "Experience": {
+            "Name": "Experience",
+            "Short": "XP"
+        },
         "ThreatValue": {
             "Name":"Threat Value",
             "Short":"TV"

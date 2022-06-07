@@ -38,8 +38,8 @@ Hooks.once("init", function () {
     Items.registerSheet("ova", OVASpellSheet, { types: ["spell"] });
 
     Actors.unregisterSheet("core", ActorSheet);
-    Actors.registerSheet("ova", OVACharacterSheet, { makeDefault: true });
-    Actors.registerSheet("ova", OVANPCSheet, {});
+    Actors.registerSheet("ova", OVACharacterSheet, { makeDefault: true, label: "OVA.Sheets.Character" });
+    Actors.registerSheet("ova", OVANPCSheet, {label: "OVA.Sheets.NPC"});
     
     preloadTemplates();
     registerHandlebarsHelpers();
