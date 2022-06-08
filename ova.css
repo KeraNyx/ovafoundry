@@ -231,6 +231,11 @@ input.character-name {
     left: -4em;
 }
 
+.roll-abilities {
+    margin-left: .5em;
+    margin-top: .5em;
+}
+
 .roll-dice {
     background-image: url('public/images/rolling-dices.svg');
     width: 100px;

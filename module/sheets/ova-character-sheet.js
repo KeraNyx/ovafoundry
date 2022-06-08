@@ -255,11 +255,14 @@ export default class OVACharacterSheet extends ActorSheet {
         const abilities = this.actor.items.filter(i => abilityIds.includes(i.id));
         const enduranceCost = abilities.reduce((acc, cur) => acc + cur.data.enduranceCost, 0);
 
+        const perks = abilities.reduce((acc, cur) => acc.concat(cur.data.perks), []);
         const dice = this.actor.data.defenses[defense];
         this._makeRoll({
             roll: dice,
             type: "defense",
             enduranceCost: enduranceCost,
+            perks: perks,
+            abilities: abilities,
             flavor: `Defense (${defense})`,
             callback: () => { this._useAbilities(abilities); },
         });
@@ -304,6 +307,8 @@ export default class OVACharacterSheet extends ActorSheet {
             effects: effects,
             type: type,
             attack: attack,
+            perks: attack.data.combinedPerks,
+            abilities: attack.data.combinedAbilities,
             enduranceCost: attack.data.enduranceCost,
             callback: attack.use.bind(attack)
         });
@@ -335,10 +340,13 @@ export default class OVACharacterSheet extends ActorSheet {
         // sum roll modifiers
         let diceTotal = Object.values(rollData).reduce((a, b) => a + b, 0);
 
+        const perks = abilities.reduce((acc, cur) => acc.concat(cur.data.perks), []);
+
         this._makeRoll({
             roll: diceTotal,
             effects: [],
-            changes: [],
+            perks: perks,            
+            abilities: abilities,
             enduranceCost: enduranceCost,
             callback: () => { this._useAbilities(abilities) },
         });
@@ -359,7 +367,7 @@ export default class OVACharacterSheet extends ActorSheet {
         this._makeRoll({ roll: 1, type: "drama", enduranceCost: enduranceCost, callback: this.actor.useDramaDice.bind(this.actor) });
     }
 
-    async _makeRoll({ roll = 2, dn = 0, dx = 0, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", changes = [], attack = null, flavor = '', callback = null }) {
+    async _makeRoll({ roll = 2, dn = 0, dx = 0, effects = [], enduranceCost = 0, ignoreArmor = 0, type = "manual", perks = [], abilities = [], attack = null, flavor = '', callback = null }) {
         const result = await new RollPrompt(flavor, type, this.actor, attack, enduranceCost, roll).show();
         if (result === false) return;
 
@@ -378,7 +386,14 @@ export default class OVACharacterSheet extends ActorSheet {
             dn: dn,
         };
 
-        CombatMessage.create({ roll: result.dice, rollData: rollData, speaker: this.actor, attack: attack });
+        CombatMessage.create({
+            roll: result.dice,
+            rollData: rollData,
+            speaker: this.actor,
+            attack: attack,
+            perks: perks,
+            abilities: abilities,
+        });
     }
 
     _packAbility(ability) {
@@ -479,6 +494,26 @@ export default class OVACharacterSheet extends ActorSheet {
 
     _getItemId(event) {
         return event.currentTarget.closest('.item').dataset.itemId;
+    }
+
+    _prepareChanges(changes) {
+        /*
+        change = {
+            source: {
+                data: ItemData
+            }
+        }
+        */
+
+        const formattedChanges = [];
+        for (const change of changes) {
+            const source = change.source;
+            const data = source.data;
+
+            formattedChanges.push(data);
+        }
+
+        return formattedChanges;
     }
 
     /** @override */

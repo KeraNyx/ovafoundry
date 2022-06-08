@@ -1,8 +1,12 @@
 <form>
     {{#if effects.self.length}}
-    <div class="form-group"></div>
+    <div class="form-group">
+        {{#if affinity}}
+        <h2>Affinity: {{#each affinity as |_ aff|}}{{aff}} {{/each}}</h2>
+        {{/if}}
+    </div>
     <h2>{{localize 'OVA.ApplyDamageDialog.ApplySelf'}}</h2>
-    <table>
+    <table class="ova">
         <thead>
             <tr>
                 <th>{{localize 'OVA.Active'}}</th>
@@ -32,7 +36,7 @@
 
     {{#if effects.target.length}}
     <h2>{{localize 'OVA.ApplyDamageDialog.ApplyTarget'}}</h2>
-    <table>
+    <table class="ova">
         <thead>
             <tr>
                 <th>{{localize 'OVA.Active'}}</th>

@@ -61,12 +61,12 @@ export default class OVAItem extends Item {
     }
 
     static SPELL_COST = [
-        // Spell  1   2   3   4   5   // Magic
+// Spell  1   2   3   4   5   // Magic
         [20, 30, 40, 50, 60], // 1
         [10, 20, 30, 40, 50], // 2
-        [5, 10, 20, 30, 40], // 3
-        [2, 5, 10, 20, 30], // 4
-        [0, 2, 5, 10, 20], // 5
+        [ 5, 10, 20, 30, 40], // 3
+        [ 2,  5, 10, 20, 30], // 4
+        [ 0,  2,  5, 10, 20], // 5
     ]
 
     _preparePerks() {
@@ -80,10 +80,12 @@ export default class OVAItem extends Item {
         itemData.perks = perks;
 
         itemData.ovaEffects = [];
+        itemData.combinedPerks = [];
         let enduranceCost = itemData.data.enduranceCost || 0;
         // calculalte endurance cost from perks
         if (itemData.perks) {
             itemData.perks.forEach(p => {
+                itemData.combinedPerks.push(p);
                 enduranceCost += p.data.level.value * p.data.enduranceCost;
                 p.data.effects.forEach(e => itemData.ovaEffects.push(new OVAEffect(p, e)));
             });
@@ -149,6 +151,11 @@ export default class OVAItem extends Item {
             roll: this.actor.data.globalMod,
             dn: spellDN,
         }
+
+        spellData.combinedAbilities = [];
+        magicAbility && spellData.combinedAbilities.push(magicAbility);
+        spellData.combinedAbilities.push(selectedAbilities);
+
         spellData.attack.roll += selectedAbilities.reduce((sum, a) => sum + (a.data.data.type == "ability" ? a.data.data.level.value : -a.data.data.level.value), 0);
         spellData.enduranceCost += selectedAbilities.reduce((sum, a) => sum + a.data.enduranceCost, 0);
 
@@ -178,6 +185,7 @@ export default class OVAItem extends Item {
             defense: {}
         };
 
+        itemData.combinedAbilities = selectedAbilities;
         // apply effects to attack data
         itemData.ovaEffects.sort((a, b) => a.data.priority - b.data.priority).forEach(e => e.apply(attackData));
         Object.assign(itemData, attackData);

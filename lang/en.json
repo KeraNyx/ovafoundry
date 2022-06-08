@@ -148,6 +148,7 @@
                 "IgnoreArmor": "Ignore Armor",
                 "Resistances": "Resistance",
                 "Defenses": "Defenses",
+                "Affinity": "Affinity",
                 "Flags": "Flags",
                 "DramaDice": {
                     "Free": "Free Drama Dice"

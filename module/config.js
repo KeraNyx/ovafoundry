@@ -43,6 +43,7 @@ OVA.effectChangeKeys = {
     "attack.roll": "OVA.Effects.List.Attack.Roll",
     "attack.ignoreArmor": "OVA.Effects.List.IgnoreArmor",
     "ovaFlags.?": "OVA.Effects.List.Flags",
+    "affinity.?": "OVA.Effects.List.Affinity",
     ...OVA.activeEffectKeys,
 };
 

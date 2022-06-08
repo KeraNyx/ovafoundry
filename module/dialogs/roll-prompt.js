@@ -127,7 +127,7 @@ export default class RollPrompt extends Dialog {
             roll = 2 - roll;
         }
 
-        roll = negativeDice ? Math.ceil(roll / mul) : roll * mul;
+        roll = negativeDice && mul != 0 ? Math.ceil(roll / mul) : roll * mul;
 
         const dice = this._makeRoll(roll, negativeDice);
 

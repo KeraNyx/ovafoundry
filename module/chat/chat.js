@@ -8,25 +8,22 @@ export const chatListeners = function (message, html, data) {
     html.on("click", "button[data-action='apply-damage']", _onApplyDamageClick);
     html.on("click", "button[data-action='apply-effect']", _onApplyEffectClick);
     html.on("click", "button[data-action='apply-heal']", _onApplyHealClick);
-    html.on("click", ".msg-roll-data", _onMessageRollDataClick);
+    html.on("click", ".msg-roll-info", _onMessageRollDataClick);
 }
 
 function _onMessageRollDataClick(e) {
     // IT'S JUST AN EXAMPLE
-    // e.preventDefault();
+    e.preventDefault();
 
-    // // Toggle the message flag
-    // let roll = event.currentTarget;
-    // const message = game.messages.get(roll.closest(".message").dataset.messageId);
-    // message._rollExpanded = !message._rollExpanded;
+    // Toggle the message flag
+    let roll = e.currentTarget;
+    const message = game.messages.get(roll.closest(".message").dataset.messageId);
+    message._abilitiesExpanded = !message._abilitiesExpanded;
 
-    // // Expand or collapse tooltips
-    // const tooltips = roll.querySelectorAll(".dice-tooltip");
-    // for ( let tip of tooltips ) {
-    //   if ( message._rollExpanded ) $(tip).slideDown(200);
-    //   else $(tip).slideUp(200);
-    //   tip.classList.toggle("expanded", message._rollExpanded);
-    // }
+    // Expand or collapse tooltips
+    const abs = roll.parentNode.querySelector(".roll-abilities");
+    if (message._abilitiesExpanded) $(abs).slideDown(200);
+    else $(abs).slideUp(200);
 }
 
 export const listenToCombatRolls = async function (message, html, data) {
@@ -231,6 +228,7 @@ async function _onApplyDamageClick(e) {
             result: attackRoll.result,
             ignoreArmor: attackRoll.ignoreArmor,
             fatiguing: attackRoll.fatiguing,
+            affinity: attackRoll.affinity,
         },
         defense: {
             roll: defenseRoll.roll,

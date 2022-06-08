@@ -48,7 +48,7 @@ export default function registerHandlebarsHelpers() {
 
         let suffix = "";
         // if key starts with defenses or resistances, replace suffix with ?
-        if (key.startsWith("defenses.") || key.startsWith("resistances.")) {
+        if (key.startsWith("defenses.") || key.startsWith("resistances.") || key.startsWith("affinity.")) {
             const [type, name] = key.split(".")
             key = type + ".?";
             suffix = ": " + name;

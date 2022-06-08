@@ -15,6 +15,7 @@ export default class ApplyDamagePrompt extends Dialog {
         this.targets = targets;
         this.attacker = attacker;
         this.fatiguing = this.rollData.attack.fatiguing;
+        this.affinity = this.rollData.attack.affinity;
 
         // fill resistances from target
         this.resistances = {};
@@ -101,6 +102,7 @@ export default class ApplyDamagePrompt extends Dialog {
 
         context.rollData = this.rollData;
         context.effects = this.effects;
+        context.affinity = this.affinity;
 
         return context;
     }

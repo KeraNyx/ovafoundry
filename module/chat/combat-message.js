@@ -2,15 +2,20 @@ export default class OVACombatMessage extends ChatMessage {
     static lastAttack = null;
 
     /** @override */
-    static async create({ roll, rollData, speaker, attack }) {
+    static async create({ roll, rollData, speaker, attack, perks = [], abilities = []}) {
         const attackData = attack?.toObject();
         const templateData = {
             attack: attackData,
             rollData: rollData,
+            item: {
+                perks: perks,
+                abilities: abilities,
+            },
             rollResults: await roll.render({ isPrivate: false, template: "systems/ova/templates/chat/roll.html" }),
         };
         const html = await renderTemplate("systems/ova/templates/chat/combat-message.html", templateData);
         rollData.fatiguing = !!attack?.data.ovaFlags?.fatiguing;
+        rollData.affinity = attack?.data.affinity;
         const msgData = {
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             user: game.user.data._id,
