@@ -7,7 +7,7 @@ export default class OVACombatMessage extends ChatMessage {
         const templateData = {
             attack: attackData,
             rollData: rollData,
-            rollResults: await roll.render({ isPrivate: false })
+            rollResults: await roll.render({ isPrivate: false, template: "systems/ova/templates/chat/roll.html" }),
         };
         const html = await renderTemplate("systems/ova/templates/chat/combat-message.html", templateData);
         rollData.fatiguing = !!attack?.data.ovaFlags?.fatiguing;

@@ -566,6 +566,12 @@ input.combat-side-value {
     background-color: #1d5c7354;
 }
 
+.roll-math {
+    margin-top: .5em;
+    text-align: center;
+    border-bottom: 1px solid;
+}
+
 .msg-roll-data {
     border-radius: .3em;
     margin-bottom: .5em;

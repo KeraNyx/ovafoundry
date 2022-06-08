@@ -56,7 +56,8 @@
             "Drama": "Drama",
             "Counter": "Counter",
             "Miracle": "Miracle",
-            "DontHurtMe": "Don't Hurt Me!"
+            "Result": "Result",
+            "RawDamage": "Raw Damage"
         },
         "Page": {
             "Name": "Page",
