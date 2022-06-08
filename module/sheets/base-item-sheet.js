@@ -7,7 +7,9 @@ export default class BaseItemSheet extends ItemSheet {
             dragDrop: [{ dropSelector: ".perks" }, { dropSelector: ".items" }],
             scrollY: [
                 ".ability-card"
-            ]
+            ],
+            height: 390,
+            classes: super.defaultOptions.classes.concat(['ova']),
         });
     }
 
@@ -107,6 +109,7 @@ export default class BaseItemSheet extends ItemSheet {
     getData() {
         const data = super.getData();
         data.perks = this.item.data.perks;
+        data.isEmbedded = this.item.isEmbedded;
 
         return data;
     }

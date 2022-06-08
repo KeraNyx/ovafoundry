@@ -3,22 +3,34 @@
         <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
         <h1 class="flex3"><input name="name" type="text" value="{{item.name}}"
                 placeholder="{{ localize 'OVA.Name' }}" /></h1>
-        <div class="item flex0" data-item-id="{{perk._id}}">
+        {{#if isEmbedded}}
+        <div class="item delete-button flex0" data-item-id="{{perk._id}}">
             <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
         </div>
+        {{/if}}
     </header>
+    <h2 class="flavor-header">
+        <span>{{ localize 'OVA.Flavor' }}: </span>
+        <input if="item-flavor" name="data.flavor" value="{{item.data.flavor}}"
+            placeholder="{{ localize 'OVA.Description' }}" type="text" />
+    </h2>
     <nav class="tabs" data-group="primary-tabs">
         <a class="item" data-tab="description" data-group="primary-tabs">{{localize 'OVA.Description'}}</a>
         <a class="item" data-tab="properties" data-group="primary-tabs">{{localize 'OVA.Properties'}}</a>
         <a class="item" data-tab="effects" data-group="primary-tabs">{{ localize 'OVA.Effects.Name' }}</a>
     </nav>
     {{!-- Ability Fields --}}
-    <section class="content">
+    <section class="ova content">
         <div class="tab" data-tab="description" data-group="primary-tabs">
-            <input name="data.flavor" value="{{item.data.flavor}}" placeholder="{{ localize 'OVA.Flavor' }}"
-                type="text" />
-            <textarea name="data.description"
-                placeholder="{{ localize 'OVA.Description' }}">{{item.data.description}}</textarea>
+            <div class="description-tab">
+                <div class="rule-pg">
+                    <span>Pg.</span>
+                    <input name="data.page" value="{{item.data.page}}" type="text" />
+                </div>
+                <div class="description">
+                    {{editor content=item.data.description target="data.description" button=true editable=true}}
+                </div>
+            </div>
         </div>
         <div class="tab" data-tab="properties" data-group="primary-tabs">
             <table>
@@ -73,15 +85,20 @@
                 <tr>
                     <td>{{localize 'OVA.EnduranceCost'}}</td>
                     <td>
-                        <input type="text" value="{{data.enduranceCost}}" name="data.enduranceCost" data-dtype="Number" />
+                        <input type="text" value="{{data.enduranceCost}}" name="data.enduranceCost"
+                            data-dtype="Number" />
                     </td>
                 </tr>
                 <tr>
-                    <td><h3>{{localize 'OVA.LimitedUse.Name'}}</h3></td>
+                    <td>
+                        <h3>{{localize 'OVA.LimitedUse.Name'}}</h3>
+                    </td>
                     <td>
                         <div class="flexrow">
-                            <input type="text" value="{{data.limitedUse.value}}" name="data.limitedUse.value" data-dtype="Number" />/
-                            <input type="text" value="{{data.limitedUse.max}}" name="data.limitedUse.max" data-dtype="Number" />
+                            <input type="text" value="{{data.limitedUse.value}}" name="data.limitedUse.value"
+                                data-dtype="Number" />/
+                            <input type="text" value="{{data.limitedUse.max}}" name="data.limitedUse.max"
+                                data-dtype="Number" />
                         </div>
                     </td>
                 </tr>

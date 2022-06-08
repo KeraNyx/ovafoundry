@@ -58,6 +58,10 @@
             "Miracle": "Miracle",
             "DontHurtMe": "Don't Hurt Me!"
         },
+        "Page": {
+            "Name": "Page",
+            "Short": "Pg."
+        },
         "Sheets": {
             "Character": "Character Sheet",
             "NPC": "NPC Sheet"

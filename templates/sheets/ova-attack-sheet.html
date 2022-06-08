@@ -3,12 +3,14 @@
         <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
         <h1 class="flex3"><input name="name" type="text" value="{{item.name}}"
                 placeholder="{{ localize 'OVA.Name' }}" /></h1>
-        <div class="item flex0" data-item-id="{{perk._id}}">
+        {{#if isEmbedded}}
+        <div class="item delete-button flex0" data-item-id="{{perk._id}}">
             <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
         </div>
+        {{/if}}
     </header>
     {{!-- Ability Fields --}}
-    <section>
+    <section class="ova content">
         <div>
             <h2>{{ localize 'OVA.Description' }}</h2>
             <textarea name="data.description"

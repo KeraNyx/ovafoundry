@@ -3,15 +3,30 @@
         <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
         <h1><input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'OVA.Name' }}" /></h1>
     </header>
+    <h2 class="flavor-header">
+        <span>{{ localize 'OVA.Flavor' }}: </span>
+        <input if="item-flavor" name="data.flavor" value="{{item.data.flavor}}" placeholder="{{ localize 'OVA.Description' }}"
+            type="text" />
+    </h2>
     <nav class="tabs" data-group="primary-tabs">
+        <a class="item" data-tab="description" data-group="primary-tabs">{{localize 'OVA.Description'}}</a>
         <a class="item" data-tab="properties" data-group="primary-tabs">{{localize 'OVA.Properties'}}</a>
         <a class="item" data-tab="effects" data-group="primary-tabs">{{ localize 'OVA.Effects.Name' }}</a>
     </nav>
     {{!-- Perk Fields --}}
-    <section class="content">
+    <section class="ova content">
+        <div class="tab" data-tab="description" data-group="primary-tabs">
+            <div class="description-tab">
+                <div class="rule-pg">
+                    <span>Pg.</span>
+                    <input name="data.page" value="{{item.data.page}}" type="text" />
+                </div>
+                <div class="description">
+                    {{editor content=item.data.description target="data.description" button=true editable=true}}
+                </div>
+            </div>
+        </div>
         <div class="tab" data-tab="properties" data-group="primary-tabs">
-            <input name="data.flavor" value="{{item.data.flavor}}" placeholder="{{ localize 'OVA.Flavor' }}"
-            type="text" />
             <table>
                 <tr>
                     <th>{{ localize 'OVA.Type' }}</th>

@@ -659,5 +659,91 @@ input.experience {
     font-size: 12pt;
     margin: 2px;
     text-align: right;
-    margin: auto;
+}
+
+/* ability sheet */
+
+.ova input {
+    border-radius: 0;
+}
+
+.delete-button {
+    margin: 0 .5em;
+    color: white;
+}
+
+.ova .window-content {
+    padding: 0px;
+}
+
+.ova .description {
+    /* border: 1px solid var(--color-border-light-tertiary); */
+    margin-top: 3px;
+    padding: 5px;
+}
+
+.ova .editor {
+    height: 100%;
+}
+
+.ova .editor .editor-content {
+    min-height: 200px;
+}
+
+.ova.content input {
+    width: 100%;
+    background-color: white;
+}
+
+.ova.content {
+    /* background-color: #ebe1e1; */
+    padding: .5em;
+}
+
+.ova nav.tabs {
+    background-color: #ebe1e1;
+}
+
+.ova nav [data-tab] {
+    padding: .5em;
+}
+
+.ova nav [data-tab].active {
+    background-color: #731d20;
+    color: white;
+}
+
+.ova .sheet-header {
+    background-color: #731d20;
+    margin-bottom: .5em;
+}
+
+.ova .sheet-header input, .ova .sheet-header img {
+    background-color: white;
+}
+
+.flavor-header {
+    margin-top: -.5em;
+    display: flex;
+    flex-direction: row;
+    background-color: #731d20;
+    padding: .5em;
+    color: white;
+}
+
+.flavor-header input {
+    margin-left: 7px;
+    background-color: white;
+}
+
+.rule-pg {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.rule-pg input {
+    border: none;
+    border-bottom: 1px solid;
+    max-width: 5em;
 }

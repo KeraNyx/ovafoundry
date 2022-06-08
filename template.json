@@ -74,7 +74,8 @@
             "magic": false,
             "perks": [],
             "effects": [],
-            "temporary": false
+            "temporary": false,
+            "page": ""
         },
         "perk": {
             "type": "perk",
@@ -84,7 +85,8 @@
             "level": {
                 "value": 1
             },
-            "enduranceCost": 0
+            "enduranceCost": 0,
+            "page": ""
         }
     }
 }

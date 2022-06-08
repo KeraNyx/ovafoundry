@@ -18,7 +18,7 @@ export default class RollPrompt extends Dialog {
                 callback: html => this._roll(html, 1),
             },
             'double': {
-                label: game.i18n.localize('OVA.Roll.DontHurtMe'),
+                label: 'x2',
                 callback: html => this._roll(html, 2),
             }
         }
