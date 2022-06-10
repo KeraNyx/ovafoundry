@@ -1,0 +1,21 @@
+{
+	"label": "Способности Боссов",
+	"entries": {
+		"Escape Plan": {
+			"name": "План Побега",
+			"description": ""
+		},
+		"Extra Actions": {
+			"name": "Дополнительные Действия",
+			"description": ""
+		},
+		"Health Reserve": {
+			"name": "Резерв Здоровья",
+			"description": ""
+		},
+		"Scale Advantage": {
+			"name": "Преимущество Размера",
+			"description": ""
+		}
+	}
+}

@@ -1,0 +1,225 @@
+{
+	"label": "Споособности",
+	"entries": {
+		"Agile": {
+			"name": "Ловкий",
+			"description": ""
+		},
+		"Armored": {
+			"name": "Броня",
+			"description": ""
+		},
+		"Art of Invisibility": {
+			"name": "Исскуство невидимости",
+			"description": ""
+		},
+		"Attack": {
+			"name": "Атака",
+			"description": ""
+		},
+		"Barrier": {
+			"name": "Барьер",
+			"description": ""
+		},
+		"Beautiful": {
+			"name": "Красивый",
+			"description": ""
+		},
+		"Charismatic": {
+			"name": "Харизматичный",
+			"description": ""
+		},
+		"Combat Expert": {
+			"name": "Эксперт Боя",
+			"description": ""
+		},
+		"Companion": {
+			"name": "Спутник",
+			"description": ""
+		},
+		"Connected": {
+			"name": "Связи",
+			"description": ""
+		},
+		"Cute!": {
+			"name": "Милашка!",
+			"description": ""
+		},
+		"Dexterous": {
+			"name": "Ловкие Руки",
+			"description": ""
+		},
+		"Dimensional Pocket": {
+			"name": "Подпространственный Карман",
+			"description": ""
+		},
+		"Endurance Reserve": {
+			"name": "Резерв Выносливости",
+			"description": ""
+		},
+		"Evasive": {
+			"name": "Уклонение",
+			"description": ""
+		},
+		"Famous": {
+			"name": "Знаменитый",
+			"description": ""
+		},
+		"Flight": {
+			"name": "Полет",
+			"description": ""
+		},
+		"Gear": {
+			"name": "Снаряжение",
+			"description": ""
+		},
+		"Healer": {
+			"name": "Целитель",
+			"description": ""
+		},
+		"Heightened Sense": {
+			"name": "Обостренное Чувство",
+			"description": ""
+		},
+		"Illusionist": {
+			"name": "Иллюзионист",
+			"description": ""
+		},
+		"Incorporeal Form": {
+			"name": "Бесплотная Форма",
+			"description": ""
+		},
+		"Intimidating": {
+			"name": "Запугивание",
+			"description": ""
+		},
+		"Intuitive": {
+			"name": "Интуиция",
+			"description": ""
+		},
+		"Inventor": {
+			"name": "Изобретатель",
+			"description": ""
+		},
+		"Invisibility": {
+			"name": "Невидимость",
+			"description": ""
+		},
+		"Iron-Willed": {
+			"name": "Железная Воля",
+			"description": ""
+		},
+		"Knowledge": {
+			"name": "Знания",
+			"description": ""
+		},
+		"Life Support": {
+			"name": "Жизнеобеспечение",
+			"description": ""
+		},
+		"Lucky": {
+			"name": "Удача",
+			"description": ""
+		},
+		"Magic, Arcane": {
+			"name": "Магия, Арканная",
+			"description": ""
+		},
+		"Magic, Witchcraft": {
+			"name": "Магия, Колдовство",
+			"description": ""
+		},
+		"Minions": {
+			"name": "Приспешники",
+			"description": ""
+		},
+		"Passion": {
+			"name": "Страсть",
+			"description": ""
+		},
+		"Perceptive": {
+			"name": "Проницательность",
+			"description": ""
+		},
+		"Performer": {
+			"name": "Артист",
+			"description": ""
+		},
+		"Pilot": {
+			"name": "Пилот",
+			"description": ""
+		},
+		"Position of Power": {
+			"name": "Наделенный Властью",
+			"description": ""
+		},
+		"Psychic": {
+			"name": "Телепат",
+			"description": ""
+		},
+		"Quick": {
+			"name": "Быстрый",
+			"description": ""
+		},
+		"Resistance": {
+			"name": "Сопротивление",
+			"description": ""
+		},
+		"Shape-Shifter": {
+			"name": "Перевертыш",
+			"description": ""
+		},
+		"Sixth Sense": {
+			"name": "Шестое Чувство",
+			"description": ""
+		},
+		"Smart": {
+			"name": "Умный",
+			"description": ""
+		},
+		"Spirit Medium": {
+			"name": "Медиум",
+			"description": ""
+		},
+		"Strong": {
+			"name": "Сильный",
+			"description": ""
+		},
+		"Telekinesis": {
+			"name": "Телекинез",
+			"description": ""
+		},
+		"Teleport": {
+			"name": "Телепорт",
+			"description": ""
+		},
+		"Time Freeze": {
+			"name": "Заморозка Времени",
+			"description": ""
+		},
+		"Tough": {
+			"name": "Крепкий",
+			"description": ""
+		},
+		"Transformation": {
+			"name": "Трансформация",
+			"description": ""
+		},
+		"Vehicle (Mecha)": {
+			"name": "Транспорт (Меха)",
+			"description": ""
+		},
+		"Vigorous": {
+			"name": "Энергичный",
+			"description": ""
+		},
+		"Walking Arsenal": {
+			"name": "Ходячий Арсенал",
+			"description": ""
+		},
+		"Wealthy": {
+			"name": "Богач",
+			"description": ""
+		}
+	}
+}

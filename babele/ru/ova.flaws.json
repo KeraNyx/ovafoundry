@@ -1,0 +1,93 @@
+{
+	"label": "Изъяны",
+	"entries": {
+		"Activation": {
+			"name": "Активация",
+			"description": ""
+		},
+		"Ammunition": {
+			"name": "Боеприпасы",
+			"description": ""
+		},
+		"Assisted": {
+			"name": "Требует Помощи",
+			"description": ""
+		},
+		"Backlash": {
+			"name": "Раслата",
+			"description": ""
+		},
+		"Break": {
+			"name": "Превозмогание",
+			"description": ""
+		},
+		"Buildup": {
+			"name": "Заряд",
+			"description": ""
+		},
+		"Cancel": {
+			"name": "Не Работает",
+			"description": ""
+		},
+		"Concentration": {
+			"name": "Концентрация",
+			"description": ""
+		},
+		"Delayed": {
+			"name": "Отложенная",
+			"description": ""
+		},
+		"Elaborate Gestures": {
+			"name": "Сложные Жесты",
+			"description": ""
+		},
+		"Feather Blow": {
+			"name": "Легкие Удары",
+			"description": ""
+		},
+		"Finisher": {
+			"name": "Добивающая",
+			"description": ""
+		},
+		"Inaccurate": {
+			"name": "Неточная",
+			"description": ""
+		},
+		"Ineffective": {
+			"name": "Неэффективная",
+			"description": ""
+		},
+		"Low Penetration": {
+			"name": "Низкая Бронебойность",
+			"description": ""
+		},
+		"No Damage": {
+			"name": "Нет Урона",
+			"description": ""
+		},
+		"Open to Attack": {
+			"name": "Беззащтный",
+			"description": ""
+		},
+		"Recoil": {
+			"name": "Recoil",
+			"description": ""
+		},
+		"Requirement": {
+			"name": "Требования",
+			"description": ""
+		},
+		"Self-Only": {
+			"name": "Только на Себя",
+			"description": ""
+		},
+		"Unwieldy": {
+			"name": "Неповоротливая",
+			"description": ""
+		},
+		"Weapon": {
+			"name": "Оружие",
+			"description": ""
+		}
+	}
+}

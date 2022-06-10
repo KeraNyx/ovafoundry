@@ -1,0 +1,277 @@
+{
+	"label": "Слабости",
+	"entries": {
+		"Absent-Minded": {
+			"name": "Забывчивый",
+			"description": ""
+		},
+		"Accidental Transformation": {
+			"name": "Случайная Трансформация",
+			"description": ""
+		},
+		"Ageism": {
+			"name": "Эйджизм",
+			"description": ""
+		},
+		"Airhead": {
+			"name": "Пустоголовый",
+			"description": ""
+		},
+		"Amnesia": {
+			"name": "Амнезия",
+			"description": ""
+		},
+		"Arrogant": {
+			"name": "Надменный",
+			"description": ""
+		},
+		"Awkward Size": {
+			"name": "Неудобный Размер",
+			"description": ""
+		},
+		"Bizzare Appearance": {
+			"name": "Необычная Внешность",
+			"description": ""
+		},
+		"Clumsy": {
+			"name": "Неловкий",
+			"description": ""
+		},
+		"Code of Conduct": {
+			"name": "Личный Кодекс",
+			"description": ""
+		},
+		"Compulsion": {
+			"name": "Соблазн",
+			"description": ""
+		},
+		"Coward": {
+			"name": "Трусливый",
+			"description": ""
+		},
+		"Crybaby": {
+			"name": "Нытик",
+			"description": ""
+		},
+		"Dense": {
+			"name": "Дремучий",
+			"description": ""
+		},
+		"Dependency": {
+			"name": "Зависимость",
+			"description": ""
+		},
+		"Dull": {
+			"name": "Скучный",
+			"description": ""
+		},
+		"Easily Distracted": {
+			"name": "Легко Отвлечь",
+			"description": ""
+		},
+		"Emotionless": {
+			"name": "Безэмоциональный",
+			"description": ""
+		},
+		"Endurance Use": {
+			"name": "Использует Выносливость",
+			"description": ""
+		},
+		"Fear": {
+			"name": "Фобия",
+			"description": ""
+		},
+		"Focus": {
+			"name": "Фокус",
+			"description": ""
+		},
+		"Frail": {
+			"name": "Хрупкий",
+			"description": ""
+		},
+		"Fussy": {
+			"name": "Прихотливый",
+			"description": ""
+		},
+		"Greedy": {
+			"name": "Жадный",
+			"description": ""
+		},
+		"Guardian": {
+			"name": "Защитник",
+			"description": ""
+		},
+		"Hatred": {
+			"name": "Ненависть",
+			"description": ""
+		},
+		"Impaired Sense": {
+			"name": "Нарушенное Чувство",
+			"description": ""
+		},
+		"Impulsive": {
+			"name": "Импульсивный",
+			"description": ""
+		},
+		"Ineptitude": {
+			"name": "Неумелый",
+			"description": ""
+		},
+		"Infamous": {
+			"name": "Дурная Слава",
+			"description": ""
+		},
+		"Jittery": {
+			"name": "Нервный",
+			"description": ""
+		},
+		"Kind-Hearted": {
+			"name": "Добросердечный",
+			"description": ""
+		},
+		"Languid": {
+			"name": "Вялый",
+			"description": ""
+		},
+		"Lecherous": {
+			"name": "Развратный",
+			"description": ""
+		},
+		"Limited Uses": {
+			"name": "Ограниченные Применения",
+			"description": ""
+		},
+		"Loner": {
+			"name": "Одиночка",
+			"description": ""
+		},
+		"Love Interest": {
+			"name": "Любовный Интерес",
+			"description": ""
+		},
+		"Love Magnet": {
+			"name": "Магнит Любви",
+			"description": ""
+		},
+		"Mute": {
+			"name": "Немой",
+			"description": ""
+		},
+		"Naive": {
+			"name": "Наивный",
+			"description": ""
+		},
+		"Nosebleeder": {
+			"name": "Кровь из носа",
+			"description": ""
+		},
+		"Oblivious": {
+			"name": "Невнимательный",
+			"description": ""
+		},
+		"Obsession": {
+			"name": "Одержимость",
+			"description": ""
+		},
+		"Outcast": {
+			"name": "Изгой",
+			"description": ""
+		},
+		"Overconfident": {
+			"name": "Самоуверенный",
+			"description": ""
+		},
+		"Pacifist": {
+			"name": "Пацифист",
+			"description": ""
+		},
+		"Poor": {
+			"name": "Бедный",
+			"description": ""
+		},
+		"Quirk": {
+			"name": "Странность",
+			"description": ""
+		},
+		"Restricted Freedom": {
+			"name": "Ограниченная Свобода",
+			"description": ""
+		},
+		"Rival": {
+			"name": "Соперник",
+			"description": ""
+		},
+		"Room for Two": {
+			"name": "Место для Двоих",
+			"description": ""
+		},
+		"Rude": {
+			"name": "Грубый",
+			"description": ""
+		},
+		"Secret": {
+			"name": "Секрет",
+			"description": ""
+		},
+		"Sensitivity": {
+			"name": "Чувствительный",
+			"description": ""
+		},
+		"Servitude": {
+			"name": "Служба",
+			"description": ""
+		},
+		"Short-Tempered": {
+			"name": "Вспыльчивый",
+			"description": ""
+		},
+		"Shy": {
+			"name": "Застенчивый",
+			"description": ""
+		},
+		"Slow": {
+			"name": "Медлительный",
+			"description": ""
+		},
+		"Soft Spot": {
+			"name": "Слабость",
+			"description": ""
+		},
+		"Split Personality": {
+			"name": "Раздвоение личности",
+			"description": ""
+		},
+		"Stubborn": {
+			"name": "Упрямый",
+			"description": ""
+		},
+		"Suppressed Power": {
+			"name": "Подавленная Сила",
+			"description": ""
+		},
+		"Trigger": {
+			"name": "Триггер",
+			"description": ""
+		},
+		"Unlucky": {
+			"name": "Неудача",
+			"description": ""
+		},
+		"Vulnerability": {
+			"name": "Уязвимость",
+			"description": ""
+		},
+		"Wanted": {
+			"name": "В розыске",
+			"description": ""
+		},
+		"Weak": {
+			"name": "Хилый",
+			"description": ""
+		},
+		"Weak-Willed": {
+			"name": "Слабовольный",
+			"description": ""
+		}
+	}
+}

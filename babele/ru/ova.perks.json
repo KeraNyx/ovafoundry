@@ -1,0 +1,105 @@
+{
+	"label": "Черты",
+	"entries": {
+		"Accurate": {
+			"name": "Точная",
+			"description": ""
+		},
+		"Affinity": {
+			"name": "Природа",
+			"description": ""
+		},
+		"Area Effect": {
+			"name": "Массовая",
+			"description": ""
+		},
+		"Armor Piercing": {
+			"name": "Бронебойная",
+			"description": ""
+		},
+		"Barrier Buster": {
+			"name": "Разрушитель Барьеров",
+			"description": ""
+		},
+		"Blinding": {
+			"name": "Ослепляющая",
+			"description": ""
+		},
+		"Continued Effect": {
+			"name": "Длительный Эффект",
+			"description": ""
+		},
+		"Defensive": {
+			"name": "Оборона",
+			"description": ""
+		},
+		"Disarming": {
+			"name": "Разоружающая",
+			"description": ""
+		},
+		"Effective": {
+			"name": "Эффективная",
+			"description": ""
+		},
+		"Fatiguing": {
+			"name": "Истощающая",
+			"description": ""
+		},
+		"Imparing": {
+			"name": "Калечашая",
+			"description": ""
+		},
+		"Multiple Targets": {
+			"name": "Множественные Цели",
+			"description": ""
+		},
+		"No Gesture": {
+			"name": "Без Жестов",
+			"description": ""
+		},
+		"Overwhelming": {
+			"name": "Подавляющая",
+			"description": ""
+		},
+		"Paralyzing": {
+			"name": "Парализующая",
+			"description": ""
+		},
+		"Ranged": {
+			"name": "Дистанционный",
+			"description": ""
+		},
+		"Ranged, Strength-Powered": {
+			"name": "Дистанционная, Силовая",
+			"description": ""
+		},
+		"Reach": {
+			"name": "Размах",
+			"description": ""
+		},
+		"Redirectable": {
+			"name": "Перенаправляемая",
+			"description": ""
+		},
+		"Strike Through": {
+			"name": "Сквозной Удар",
+			"description": ""
+		},
+		"Stunning": {
+			"name": "Оглушающая",
+			"description": ""
+		},
+		"Trap": {
+			"name": "Ловушка",
+			"description": ""
+		},
+		"Vamprie": {
+			"name": "Вампир",
+			"description": ""
+		},
+		"Will-Attack": {
+			"name": "Атака по Разуму",
+			"description": ""
+		}
+	}
+}
