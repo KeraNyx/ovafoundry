@@ -50,7 +50,7 @@ export default class BaseItemSheet extends ItemSheet {
     async _onDrop(event) {
         const data = TextEditor.getDragEventData(event);
         const item = this.item;
-        if (item.type === 'perk') return;
+        if (item.type === 'perk') return false;
 
         const newItem = await Item.implementation.fromDropData(data);
         const newItemData = newItem.toObject();
@@ -61,6 +61,8 @@ export default class BaseItemSheet extends ItemSheet {
                 this.item.addPerks(newPerks);
                 break;
         }
+
+        return true;
     }
 
     async _onSubmit(event) {

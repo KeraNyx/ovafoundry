@@ -22,7 +22,7 @@ export default class OVACharacterSheet extends ActorSheet {
         });
     }
 
-    _onDrop(event) {
+    async _onDrop(event) {
         event.preventDefault();
         const abilityId = event.target.closest(".item")?.dataset.itemId;
         if (abilityId) {
@@ -31,8 +31,8 @@ export default class OVACharacterSheet extends ActorSheet {
                 console.log(`Could not find item with id ${abilityId}`);
                 return;
             }
-            ability.sheet._onDrop(event);
-            return;
+            const dropped = await ability.sheet._onDrop(event);
+            if (dropped) return;
         }
         super._onDrop(event);
     }

@@ -55,20 +55,21 @@ export default class OVAAbilitySheet extends BaseItemSheet {
 
         const data = TextEditor.getDragEventData(event);
         const item = this.item;
-        if (item.type !== 'ability') return;
+        if (item.type !== 'ability') return false;
 
         const newItem = await Item.implementation.fromDropData(data);
         const newItemData = newItem.toObject();
 
-        if (!item.data.data.isRoot) return;
+        if (!item.data.data.isRoot) return false;
 
         switch (newItemData.type) {
             case 'ability':
-                if (!item.data.data.isRoot) break;
                 const rootId = item.data._id;
                 newItemData.data.rootId = rootId;
                 this.actor.createEmbeddedDocuments("Item", [newItemData]);
                 break;
         }
+
+        return true;
     }
 }
