@@ -16,6 +16,11 @@
     </h2>
     <nav class="tabs" data-group="primary-tabs">
         <a class="item" data-tab="description" data-group="primary-tabs">{{localize 'OVA.Description'}}</a>
+        {{#if data.isEmbedded}}
+        {{#if data.isRoot}}
+        <a class="item" data-tab="abilities" data-group="primary-tabs">{{localize 'OVA.Ability.NamePlural'}}</a>
+        {{/if}}
+        {{/if}}
         <a class="item" data-tab="properties" data-group="primary-tabs">{{localize 'OVA.Properties'}}</a>
         <a class="item" data-tab="effects" data-group="primary-tabs">{{ localize 'OVA.Effects.Name' }}</a>
     </nav>
@@ -67,6 +72,13 @@
                 </div>
             </div>
         </div>
+        {{#if data.isEmbedded}}
+        {{#if data.isRoot}}
+        <div class="tab" data-tab="abilities" data-group="primary-tabs">
+            {{> "systems/ova/templates/parts/ability-list.html" items=abilities }}
+        </div>
+        {{/if}}
+        {{/if}}
         <div class="tab" data-tab="properties" data-group="primary-tabs">
             <table class="center">
                 <tr>
@@ -94,11 +106,6 @@
                     </td>
                 </tr>
             </table>
-            {{#if data.isEmbedded}}
-            {{#if data.isRoot}}
-            {{> "systems/ova/templates/parts/ability-list.html" items=abilities }}
-            {{/if}}
-            {{/if}}
         </div>
         <div class="tab" data-tab="effects" data-group="primary-tabs">
             {{> "systems/ova/templates/parts/effects.html" effects=data.effects }}
