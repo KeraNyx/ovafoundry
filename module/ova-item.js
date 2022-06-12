@@ -38,7 +38,7 @@ export default class OVAItem extends Item {
                 _id: currentPerks[index]._id,
                 "data.level.value": currentPerks[index].data.level.value - 1
             }]);
-
+            await this.actor.updateEmbeddedDocuments("Item", [{ _id: this.id, "data.perks": this.data.data.perks }]);
         } else {
             // remove perk at index
             await this.actor.deleteEmbeddedDocuments("Item", [perkId]);
