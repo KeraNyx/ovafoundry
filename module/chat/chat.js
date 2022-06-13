@@ -198,7 +198,7 @@ async function _onApplyHealClick(e) {
     const spellRoll = message.data.flags["roll-data"];
 
     const targets = canvas.tokens.controlled.map(t => t.actor);
-    const attacker = _getMessageAuthor(lastAttack.message);
+    const attacker = _getMessageAuthor(message);
 
     const promptData = {
         effects: {

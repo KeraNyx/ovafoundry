@@ -17,6 +17,7 @@ import CombatTracker from "./module/combat/tracker.js";
 import * as chat from "./module/chat/chat.js";
 import registerHandlebarsHelpers from "./ova-handlebars-helpers.js";
 import configureStatusEffects from "./configure-status-effects.js";
+import Socket from "./module/sockets/socket.js";
 
 Hooks.once("init", function () {
     console.log("OVA | Initializing OVA System");
@@ -32,11 +33,13 @@ Hooks.once("init", function () {
     CONFIG.Dice.terms['d'] = OVADie;
     CONFIG.Combatant.documentClass = OVACombatant;
     CONFIG.ActiveEffect.documentClass = OVAActiveEffect;
+    CONFIG.Item.typeLabels["ability"] = "OVA.Ability.Name";
+    CONFIG.Item.typeLabels["perk"] = "OVA.Perk.Name";
     // CONFIG.debug.hooks = true;
 
     Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("ova", OVAAbilitySheet, { types: ["ability"] });
-    Items.registerSheet("ova", OVAPerkSheet, { types: ["perk"] });
+    Items.registerSheet("ova", OVAAbilitySheet, { types: ["ability"], label: "OVA.Ability.Name" });
+    Items.registerSheet("ova", OVAPerkSheet, { types: ["perk"], label: "OVA.Perk.Name" });
     Items.registerSheet("ova", OVAAttackSheet, { types: ["attack"] });
     Items.registerSheet("ova", OVASpellSheet, { types: ["spell"] });
 
@@ -44,6 +47,8 @@ Hooks.once("init", function () {
     Actors.registerSheet("ova", OVACharacterSheet, { makeDefault: true, label: "OVA.Sheets.Character" });
     Actors.registerSheet("ova", OVANPCSheet, { label: "OVA.Sheets.NPC" });
 
+    Socket.initialize();
+    OVACharacter.listenForValueChange();
     preloadTemplates();
     registerHandlebarsHelpers();
     registerSystemSettings();
@@ -80,10 +85,12 @@ Hooks.on("renderChatLog", chat.chatListeners);
 
 Hooks.on('preUpdateCombat', preUpdateCombat);
 
-Hooks.on('updateCombat', function updateCombat(combat, updateData, context, userId) {
+Hooks.on('deleteCombat', function updateCombat(combat, updateData, context, userId) {
 
 });
+
 async function preUpdateCombat(combat, updateData, context) {
+    if (!game.user.isGM) return;
     // removing expired effects
     for (let turn of combat.turns) {
         const turnActor = turn.actor ? turn.actor : turn.token.actor;

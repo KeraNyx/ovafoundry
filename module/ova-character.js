@@ -1,4 +1,5 @@
 import OVAEffect from "./effects/ova-effect.js";
+import Socket from "./sockets/socket.js";
 
 export default class OVACharacter extends Actor {
     static async create(data, options) {
@@ -213,6 +214,18 @@ export default class OVACharacter extends Actor {
 
     _showValueChangeText(amount, stroke = 0x000000) {
         const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
+        OVACharacter.showValueChangeText(tokens, amount, stroke);
+        Socket.emit("tokensAttributeChange", { tokens: tokens.map(t => t.id), amount: amount, stroke: stroke });
+    }
+
+    static listenForValueChange() {
+        Socket.on("tokensAttributeChange", data => {
+            const tokens = data.tokens.map(id => canvas.tokens.get(id));
+            OVACharacter.showValueChangeText(tokens, data.amount, data.stroke);
+        });
+    }
+
+    static showValueChangeText(tokens, amount, stroke = 0x000000) {
         for (let t of tokens) {
             t?.hud.createScrollingText(amount.signedString(), {
                 icon: "icons/svg/aura.svg",
