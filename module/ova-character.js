@@ -171,7 +171,6 @@ export default class OVACharacter extends Actor {
         }
 
         this.items.filter(i => i.data.type !== "ability").forEach(item => item.prepareItemData());
-
     }
 
     giveFreeDramaDice() {

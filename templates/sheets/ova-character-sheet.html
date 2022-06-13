@@ -1,6 +1,6 @@
 <form class="actor-sheet {{cssClass}}" autocomplete="off">
     <header class="char-sheet-header">
-        <img src="systems/ova/public/images/ova-logo.png" class="logo" />
+        <div class="logo"></div>
         <div class="character-name-container">
             <input name="name" type="text" class="character-name" value="{{actor.name}}"
                 placeholder="{{ localize 'OVA.Name' }}" />
@@ -11,8 +11,8 @@
                     placeholder="{{ localize 'OVA.Experience.Name' }}" />
             </div>
         </div>
-        <img src="{{actor.img}}" class="character-portrait" data-edit="img" title="{{actor.name}}" height="128"
-            width="128" />
+        <!-- <div style="background-image: url('{{actor.img}}');" class="character-portrait clickable" data-edit="img" title="{{actor.name}}"></div> -->
+        <img src="{{actor.img}}" class="character-portrait" data-edit="img" title="{{actor.name}}" height="128"  width="128" />
     </header>
 
     <div class="ability-block flexrow">
@@ -22,17 +22,17 @@
                     {{localize "OVA.Roll.Drama"}}<div class="drama-dice"></div>
                 </div>
             </div>
-            <div class="drama-dice-name free-drama-dice give-free-dd clickable">Free: {{actor.data.dramaDice.free}}
+            <div class="drama-dice-name free-drama-dice give-free-dd clickable">{{localize 'OVA.Free'}}: {{actor.data.dramaDice.free}}
             </div>
-            <div class="drama-dice-name free-drama-dice reset-used-dd clickable">Used: {{actor.data.dramaDice.used}}
+            <div class="drama-dice-name free-drama-dice reset-used-dd clickable">{{localize 'OVA.Used'}}: {{actor.data.dramaDice.used}}
             </div>
         </div>
         <div>
-            <h3 class="ability-title">{{ localize 'OVA.Ability.NamePlural' }}</h3>
+            <h3 class="ability-title">{{ localize 'OVA.Ability.NamePlural' }} ({{abilityLevels}})</h3>
             {{> "systems/ova/templates/parts/ability-list.html" items=abilities selected=selectedAbilities}}
         </div>
         <div>
-            <h3 class="ability-title">{{ localize 'OVA.Weakness.NamePlural' }}</h3>
+            <h3 class="ability-title">{{ localize 'OVA.Weakness.NamePlural' }} ({{weaknessLevels}})</h3>
             {{> "systems/ova/templates/parts/ability-list.html" items=weaknesses selected=selectedAbilities}}
         </div>
     </div>
@@ -41,7 +41,7 @@
         <div class="reserve-data center flexrow">
             <div class="combat-cell">
                 <div class="combat-cell-name">{{ localize 'OVA.Endurance.Reserve' }}</div>
-                <input type="text" class="combat-cell-value" name="data.enduranceReserve.value"
+                <input type="text" class="combat-cell-value end-value" name="data.enduranceReserve.value"
                     value="{{data.data.enduranceReserve.value}}" data-dtype="Number" />
             </div>
             <div class="combat-side-cell">

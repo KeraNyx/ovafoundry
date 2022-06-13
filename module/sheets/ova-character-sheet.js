@@ -58,7 +58,7 @@ export default class OVACharacterSheet extends ActorSheet {
     /** @override */
     activateListeners(html) {
         super.activateListeners(html);
-
+        
         html.find('.item-view').click(this._startEditingItem.bind(this));
         html.find('.item-edit').on("blur", this._endEditingItem.bind(this));
         html.find('.item-edit').click(this._editItem.bind(this));
@@ -530,6 +530,8 @@ export default class OVACharacterSheet extends ActorSheet {
         context.attacks = [];
         context.spells = [];
         context.selectedAbilities = this.selectedAbilities;
+        context.abilityLevels = 0;
+        context.weaknessLevels = 0;
         for (const item of this.actor.items) {
             const itemData = item.data;
             if (itemData.type === "attack") {
@@ -543,8 +545,10 @@ export default class OVACharacterSheet extends ActorSheet {
             if (itemData.data.rootId != '') continue;
 
             if (itemData.data.type === "ability") {
+                context.abilityLevels += itemData.data.level.value;
                 context.abilities.push(itemData);
             } else if (itemData.data.type === "weakness") {
+                context.weaknessLevels += itemData.data.level.value;
                 context.weaknesses.push(itemData);
             }
         }

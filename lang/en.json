@@ -36,6 +36,8 @@
             "Reserve": "E. Reserve"
         },
         "DramaDice": "Drama Dice",
+        "Free": "Free",
+        "Used": "Used",
         "Duration": {
             "Rounds": "Duration (Rounds)"
         },

@@ -38,6 +38,7 @@
     padding: 0px;
     margin-right: .45em;
     max-width: .6em;
+    height: 28px;
 }
 
 .ability-description {
@@ -205,6 +206,8 @@
     height: 113px;
     right: -18px;
     top: -10px;
+    background-size: contain;
+    background-image: url('public/images/ova-logo.png');
 }
 
 .character-name-container {
@@ -236,6 +239,11 @@ input.character-name {
     border-width: 3px;
     border-style: solid;
     object-fit: contain;
+    width: 128px;
+    height: 128px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .fixed-panel {
