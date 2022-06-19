@@ -1,3 +1,7 @@
+# Fix TV calculation for attack with endurance cost?
+# Different color for auto TV?
+# Increase HP/endurance when transforming and have tough, vigorous abilities
+# Export printable sheet integration
 # Instant perks/flaws on attack 
 # Complications
 # drama/miracle dice for older messages

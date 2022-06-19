@@ -216,9 +216,14 @@ export default class OVACharacterSheet extends ActorSheet {
     async _onSubmit(event, options) {
         const formData = this._getSubmitData({});
 
-        // removing max endurance and hp
+        // removing tv if it the same as the default
+        if (formData["data.tv"] === this.actor.data.tv) {
+            formData["data.tv"] = null;
+        }
 
         this._submitItems(formData);
+        options = options || {};
+        options.updateData = formData;
         await super._onSubmit(event, options);
     }
 
@@ -532,6 +537,7 @@ export default class OVACharacterSheet extends ActorSheet {
         context.selectedAbilities = this.selectedAbilities;
         context.abilityLevels = 0;
         context.weaknessLevels = 0;
+        context.actor.data.autoTV = !this.actor.data.data.tv;
         for (const item of this.actor.items) {
             const itemData = item.data;
             if (itemData.type === "attack") {

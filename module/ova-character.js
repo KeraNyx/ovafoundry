@@ -212,6 +212,7 @@ export default class OVACharacter extends Actor {
         // levels of abilities affecting health and  (effect keys endurance.max and hp.max)
         const abilities = this.items.filter(i => i.data.type === "ability");
         abilities.forEach(a => {
+            if (!a.data.data.active) return;
             for (const effect of a.data.data.effects) {
                 if (effect.key === "endurance.max" || effect.key === "hp.max") {
                     const sign = a.data.data.type === "ability" ? 1 : -1;
