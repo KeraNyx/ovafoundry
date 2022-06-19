@@ -5,3 +5,4 @@
 # Ability to link Ability in the chat
 # Clear last roll/attack on chat clear
 # Create NPC Character
+# Endurance Penalty from Magic and Drama Dice
