@@ -253,6 +253,10 @@
 			"name": "Триггер",
 			"description": ""
 		},
+		"Unique Weakness": {
+			"name": "Уникальная Слабость",
+			"description": ""
+		},
 		"Unlucky": {
 			"name": "Неудача",
 			"description": ""

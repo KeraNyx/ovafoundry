@@ -81,6 +81,10 @@
 			"name": "Только на Себя",
 			"description": ""
 		},
+		"Unique Flaw": {
+			"name": "Уникальный Изъян",
+			"description": ""
+		},
 		"Unwieldy": {
 			"name": "Неповоротливая",
 			"description": ""
