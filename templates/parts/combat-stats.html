@@ -111,7 +111,7 @@
         <div class="flex1"></div>
         <div class="combat-cell tv-cell">
             <div class="combat-cell-name">{{ localize 'OVA.ThreatValue.Short' }}</div>
-            <input type="text" class="combat-cell-value" name="data.tv"
+            <input type="text" class="combat-cell-value {{#if actor.data.autoTV}}auto-tv{{/if}}" name="data.tv"
                 value="{{actor.data.tv}}" data-dtype="Number" />
         </div>
     </div>

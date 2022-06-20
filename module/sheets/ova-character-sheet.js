@@ -218,7 +218,8 @@ export default class OVACharacterSheet extends ActorSheet {
 
         // removing tv if it the same as the default
         if (formData["data.tv"] === this.actor.data.tv) {
-            formData["data.tv"] = null;
+            const fd = new FormDataExtended(this.form, {editors: this.editors});
+            fd.delete("data.tv");
         }
 
         this._submitItems(formData);
@@ -537,7 +538,7 @@ export default class OVACharacterSheet extends ActorSheet {
         context.selectedAbilities = this.selectedAbilities;
         context.abilityLevels = 0;
         context.weaknessLevels = 0;
-        context.actor.data.autoTV = !this.actor.data.data.tv;
+        context.actor.data.autoTV = this.actor.data.data.tv === null;
         for (const item of this.actor.items) {
             const itemData = item.data;
             if (itemData.type === "attack") {

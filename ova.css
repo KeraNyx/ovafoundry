@@ -689,6 +689,10 @@ input.combat-side-value {
     margin-left: -2em;
 }
 
+.auto-tv {
+    color: #ccb3b3 !important;
+}
+
 .tv-cell {
     min-width: 3.75em;
     margin: -.2em 0;
