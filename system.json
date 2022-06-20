@@ -3,7 +3,7 @@
     "title": "OVA",
     "description": "System for playing Open Versitale Anime Role-Playing Game (OVA)",
     "author": "Lucius The Mage",
-    "version": "0.1.16",
+    "version": "0.1.17",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "9.269",
     "esmodules": [
