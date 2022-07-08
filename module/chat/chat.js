@@ -27,6 +27,67 @@ function _onMessageRollDataClick(e) {
     else $(abs).slideUp(200);
 }
 
+export const listenToCommands = function (chat, content, message) {
+    let regExp;
+    regExp = /(\S+)/g;
+    let commands = content.match(regExp);
+
+    if (!['/d', '/defense', '/a', '/attack'].includes(commands[0])) {
+        return true;
+    }
+
+    let type = "manual";
+    let dx = commands[2] || 1;
+    let roll = commands[1] || 2;
+
+    let negative = false;
+    if (roll <= 0) {
+        negative = true;
+        roll = 2 - roll;
+    }
+    
+    let dice;
+    if (negative) {
+        dice = new Roll(`${roll}d6kl`);
+    } else {
+        dice = new Roll(`${roll}d6khs`);
+    }
+    dice.evaluate({ async: false })
+
+    switch (commands[0]) {
+        case '/d':
+        case '/defense':
+            type = "defense";
+            break;
+
+        case '/a':
+        case '/attack':
+            type = "attack";
+            break;
+    }
+
+    const rollData = {
+        roll: roll,
+        dx: dx,
+        result: dice.result,
+        ignoreArmor: 0,
+        effects: [],
+        type: type,
+        dn: 0,
+    };
+
+    OVACombatMessage.create({
+        roll: dice,
+        rollData: rollData,
+        // speaker: this.actor,
+        // attack: attack,
+        perks: [],
+        abilities: [],
+    });
+
+    return false;
+}
+
 export const listenToCombatRolls = async function (message, html, data) {
     _checkClear();
 
@@ -76,7 +137,7 @@ async function _onDramaRoll(message, html, data) {
 
 function _onAttackRoll(message, html, data) {
     if (message.data.flags["roll-data"].dx >= 0) {
-        if (lastAttack && _getMessageAuthor(lastAttack.message).id !== _getMessageAuthor(message).id) {
+        if (lastAttack && _getMessageAuthorActor(lastAttack.message).id !== _getMessageAuthorActor(message).id) {
             return _onCounterRoll(message, html, data);
         }
 
@@ -188,7 +249,7 @@ function _onSpellRoll(message, html, data) {
     }
     if (result >= 0) {
         const attackObj = message.data.flags["attack"];
-        const attack = _getMessageAuthor(message).items.find(i => i.id === attackObj._id);
+        const attack = _getMessageAuthorActor(message).items.find(i => i.id === attackObj._id);
         attack?.update({ "data.active": true });
         html.find("button[data-action='apply-effect']").removeClass("hidden");
     }
@@ -221,7 +282,7 @@ async function _onApplyHealClick(e) {
     const spellRoll = message.data.flags["roll-data"];
 
     const targets = canvas.tokens.controlled.map(t => t.actor);
-    const attacker = _getMessageAuthor(message);
+    const attacker = _getMessageAuthorActor(message);
 
     const promptData = {
         effects: {
@@ -245,7 +306,12 @@ async function _onTakeDamageClick(e) {
     const messageId = e.currentTarget.closest(".chat-message").dataset.messageId;
     const message = game.messages.get(messageId)
 
-    const target = _getMessageAuthor(message);
+    const target = _getMessageAuthorActor(message);
+    let targets = target ? [target] : canvas.tokens.controlled.map(t => t.actor);
+
+    if (!targets.length) {
+        return ui.notifications.warn(game.i18n.format("OVA.ErrorNoActorSelecter"));
+    }
 
     const attackRoll = message.data.flags["attack-roll-data"];
     const defenseRoll = message.data.flags["roll-data"];
@@ -261,11 +327,11 @@ async function _onTakeDamageClick(e) {
         },
         defense: {
             roll: defenseRoll.roll,
-            result: defenseRoll.resultOverride !== null ? defenseRoll.resultOverride : defenseRoll.result,
+            result: defenseRoll.resultOverride ? defenseRoll.resultOverride : defenseRoll.result,
         }
     }
 
-    const attacker = _getMessageAuthor(lastAttack.message);
+    const attacker = _getMessageAuthorActor(lastAttack.message);
 
     const promptData = {
         effects: {
@@ -273,7 +339,7 @@ async function _onTakeDamageClick(e) {
             target: attackRoll.effects.filter(e => e.target === "target"),
         },
         rollData: rollData,
-        targets: [target],
+        targets: targets,
         attacker: attacker,
     };
 
@@ -290,7 +356,7 @@ async function _onApplyDamageClick(e) {
     const attackMessageId = message.data.flags["attack-message-id"];
     const attackMessage = game.messages.get(attackMessageId);
 
-    const target = _getMessageAuthor(attackMessage);
+    const target = _getMessageAuthorActor(attackMessage);
 
     // only used for counter rolls so we can hardcode it.
     const attackRoll = message.data.flags["attack-roll-data"];
@@ -311,7 +377,7 @@ async function _onApplyDamageClick(e) {
         }
     }
 
-    const attacker = _getMessageAuthor(message);
+    const attacker = _getMessageAuthorActor(message);
 
     const promptData = {
         effects: {
@@ -327,7 +393,7 @@ async function _onApplyDamageClick(e) {
     prompt.render(true);
 }
 
-function _getMessageAuthor(message) {
+function _getMessageAuthorActor(message) {
     let author = null;
     if (message.data.speaker.token) {
         const authorId = message.data.speaker.token;

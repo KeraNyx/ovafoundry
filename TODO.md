@@ -1,4 +1,5 @@
 # Show custom modifier in roll info
+# reset free drama dice
 # Fix TV calculation for attack with endurance cost?
 # Increase HP/endurance when transforming and have tough, vigorous abilities
 # Export printable sheet integration

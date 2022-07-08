@@ -236,6 +236,7 @@
         "AddActiveEffect": "Add Active Effect",
         "PDFoundry":{
             "NotInstalled": "PDFoundry must be installed to use this feature. (Rulebook name can be configured in the system settings.)"
-        }
+        },
+        "ErrorNoActorSelecter": "You need to select target first"
     }
 }

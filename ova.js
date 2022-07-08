@@ -88,6 +88,10 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     }
 });
 
+Hooks.on("chatMessage", (log, content, message) => {
+    return chat.listenToCommands(log, content, message);
+});
+
 Hooks.on("renderChatLog", chat.chatListeners);
 
 Hooks.on('preUpdateCombat', preUpdateCombat);
