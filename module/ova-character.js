@@ -374,7 +374,7 @@ export default class OVACharacter extends Actor {
             callback: html => {
                 const form = html[0].querySelector("form");
                 const fd = new FormDataExtended(form);
-                foundry.utils.mergeObject(data, toObject<fd>(), { inplace: true });
+                foundry.utils.mergeObject(data, fd.toObject(), { inplace: true });
                 if (!data.folder) delete data["folder"];
                 const subtype = data.type;
                 data.type = 'character';
