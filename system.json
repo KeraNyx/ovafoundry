@@ -74,8 +74,8 @@
         }
     ],
     "socket": true,
-    "url": "https://github.com/KeraNyx/ovafoundry",
-    "manifest": "https://github.com/KeraNyx/ovafoundry/-/raw/master/system.json",
-    "download": "https://github.com/KeraNyx/ovafoundry/-/archive/master/ova-master.zip",
+    "url": "https://github.com/KeraNyx/ova",
+    "manifest": "https://github.com/KeraNyx/ova/-/raw/master/system.json",
+    "download": "https://github.com/KeraNyx/ova/-/archive/master/ova-master.zip",
     "license": "LICENSE.txt"
 }
