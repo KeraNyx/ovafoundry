@@ -3,9 +3,11 @@
     "title": "OVA",
     "description": "System for playing Open Versatile Anime Role-Playing Game (OVA)",
     "author": "Deathkitten",
-    "version": "0.0.1",
-    "minimumCoreVersion": "9",
-    "compatibleCoreVersion": "9.269",
+    "version": "0.1",
+    "compatibility": {
+    "minimum": 9,
+    "verified": "9"
+    },
     "esmodules": [
         "ova.js"
     ],
