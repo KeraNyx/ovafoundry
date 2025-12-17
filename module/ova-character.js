@@ -7,25 +7,25 @@ export default class OVACharacter extends Actor {
     const subtype = options.subtype ?? "character";
 
     data.prototypeToken = {
-      actorLink: subtype === "character",
-      disposition: subtype === "character" ? 1 : -1,
-      vision: true,
-      bar1: { attribute: "attributes.hp" },
-      bar2: { attribute: "attributes.endurance" }
+        actorLink: subtype === "character",
+        disposition: subtype === "character" ? 1 : -1,
+        vision: true,
+        bar1: { attribute: "attributes.hp" },
+        bar2: { attribute: "attributes.endurance" }
     };
 
     data.img ??= "icons/svg/mystery-man-black.svg";
 
     if (subtype === "npc") {
-      foundry.utils.setProperty(
-        data,
-        "flags.core.sheetClass",
-        "ova.OVANPCSheet"
-      );
+        foundry.utils.setProperty(
+            data,
+            "flags.core.sheetClass",
+            "ova.OVANPCSheet"
+        );
     }
 
-    return super.create(data, options);
-  }
+    return await super.create(data, options);
+}
 
   async createAttack() {
     return this.createEmbeddedDocuments("Item", [{
