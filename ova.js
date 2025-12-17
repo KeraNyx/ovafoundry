@@ -20,41 +20,52 @@ import configureStatusEffects from "./configure-status-effects.js";
 import Socket from "./module/sockets/socket.js";
 import OVATokenHUD from "./module/token/ova-token-hud.js";
 
-Hooks.once("init", function () {
+Hooks.once("init", async function () {
     console.log("OVA | Initializing OVA System");
 
-    game.CombatTracker = CombatTracker;
-
-    CONFIG.OVA = OVA;
-    CONFIG.statusEffects = configureStatusEffects();
-
+    // Set document classes
     CONFIG.Item.documentClass = OVAItem;
     CONFIG.Actor.documentClass = OVACharacter;
-    CONFIG.Dice.types = [OVADie, FateDie]
-    CONFIG.Dice.terms['d'] = OVADie;
     CONFIG.Combatant.documentClass = OVACombatant;
     CONFIG.ActiveEffect.documentClass = OVAActiveEffect;
+
+    CONFIG.Dice.types = [OVADie];
+    CONFIG.Dice.terms["d"] = OVADie;
+
     CONFIG.Item.typeLabels["ability"] = "OVA.Ability.Name";
     CONFIG.Item.typeLabels["perk"] = "OVA.Perk.Name";
     CONFIG.Actor.typeLabels["character"] = "OVA.Character.Name";
     CONFIG.Actor.typeLabels["npc"] = "OVA.NPC.Name";
-    // CONFIG.debug.hooks = true;
 
+    // Register Item sheets
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("ova", OVAAbilitySheet, { types: ["ability"], label: "OVA.Ability.Name" });
     Items.registerSheet("ova", OVAPerkSheet, { types: ["perk"], label: "OVA.Perk.Name" });
     Items.registerSheet("ova", OVAAttackSheet, { types: ["attack"] });
     Items.registerSheet("ova", OVASpellSheet, { types: ["spell"] });
 
+    // Register Actor sheets
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("ova", OVACharacterSheet, { makeDefault: true, label: "OVA.Sheets.Character" });
     Actors.registerSheet("ova", OVANPCSheet, { label: "OVA.Sheets.NPC" });
 
+    // Initialize socket
     Socket.initialize();
+
+    // Listen for value changes across clients
     OVACharacter.listenForValueChange();
-    preloadTemplates();
+
+    // Preload templates
+    await preloadTemplates();
+
+    // Handlebars helpers
     registerHandlebarsHelpers();
+
+    // System settings
     registerSystemSettings();
+
+    // Replace combat tracker
+    game.CombatTracker = CombatTracker;
 });
 
 Hooks.on("ready", async function () {
@@ -67,7 +78,7 @@ async function preloadTemplates() {
         "systems/ova/templates/parts/effects.html",
         "systems/ova/templates/parts/effect-inline-desc.html",
         "systems/ova/templates/parts/perk-list.html",
-        "systems/ova/templates/parts/combat-stats.html",
+        "systems/ova/templates/parts/combat-stats.html"
     ]);
 }
 
@@ -83,7 +94,6 @@ function registerSystemSettings() {
 
 Hooks.on("renderChatMessage", (message, html, data) => {
     if (message.roll) {
-        // chat.listenToAttackRoll(message, html, data);
         chat.listenToCombatRolls(message, html, data);
     }
 });
@@ -94,32 +104,28 @@ Hooks.on("chatMessage", (log, content, message) => {
 
 Hooks.on("renderChatLog", chat.chatListeners);
 
-Hooks.on('preUpdateCombat', preUpdateCombat);
-
-Hooks.on('deleteCombat', function updateCombat(combat, updateData, context, userId) {
-
-});
-
-async function preUpdateCombat(combat, updateData, context) {
+Hooks.on('preUpdateCombat', async (combat, updateData, options, userId) => {
     if (!game.user.isGM) return;
-    // removing expired effects
+
     for (let turn of combat.turns) {
-        const turnActor = turn.actor ? turn.actor : turn.token.actor;
-        if (!turnActor) continue;
+        const actor = turn.actor ?? turn.token.actor;
+        if (!actor) continue;
 
-        for (let effect of turnActor.data.effects) {
+        for (let effect of actor.data.effects) {
             if (effect.data.flags["each-round"]) {
-                if (updateData.turn === undefined || (effect.data.duration.startTurn == updateData.turn && (updateData.turn > combat.turn || updateData.round > combat.round))) {
+                if (updateData.turn === undefined ||
+                    (effect.data.duration.startTurn === updateData.turn &&
+                    (updateData.turn > combat.turn || updateData.round > combat.round))) {
+                    
                     const overTimeEffect = effect.data.flags["each-round"];
-                    const newData = { data: foundry.utils.deepClone(turnActor.data.data) };
-                    OVAEffect.applyEffectChanges(overTimeEffect, newData)
-
-                    await turnActor.update(newData);
-                    await turnActor.sheet?.refreshActiveEffects(effect);
+                    const newData = { data: foundry.utils.deepClone(actor.data.data) };
+                    OVAEffect.applyEffectChanges(overTimeEffect, newData);
+                    await actor.update(newData);
+                    await actor.sheet?.refreshActiveEffects(effect);
                 }
             }
         }
 
-        turnActor.clearExpiredEffects();
+        actor.clearExpiredEffects();
     }
-}
+});

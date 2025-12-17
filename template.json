@@ -1,96 +1,92 @@
 {
-    "Actor": {
-        "types": [
-            "character"
-        ],
-        "character": {
-            "hp": {
-                "value": 40,
-                "max": 40
-            },
-            "hpReserve": {
-                "max": 0
-            },
-            "endurance": {
-                "value": 40,
-                "penalty": 0,
-                "max": 40
-            },
-            "enduranceReserve": {
-                "value": 0,
-                "max": 0
-            },
-            "defenses": {
-                "evasion": 0
-            },
-            "experience": {
-                "value": 0
-            },
-            "tv": null,
-            "abilities": [],
-            "weaknesses": [],
-            "attacks": [],
-            "dramaDice": {
-                "used": 0,
-                "free": 0
-            }
+  "Actor": {
+    "types": ["character", "npc"],
+
+    "character": {
+      "system": {
+        "hp": { "value": 40, "max": 40 },
+        "hpReserve": { "max": 0 },
+
+        "endurance": { "value": 40, "penalty": 0, "max": 40 },
+        "enduranceReserve": { "value": 0, "max": 0 },
+
+        "defenses": { "evasion": 0 },
+        "experience": { "value": 0 },
+        "tv": null,
+
+        "abilities": [],
+        "weaknesses": [],
+        "attacks": [],
+
+        "dramaDice": {
+          "used": 0,
+          "free": 0
         }
+      }
     },
-    "Item": {
-        "types": [
-            "ability",
-            "perk",
-            "attack",
-            "spell"
-        ],
-        "attack": {
-            "description": "",
-            "abilities": [],
-            "perks": [],
-            "limitedUse": {
-                "value": 0,
-                "max": 0
-            }
-        },
-        "spell": {
-            "description": "",
-            "abilities": [],
-            "active": []
-        },
-        "ability": {
-            "type": "ability",
-            "level": {
-                "value": 1
-            },
-            "enduranceCost": 0,
-            "description": "",
-            "flavor": "",
-            "limitedUse": {
-                "value": 0,
-                "max": 0
-            },
-            "passive": false,
-            "active": true,
-            "isRoot": false,
-            "rootType": "modifier",
-            "rootId": "",
-            "magic": false,
-            "perks": [],
-            "effects": [],
-            "temporary": false,
-            "boss": false,
-            "page": ""
-        },
-        "perk": {
-            "type": "perk",
-            "flavor": "",
-            "description": "",
-            "effects": [],
-            "level": {
-                "value": 1
-            },
-            "enduranceCost": 0,
-            "page": ""
-        }
+
+    "npc": {
+      "system": {
+        "hp": { "value": 40, "max": 40 },
+        "endurance": { "value": 40, "max": 40 },
+        "defenses": { "evasion": 0 },
+        "tv": null
+      }
     }
+  },
+
+  "Item": {
+    "types": ["ability", "perk", "attack", "spell"],
+
+    "attack": {
+      "system": {
+        "description": "",
+        "abilities": [],
+        "perks": [],
+        "limitedUse": { "value": 0, "max": 0 }
+      }
+    },
+
+    "spell": {
+      "system": {
+        "description": "",
+        "abilities": [],
+        "active": []
+      }
+    },
+
+    "ability": {
+      "system": {
+        "type": "ability",
+        "level": { "value": 1 },
+        "enduranceCost": 0,
+        "description": "",
+        "flavor": "",
+        "limitedUse": { "value": 0, "max": 0 },
+        "passive": false,
+        "active": true,
+        "isRoot": false,
+        "rootType": "modifier",
+        "rootId": "",
+        "magic": false,
+        "perks": [],
+        "effects": [],
+        "temporary": false,
+        "boss": false,
+        "page": ""
+      }
+    },
+
+    "perk": {
+      "system": {
+        "type": "perk",
+        "flavor": "",
+        "description": "",
+        "effects": [],
+        "level": { "value": 1 },
+        "enduranceCost": 0,
+        "page": ""
+      }
+    }
+  }
 }

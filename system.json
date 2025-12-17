@@ -1,84 +1,100 @@
 {
-    "id": "ova",
-    "title": "OVA Foundry",
-    "description": "System for playing Open Versatile Anime Role-Playing Game (OVA)",
-    "version": "0.1",
-    "compatibility": {
-        "minimum": 9,
-        "verified": "9"
+  "id": "ova",
+  "title": "OVA Foundry",
+  "description": "System for playing Open Versatile Anime Role-Playing Game (OVA)",
+  "version": "0.1",
+  "compatibility": {
+    "minimum": 11,
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "Deathkitten",
+      "discord": "deathkittenkera"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "npc": {}
     },
-    "authors": [{
-    "name": "Deathkitten",
-    "discord": "deathkittenkera"
-  }],
-    "esmodules": [
-        "ova.js"
-    ],
-    "styles": [
-        "ova.css"
-    ],
-    "packs": [
-        {
-            "label": "Abilities",
-            "type": "Item",
-            "name": "abilities",
-            "path": "packs/abilities.db",
-            "system": "ova",
-            "package": "ova",
-            "entity": "Item"
-        },
-        {
-            "label": "Weaknesses",
-            "type": "Item",
-            "name": "weaknesses",
-            "path": "packs/weaknesses.db",
-            "system": "ova",
-            "package": "ova",
-            "entity": "Item"
-        },
-        {
-            "label": "Perks",
-            "type": "Item",
-            "name": "perks",
-            "path": "packs/perks.db",
-            "system": "ova",
-            "package": "ova",
-            "entity": "Item"
-        },
-        {
-            "label": "Flaws",
-            "type": "Item",
-            "name": "flaws",
-            "path": "packs/flaws.db",
-            "system": "ova",
-            "package": "ova",
-            "entity": "Item"
-        },
-        {
-            "label": "Boss Abilities",
-            "type": "Item",
-            "name": "boss-abilities",
-            "path": "packs/boss-abilities.db",
-            "system": "ova",
-            "package": "ova",
-            "entity": "Item"
-        }
-    ],
-    "languages": [
-        {
-            "lang": "en",
-            "name": "English",
-            "path": "lang/en.json"
-        },
-        {
-            "lang": "ru",
-            "name": "Русский",
-            "path": "lang/ru.json"
-        }
-    ],
-    "socket": true,
-    "url": "https://github.com/KeraNyx/ova",
-    "manifest": "https://github.com/KeraNyx/ova/blob/master/system.json",
-    "download": "https://github.com/KeraNyx/ova/archive/master/ova-master.zip",
-    "license": "LICENSE.txt"
+    "Item": {
+      "ability": {},
+      "weakness": {},
+      "perk": {},
+      "flaw": {},
+      "attack": {},
+      "spell": {}
+    }
+  },
+  "esmodules": [
+    "ova.js"
+  ],
+  "styles": [
+    "ova.css"
+  ],
+  "packs": [
+    {
+      "label": "Abilities",
+      "type": "Item",
+      "name": "abilities",
+      "path": "packs/abilities.db",
+      "system": "ova",
+      "package": "ova",
+      "entity": "Item"
+    },
+    {
+      "label": "Weaknesses",
+      "type": "Item",
+      "name": "weaknesses",
+      "path": "packs/weaknesses.db",
+      "system": "ova",
+      "package": "ova",
+      "entity": "Item"
+    },
+    {
+      "label": "Perks",
+      "type": "Item",
+      "name": "perks",
+      "path": "packs/perks.db",
+      "system": "ova",
+      "package": "ova",
+      "entity": "Item"
+    },
+    {
+      "label": "Flaws",
+      "type": "Item",
+      "name": "flaws",
+      "path": "packs/flaws.db",
+      "system": "ova",
+      "package": "ova",
+      "entity": "Item"
+    },
+    {
+      "label": "Boss Abilities",
+      "type": "Item",
+      "name": "boss-abilities",
+      "path": "packs/boss-abilities.db",
+      "system": "ova",
+      "package": "ova",
+      "entity": "Item"
+    }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "ru",
+      "name": "Русский",
+      "path": "lang/ru.json"
+    }
+  ],
+  "socket": true,
+  "url": "https://github.com/KeraNyx/ova",
+  "manifest": "https://github.com/KeraNyx/ova/blob/master/system.json",
+  "download": "https://github.com/KeraNyx/ova/archive/master/ova-master.zip",
+  "license": "LICENSE.txt"
 }
