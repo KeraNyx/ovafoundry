@@ -1,4 +1,4 @@
-export default class OVATokenHUD extends TokenHUD {
+export default class OVATokenHUD extends foundry.applications.hud.TokenHUD {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: "token-hud",

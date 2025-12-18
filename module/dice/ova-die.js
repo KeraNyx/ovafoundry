@@ -1,4 +1,4 @@
-export default class OVADie extends Die {
+export default class OVADie extends foundry.dice.terms.Die {
     constructor(termData = {}) {
         super(termData);
         Die.MODIFIERS['khs'] = 'keepHighestSum';

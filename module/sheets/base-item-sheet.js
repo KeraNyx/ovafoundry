@@ -1,6 +1,6 @@
 import OVAEffect from "../effects/ova-effect.js";
 
-export default class BaseItemSheet extends ItemSheet {
+export default class BaseItemSheet extends foundry.appv1.sheets.ItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             tabs: [{ navSelector: ".tabs", contentSelector: ".content" }],

@@ -7,25 +7,24 @@ export default class OVACharacter extends Actor {
     const subtype = options.subtype ?? "character";
 
     data.prototypeToken = {
-        actorLink: subtype === "character",
-        disposition: subtype === "character" ? 1 : -1,
-        vision: true,
-        bar1: { attribute: "attributes.hp" },
-        bar2: { attribute: "attributes.endurance" }
+      actorLink: subtype === "character",
+      disposition: subtype === "character" ? 1 : -1,
+      vision: true,
+      bar1: { attribute: "attributes.hp" },
+      bar2: { attribute: "attributes.endurance" }
     };
 
     data.img ??= "icons/svg/mystery-man-black.svg";
 
     if (subtype === "npc") {
-        data.flags ??= {};
-        data.flags.core ??= {};
-        data.flags.core.sheetClass = "ova.OVANPCSheet";
+      data.flags ??= {};
+      data.flags.core ??= {};
+      data.flags.core.sheetClass = "ova.OVANPCSheet";
     }
 
-    // MUST return the created actor for it to appear
     const actor = await super.create(data, options);
     return actor;
-}
+  }
 
   async createAttack() {
     return this.createEmbeddedDocuments("Item", [{
@@ -225,51 +224,59 @@ export default class OVACharacter extends Actor {
     }
   }
 
+  // -----------------------
+  // Updated V16 dialog
+  // -----------------------
   static async createDialog(data = {}, { parent = null, pack = null, ...options } = {}) {
     const documentName = this.metadata.name;
     const types = ["character", "npc"];
 
-    const folders = parent ? [] : game.folders.filter(
-      f => f.type === documentName && f.displayed
-    );
-
+    const folders = parent ? [] : game.folders.filter(f => f.type === documentName && f.displayed);
     const label = game.i18n.localize(this.metadata.label);
     const title = game.i18n.format("DOCUMENT.Create", { type: label });
 
-    const html = await renderTemplate("templates/sidebar/document-create.html", {
-      name: data.name ?? game.i18n.format("DOCUMENT.New", { type: label }),
-      folder: data.folder,
-      folders,
-      hasFolders: folders.length > 0,
-      type: data.type ?? types[0],
-      types: Object.fromEntries(types.map(t => [t, t])),
-      hasTypes: types.length > 1
-    });
+    const htmlContent = await foundry.applications.handlebars.renderTemplate(
+      "templates/sidebar/document-create.html",
+      {
+        name: data.name ?? game.i18n.format("DOCUMENT.New", { type: label }),
+        folder: data.folder,
+        folders,
+        hasFolders: folders.length > 0,
+        type: data.type ?? types[0],
+        types: Object.fromEntries(types.map(t => [t, t])),
+        hasTypes: types.length > 1
+      }
+    );
 
-    return await Dialog.prompt({
-      title,
-      content: html,
-      label: title,
-      rejectClose: false,
-      options,
-      callback: async (html) => {
-        const form = html[0].querySelector("form");
-        const fd = new FormDataExtended(form);
+    class CreateActorDialog extends foundry.applications.api.HandlebarsApplicationMixin(
+      foundry.applications.api.ApplicationV2
+    ) {
+      static get defaultOptions() {
+        return mergeObject(super.defaultOptions, {
+          title,
+          template: htmlContent,
+          width: 400,
+          height: "auto",
+          resizable: true
+        });
+      }
 
-        foundry.utils.mergeObject(data, fd.toObject(), { inplace: true });
+      async _updateObject(event, formData) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const formEntries = Object.fromEntries(new FormData(form).entries());
+        foundry.utils.mergeObject(data, formEntries, { inplace: true });
 
-       const subtype = data.type;
-       data.type = "character"; // system type
-       delete data.folder;      // optional
+        const subtype = data.type;
+        data.type = "character"; // enforce system type
+        delete data.folder;      // optional
 
-      return await this.create(data, {
-        parent,
-        pack,
-        renderSheet: true, // ensures sheet opens
-        subtype
-      });
+        await this.constructor.create(data, { parent, pack, renderSheet: true, subtype });
+        this.close();
+      }
     }
 
-    });
+    const dialog = new CreateActorDialog();
+    dialog.render(true);
   }
 }

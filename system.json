@@ -15,16 +15,10 @@
   ],
   "documentTypes": {
     "Actor": {
-      "character": {},
-      "npc": {}
+      "types": ["character", "npc"]
     },
     "Item": {
-      "ability": {},
-      "weakness": {},
-      "perk": {},
-      "flaw": {},
-      "attack": {},
-      "spell": {}
+      "types": ["ability", "weakness", "perk", "flaw", "attack", "spell"]
     }
   },
   "esmodules": [

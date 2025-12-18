@@ -1,4 +1,4 @@
-export default class OVACharacterSheet extends ActorSheet {
+export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
 
   constructor(...args) {
     super(...args);
