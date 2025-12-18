@@ -1,3 +1,6 @@
+import RollPrompt from "../dialogs/roll-prompt.js";
+import AddActiveEffectPrompt from "../dialogs/add-active-effect-dialogue.js";
+
 export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
 
   constructor(...args) {
@@ -17,13 +20,12 @@ export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
   /* -------------------------------------------- */
   /*  Data Preparation                            */
   /* -------------------------------------------- */
-
   getData() {
     const context = super.getData();
     const actor = this.actor;
 
     context.actor = actor;
-    context.system = actor.system;
+    context.system = actor?.system ?? {};
     context.config = CONFIG.OVA;
     context.selectedAbilities = this.selectedAbilities;
 
@@ -36,7 +38,7 @@ export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
     let weaknessLevels = 0;
 
     for (const item of actor.items) {
-      const system = item.system;
+      const system = item?.system ?? {};
 
       if (item.type === "attack") {
         context.attacks.push(item);
@@ -51,12 +53,12 @@ export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
       if (system.rootId !== "") continue;
 
       if (system.type === "ability") {
-        abilityLevels += system.level.value;
+        abilityLevels += system.level?.value ?? 0;
         context.abilities.push(item);
       }
 
       if (system.type === "weakness") {
-        weaknessLevels += system.level.value;
+        weaknessLevels += system.level?.value ?? 0;
         context.weaknesses.push(item);
       }
     }
@@ -74,7 +76,6 @@ export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
   /* -------------------------------------------- */
   /*  Listeners                                   */
   /* -------------------------------------------- */
-
   activateListeners(html) {
     super.activateListeners(html);
 
@@ -91,9 +92,8 @@ export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
   /* -------------------------------------------- */
   /*  Item Helpers                                */
   /* -------------------------------------------- */
-
   _getItemId(event) {
-    return event.currentTarget.closest(".item")?.dataset.itemId;
+    return event.currentTarget.closest(".item")?.dataset?.itemId;
   }
 
   _editItem(event) {
@@ -107,13 +107,11 @@ export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
     const item = this.actor.items.get(this._getItemId(event));
     if (!item) return;
 
-    const active = !item.system.active;
+    const active = !item.system?.active;
     const updates = [{ _id: item.id, "system.active": active }];
 
-    const children = this.actor.items.filter(i => i.system.rootId === item.id);
-    for (const c of children) {
-      updates.push({ _id: c.id, "system.active": active });
-    }
+    const children = this.actor.items.filter(i => i.system?.rootId === item.id);
+    for (const c of children) updates.push({ _id: c.id, "system.active": active });
 
     await this.actor.updateEmbeddedDocuments("Item", updates);
   }
@@ -134,25 +132,24 @@ export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
   /* -------------------------------------------- */
   /*  Rolls                                       */
   /* -------------------------------------------- */
-
   async _makeManualRoll(event) {
     event.preventDefault();
 
     const abilities = this.actor.items.filter(i => this.selectedAbilities.includes(i.id));
-    let roll = this.actor.system.globalMod ?? 0;
+    let roll = this.actor.system?.globalMod ?? 0;
     let enduranceCost = 0;
 
     for (const a of abilities) {
-      const sign = a.system.type === "weakness" ? -1 : 1;
-      roll += sign * a.system.level.value;
-      enduranceCost += a.system.enduranceCost ?? 0;
+      const sign = a.system?.type === "weakness" ? -1 : 1;
+      roll += sign * (a.system?.level?.value ?? 0);
+      enduranceCost += a.system?.enduranceCost ?? 0;
     }
 
     await this._makeRoll({
       roll,
       enduranceCost,
       abilities,
-      callback: () => abilities.forEach(a => a.use())
+      callback: () => abilities.forEach(a => a.use?.())
     });
   }
 
@@ -168,7 +165,6 @@ export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
   /* -------------------------------------------- */
   /*  Effects                                     */
   /* -------------------------------------------- */
-
   _removeEffect(event) {
     event.preventDefault();
     const id = this._getItemId(event);

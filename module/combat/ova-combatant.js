@@ -1,23 +1,26 @@
 export default class OVACombatant extends Combatant {
-    /** @override */
-    getInitiativeRoll(formula) {
-        const rollData = this.actor?.getRollData() || {};
-        const speed = rollData.speed;
+  /** @override */
+  get initiativeRoll() {
+    const rollData = this.actor?.getRollData?.() ?? {};
+    const speed = rollData.speed ?? 0;
 
-        let roll = 2 + speed;
-        let negativeDice = false;
-        if (roll <= 0) {
-            negativeDice = true;
-            roll = 2 - roll;
-        }
+    let rollValue = 2 + speed;
+    let negativeDice = false;
 
-        // roll dice
-        let dice;
-        if (negativeDice) {
-            dice = new Roll(`${roll}d6kl`);
-        } else {
-            dice = new Roll(`${roll}d6khs`);
-        }
-        return dice;
+    if (rollValue <= 0) {
+      negativeDice = true;
+      rollValue = 2 - rollValue;
     }
+
+    // Create dice roll
+    const formula = negativeDice ? `${rollValue}d6kl` : `${rollValue}d6khs`;
+    return new Roll(formula);
+  }
+
+  /** @override */
+  async rollInitiative({ chatMessage = true, createCombatants = false } = {}) {
+    const roll = this.initiativeRoll;
+    await roll.evaluate({ async: true });
+    return super.rollInitiative({ formula: roll.total, chatMessage, createCombatants });
+  }
 }

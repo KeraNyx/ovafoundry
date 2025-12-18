@@ -1,4 +1,4 @@
-export default class OVATokenHUD extends foundry.applications.hud.TokenHUD {
+export default class OVATokenHUD extends foundry.appv1.hud.TokenHUD {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: "token-hud",
@@ -14,7 +14,8 @@ export default class OVATokenHUD extends foundry.applications.hud.TokenHUD {
 
     _triggerActiveEffects(event) {
         event.preventDefault();
-        const targets = canvas.tokens.controlled.map(t => t.actor);
-        targets.forEach(t => t.triggerOverTimeEffects());
+
+        const targets = canvas.tokens.controlled.map(t => t.actor).filter(a => a);
+        targets.forEach(actor => actor.triggerOverTimeEffects?.());
     }
 }

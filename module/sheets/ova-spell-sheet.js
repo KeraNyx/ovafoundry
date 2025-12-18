@@ -17,7 +17,6 @@ export default class OVASpellSheet extends OVAAttackSheet {
             html.find('.item-edit').on("blur", sheet._endEditingItem.bind(sheet));
             html.find('.item-edit').click(sheet._editItem.bind(sheet));
 
-            html.find('.item-edit').click(sheet._editItem.bind(sheet));
             html.find('.item-value').on("input", sheet._onItemValueChange.bind(sheet));
             html.find('.item-value').keypress(sheet._itemValueValidator.bind(sheet));
             html.find('.ability-name').on("contextmenu", sheet._editItem.bind(sheet));
@@ -42,11 +41,13 @@ export default class OVASpellSheet extends OVAAttackSheet {
 
         if (newItemData.type !== 'ability') return;
 
-        const oldAbilities = item.actor.data.items.filter(i => i.data.data.rootId === item.id)
-        if (oldAbilities.length) await this.actor.deleteEmbeddedDocuments("Item", oldAbilities.map(i => i.id));
-        newItemData.data.rootId = item.id;
+        const oldAbilities = item.actor.items.filter(i => i.system.rootId === item.id);
+        if (oldAbilities.length) {
+            await this.actor.deleteEmbeddedDocuments("Item", oldAbilities.map(i => i.id));
+        }
 
-        this.actor.createEmbeddedDocuments("Item", [newItemData]);
+        newItemData.data.rootId = item.id;
+        await this.actor.createEmbeddedDocuments("Item", [newItemData]);
     }
 
     getData() {

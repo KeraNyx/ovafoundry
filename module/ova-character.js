@@ -22,8 +22,7 @@ export default class OVACharacter extends Actor {
       data.flags.core.sheetClass = "ova.OVANPCSheet";
     }
 
-    const actor = await super.create(data, options);
-    return actor;
+    return super.create(data, options);
   }
 
   async createAttack() {
@@ -40,7 +39,6 @@ export default class OVACharacter extends Actor {
     }]);
   }
 
-  /** @override */
   async _preUpdate(changes, options, user) {
     const system = this.system;
 
@@ -222,61 +220,5 @@ export default class OVACharacter extends Actor {
         jitter: 0.25
       });
     }
-  }
-
-  // -----------------------
-  // Updated V16 dialog
-  // -----------------------
-  static async createDialog(data = {}, { parent = null, pack = null, ...options } = {}) {
-    const documentName = this.metadata.name;
-    const types = ["character", "npc"];
-
-    const folders = parent ? [] : game.folders.filter(f => f.type === documentName && f.displayed);
-    const label = game.i18n.localize(this.metadata.label);
-    const title = game.i18n.format("DOCUMENT.Create", { type: label });
-
-    const htmlContent = await foundry.applications.handlebars.renderTemplate(
-      "templates/sidebar/document-create.html",
-      {
-        name: data.name ?? game.i18n.format("DOCUMENT.New", { type: label }),
-        folder: data.folder,
-        folders,
-        hasFolders: folders.length > 0,
-        type: data.type ?? types[0],
-        types: Object.fromEntries(types.map(t => [t, t])),
-        hasTypes: types.length > 1
-      }
-    );
-
-    class CreateActorDialog extends foundry.applications.api.HandlebarsApplicationMixin(
-      foundry.applications.api.ApplicationV2
-    ) {
-      static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
-          title,
-          template: htmlContent,
-          width: 400,
-          height: "auto",
-          resizable: true
-        });
-      }
-
-      async _updateObject(event, formData) {
-        event.preventDefault();
-        const form = event.currentTarget;
-        const formEntries = Object.fromEntries(new FormData(form).entries());
-        foundry.utils.mergeObject(data, formEntries, { inplace: true });
-
-        const subtype = data.type;
-        data.type = "character"; // enforce system type
-        delete data.folder;      // optional
-
-        await this.constructor.create(data, { parent, pack, renderSheet: true, subtype });
-        this.close();
-      }
-    }
-
-    const dialog = new CreateActorDialog();
-    dialog.render(true);
   }
 }

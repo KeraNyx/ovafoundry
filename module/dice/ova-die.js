@@ -1,37 +1,40 @@
 export default class OVADie extends foundry.dice.terms.Die {
     constructor(termData = {}) {
         super(termData);
-        Die.MODIFIERS['khs'] = 'keepHighestSum';
+        // Register custom modifier if not already present
+        if (!foundry.dice.DIE_MODIFIERS.hasOwnProperty('khs')) {
+            foundry.dice.DIE_MODIFIERS['khs'] = 'keepHighestSum';
+        }
     }
 
+    /** Custom 'keepHighestSum' modifier */
     keepHighestSum(modifier) {
-        // sum same this.results
-        const dieSum = {};
+        // Calculate sum of results for each unique die value
+        const dieSums = {};
         for (const roll of this.results) {
-            if (!dieSum[roll.result]) {
-                dieSum[roll.result] = roll.result;
-            } else {
-                dieSum[roll.result] += roll.result;
+            dieSums[roll.result] = (dieSums[roll.result] || 0) + roll.result;
+        }
+
+        // Find die value with the highest sum
+        let highestSum = 0;
+        let highestDie = 0;
+        for (const dieValue in dieSums) {
+            const sum = dieSums[dieValue];
+            if (sum > highestSum) {
+                highestSum = sum;
+                highestDie = Number(dieValue);
             }
         }
 
-        // find die with highest sum
-        let highest = 0;
-        let hidhestDie = 0;
-
-        for (const die in dieSum) {
-            if (dieSum[die] <= highest) continue;
-            highest = dieSum[die];
-            hidhestDie = die;
-        }
-
-        // discard all dice with lower sum
+        // Discard all dice that are not the highest sum
         for (const roll of this.results) {
-            if (roll.result != hidhestDie) {
+            if (roll.result !== highestDie) {
                 roll.discarded = true;
                 roll.active = false;
+            } else {
+                roll.discarded = false;
+                roll.active = true;
             }
         }
     }
-
 }

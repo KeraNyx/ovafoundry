@@ -17,12 +17,12 @@ export default class OVAAttackSheet extends BaseItemSheet {
     _selectAbility(event) {
         event.preventDefault();
 
-        var dataset = event.currentTarget.closest(".item").dataset;
+        const dataset = event.currentTarget.closest(".item").dataset;
         const selectionId = dataset.itemId;
         const ability = this.actor.items.find(i => i.id === selectionId);
-        if (ability.data.data.passive) return;
+        if (ability?.data?.data?.passive) return;
 
-        let selected = this.item.data.data.abilities;
+        let selected = this.item.data.data.abilities ?? [];
 
         if (selected.includes(selectionId)) {
             selected = selected.filter(id => id !== selectionId);
@@ -42,16 +42,14 @@ export default class OVAAttackSheet extends BaseItemSheet {
 
         data.item = itemData;
         data.data = itemData.data;
-        data.selected = itemData.data.abilities;
-        data.abilities = this.actor.items.
-            filter(i => i.type === 'ability' && i.data.data.rootId === '').
-            map(a => a.data).
-            sort((a, b) => {
-                // sort by type and name
-                if (a.data.type === b.data.type) {
-                    return a.name.localeCompare(b.name);
-                }
-                return a.type.localeCompare(b.type);
+        data.selected = itemData.data.abilities ?? [];
+
+        data.abilities = this.actor.items
+            .filter(i => i.type === 'ability' && (i.data?.data?.rootId === ''))
+            .map(a => a.data)
+            .sort((a, b) => {
+                if (a.data?.type === b.data?.type) return a.name.localeCompare(b.name);
+                return (a.data?.type ?? '').localeCompare(b.data?.type ?? '');
             });
 
         return data;

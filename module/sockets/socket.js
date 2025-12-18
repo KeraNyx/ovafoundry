@@ -4,33 +4,36 @@ export default class Socket {
         this.callbacks = {};
     }
 
+    /** Initialize the singleton instance and set up listeners */
     static initialize() {
         Socket._instance._initialize();
     }
 
     _initialize() {
-        if (!this.initialized) {
-            game.socket.on('system.ova', (data) => {
-                Socket._instance._handleMessage(data);
-            });
-            this.initialized = true;
-        }
+        if (this.initialized) return;
+
+        game.socket.on('system.ova', (data) => {
+            this._handleMessage(data);
+        });
+
+        this.initialized = true;
     }
 
+    /** Handle incoming socket messages */
     _handleMessage(data) {
-        if (this.callbacks[data.event]) {
-            this.callbacks[data.event](data.data);
-        }
+        const callback = this.callbacks[data.event];
+        if (callback) callback(data.data);
     }
 
+    /** Emit a message to all clients */
     static emit(eventName, data) {
-        const message = {
+        game.socket.emit('system.ova', {
             event: eventName,
             data: data
-        }
-        game.socket.emit('system.ova', message);
+        });
     }
 
+    /** Register a callback for a socket event */
     static on(eventName, callback) {
         Socket._instance._on(eventName, callback);
     }
@@ -39,4 +42,6 @@ export default class Socket {
         this.callbacks[eventName] = callback;
     }
 }
+
+/** Singleton instance */
 Socket._instance = new Socket();

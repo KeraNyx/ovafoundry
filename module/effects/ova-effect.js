@@ -11,7 +11,6 @@ export default class OVAEffect {
   /* -------------------------------------------- */
   /*  Static Configuration                        */
   /* -------------------------------------------- */
-
   static TYPES = {
     "apply-changes": "OVA.Effects.Types.ApplyChanges",
     "apply-active-effect": "OVA.Effects.Types.ApplyActiveEffect",
@@ -30,17 +29,8 @@ export default class OVAEffect {
   /* -------------------------------------------- */
   /*  Apply Effect (Derived Data Phase)           */
   /* -------------------------------------------- */
-
   apply(targetData) {
-    const {
-      type,
-      key,
-      mode,
-      keyValue,
-      value,
-      priority
-    } = this.data;
-
+    const { type, key, mode, keyValue, value, priority } = this.data;
     const itemSystem = this.item.system ?? {};
     const sign = ["weakness", "flaw"].includes(this.item.type) ? -1 : 1;
 
@@ -52,13 +42,8 @@ export default class OVAEffect {
     if (!targetData.changes) targetData.changes = [];
 
     /* ---------------- APPLY CHANGES ---------------- */
-
-    if (type === "apply-changes") {
-      if (value === "" || value === undefined) return;
-
-      const evaluatedValue = Number.fromString(
-        OVAEffect._safeEval(targetData, value)
-      );
+    if (type === "apply-changes" && value !== "" && value !== undefined) {
+      const evaluatedValue = Number(OVAEffect._safeEval(targetData, value));
 
       targetData.changes.push({
         source: {
@@ -80,7 +65,6 @@ export default class OVAEffect {
     }
 
     /* -------------- APPLY ACTIVE EFFECT ------------ */
-
     if (type === "apply-active-effect") {
       if (!targetData.activeEffects) targetData.activeEffects = [];
 
@@ -99,11 +83,9 @@ export default class OVAEffect {
   /* -------------------------------------------- */
   /*  Immediate Change Application                */
   /* -------------------------------------------- */
-
   static applyEffectChanges(effect, targetData) {
     const { key, mode, value, keyValue = "" } = effect;
     const resolvedKey = key.replace(/\?/g, keyValue);
-
     let current = foundry.utils.getProperty(targetData, resolvedKey) ?? 0;
 
     switch (Number(mode)) {
@@ -130,13 +112,12 @@ export default class OVAEffect {
   /* -------------------------------------------- */
   /*  ActiveEffect Document Builder               */
   /* -------------------------------------------- */
-
   static createActiveEffect(effect, rollData) {
     rollData.item = effect.source.item ?? {};
     rollData.level = effect.source.level ?? 0;
 
     const evaluatedValue = effect.value !== ""
-      ? Number.fromString(OVAEffect._safeEval(rollData, effect.value))
+      ? Number(OVAEffect._safeEval(rollData, effect.value))
       : "";
 
     const resolvedKey = effect.key.replace(/\?/g, effect.keyValue ?? "");
@@ -158,10 +139,9 @@ export default class OVAEffect {
     };
 
     /* -------- Over-Time Effect Support -------- */
-
     if (effect.overTime?.when && effect.overTime.key) {
       const otValue = effect.overTime.value !== ""
-        ? Number.fromString(OVAEffect._safeEval(rollData, effect.overTime.value))
+        ? Number(OVAEffect._safeEval(rollData, effect.overTime.value))
         : "";
 
       aeData.flags[effect.overTime.when] = {
@@ -177,26 +157,18 @@ export default class OVAEffect {
   /* -------------------------------------------- */
   /*  Safe Expression Evaluation                  */
   /* -------------------------------------------- */
-
   static _safeEval(data, expression) {
     let result;
-
     try {
       expression = expression.replace(/@/g, "data.");
-      const fn = new Function(
-        "sandbox",
-        "data",
-        `with (sandbox) { return ${expression}; }`
-      );
+      const fn = new Function("sandbox", "data", `with(sandbox){ return ${expression}; }`);
       result = fn({ ...Roll.MATH_PROXY }, data);
     } catch {
       result = undefined;
     }
 
-    if (!Number.isNumeric(result)) {
-      throw new Error(
-        `OVAEffect.safeEval produced a non-numeric result: ${expression} → ${result}`
-      );
+    if (!Number.isFinite(result)) {
+      throw new Error(`OVAEffect._safeEval produced non-numeric result: ${expression} → ${result}`);
     }
 
     return result;
@@ -205,7 +177,6 @@ export default class OVAEffect {
   /* -------------------------------------------- */
   /*  Default Effect Template                    */
   /* -------------------------------------------- */
-
   static defaultObject() {
     return {
       type: "apply-changes",

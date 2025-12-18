@@ -16,7 +16,6 @@ export default class OVAAbilitySheet extends BaseItemSheet {
             html.find('.item-edit').on("blur", this.actor.sheet._endEditingItem.bind(this));
             html.find('.item-edit').click(this.actor.sheet._editItem.bind(this));
 
-            html.find('.item-edit').click(this.actor.sheet._editItem.bind(this));
             html.find('.item-value').on("input", this.actor.sheet._onItemValueChange.bind(this));
             html.find('.item-value').keypress(this.actor.sheet._itemValueValidator.bind(this));
             html.find('.ability-name').on("contextmenu", this.actor.sheet._editItem.bind(this));
@@ -40,7 +39,7 @@ export default class OVAAbilitySheet extends BaseItemSheet {
         data.item = itemData;
         data.data = itemData.data;
         data.abilities = itemData.data.abilities;
-        
+
         return data;
     }
 

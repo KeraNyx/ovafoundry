@@ -2,7 +2,7 @@ import BaseItemSheet from "./base-item-sheet.js";
 
 export default class OVAPerkSheet extends BaseItemSheet {
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             template: "systems/ova/templates/sheets/ova-perk-sheet.html"
         });
     }

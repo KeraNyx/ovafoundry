@@ -29,7 +29,7 @@ export default class OVAItem extends Item {
       await this.actor.updateEmbeddedDocuments("Item", updatedPerkData);
     }
 
-    const perkIds = [...this.system.perks, ...newPerks.map(p => p.id)];
+    const perkIds = [...currentPerks, ...newPerks.map(p => p.id)];
     await this.update({ "system.perks": perkIds });
   }
 
@@ -50,7 +50,6 @@ export default class OVAItem extends Item {
     }
   }
 
-  /** @override */
   prepareDerivedData() {
     super.prepareDerivedData();
     if (!this.isEmbedded) return;
@@ -87,7 +86,7 @@ export default class OVAItem extends Item {
 
     for (const perk of actorPerks) {
       this.combinedPerks.push(perk);
-      enduranceCost += perk.system.level.value * perk.system.enduranceCost;
+      enduranceCost += (perk.system.level.value * (perk.system.enduranceCost ?? 0));
 
       for (const effect of perk.system.effects ?? []) {
         this.ovaEffects.push(new OVAEffect(perk, effect));
@@ -96,7 +95,7 @@ export default class OVAItem extends Item {
 
     this.enduranceCost = Math.max(enduranceCost, 0);
 
-    if (this.type === "perk" || this.type === "ability") {
+    if (["perk", "ability"].includes(this.type)) {
       for (const effect of this.system.effects ?? []) {
         this.ovaEffects.push(new OVAEffect(this, effect));
       }
@@ -187,7 +186,6 @@ export default class OVAItem extends Item {
     data.level.total = data.level.value + data.level.mod;
   }
 
-  /** @override */
   async _preDelete() {
     if (this.system.perks?.length) {
       await this.actor?.deleteEmbeddedDocuments("Item", this.system.perks);

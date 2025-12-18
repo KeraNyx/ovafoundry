@@ -18,17 +18,17 @@ export default function configureStatusEffects() {
         {
             id: "paralysis",
             label: "EFFECT.StatusParalysis",
-            icon: "icons/svg/paralysis.svg",
+            icon: "icons/svg/paralysis.svg"
         },
         {
             id: "impaired",
             label: "EFFECT.StatusImpaired",
-            icon: "icons/svg/down.svg",
+            icon: "icons/svg/down.svg"
         },
         {
             id: "disarmed",
             label: "EFFECT.StatusDisarmed",
-            icon: "icons/svg/sword.svg",
+            icon: "icons/svg/sword.svg"
         },
         {
             id: "blind",
@@ -38,12 +38,12 @@ export default function configureStatusEffects() {
         {
             id: "fly",
             label: "EFFECT.StatusFlying",
-            icon: "icons/svg/wing.svg",
+            icon: "icons/svg/wing.svg"
         },
         {
             id: "eye",
             label: "EFFECT.StatusMarked",
             icon: "icons/svg/eye.svg"
-        },
+        }
     ];
 }
