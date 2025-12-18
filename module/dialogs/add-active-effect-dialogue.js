@@ -3,7 +3,6 @@ import OVAEffect from "../effects/ova-effect.js";
 export default class AddActiveEffectPrompt extends Application {
   constructor(actor) {
     super({});
-
     this.actor = actor;
     this.effect = OVAEffect.defaultObject();
   }
@@ -23,14 +22,18 @@ export default class AddActiveEffectPrompt extends Application {
 
   /** @override */
   activateListeners(html) {
-    html.querySelectorAll('.effect-key-select').forEach(el => {
+    super.activateListeners(html);
+
+    // Ensure html is a plain HTMLElement
+    const root = html instanceof HTMLElement ? html : html[0];
+
+    root?.querySelectorAll('.effect-key-select').forEach(el => {
       el.addEventListener('change', ev => {
-        const valueContainer = html.querySelector('.effect-key-value');
+        const valueContainer = root.querySelector('.effect-key-value');
         if (ev.currentTarget.value.includes("?")) valueContainer.classList.remove('hidden');
         else valueContainer.classList.add('hidden');
       });
     });
-    super.activateListeners(html);
   }
 
   /** @override */

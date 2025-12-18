@@ -174,4 +174,13 @@ export default class OVACharacterSheet extends foundry.appv1.sheets.ActorSheet {
   _addActiveEffect() {
     new AddActiveEffectPrompt(this.actor).render(true);
   }
+
+  /* -------------------------------------------- */
+  /*  Save Sheet Changes                           */
+  /* -------------------------------------------- */
+  async _updateObject(event, formData) {
+    event.preventDefault();
+    // This updates the actor with all changes from the form
+    await this.actor.update(formData);
+  }
 }

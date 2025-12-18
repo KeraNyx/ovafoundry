@@ -3,15 +3,19 @@ import Socket from "./sockets/socket.js";
 
 export default class OVACharacter extends Actor {
 
-  static async create(data, options = {}) {
-    const subtype = options.subtype ?? "character";
+  /* -------------------------------------------- */
+  /*  Creation                                    */
+  /* -------------------------------------------- */
 
-    data.prototypeToken = {
+  static async create(data, options = {}) {
+    const subtype = options.subtype ?? data.type ?? "character";
+
+    data.prototypeToken ??= {
       actorLink: subtype === "character",
       disposition: subtype === "character" ? 1 : -1,
       vision: true,
-      bar1: { attribute: "attributes.hp" },
-      bar2: { attribute: "attributes.endurance" }
+      bar1: { attribute: "system.hp" },
+      bar2: { attribute: "system.endurance" }
     };
 
     data.img ??= "icons/svg/mystery-man-black.svg";
@@ -24,6 +28,10 @@ export default class OVACharacter extends Actor {
 
     return super.create(data, options);
   }
+
+  /* -------------------------------------------- */
+  /*  Embedded Item Helpers                       */
+  /* -------------------------------------------- */
 
   async createAttack() {
     return this.createEmbeddedDocuments("Item", [{
@@ -39,21 +47,25 @@ export default class OVACharacter extends Actor {
     }]);
   }
 
-  async _preUpdate(changes, options, user) {
-    const system = this.system;
+  /* -------------------------------------------- */
+  /*  Update Handling                             */
+  /* -------------------------------------------- */
 
-    let hp = foundry.utils.getProperty(changes, "system.hp.value") ?? system.hp.value;
-    let end = foundry.utils.getProperty(changes, "system.endurance.value") ?? system.endurance.value;
+  async _preUpdate(changes, options, user) {
+    const s = this.system;
+
+    let hp = foundry.utils.getProperty(changes, "system.hp.value") ?? s.hp.value;
+    let end = foundry.utils.getProperty(changes, "system.endurance.value") ?? s.endurance.value;
 
     if (hp < 0) {
       end += hp;
-      foundry.utils.setProperty(changes, "system.endurance.value", end);
+      foundry.utils.setProperty(changes, "system.endurance.value", Math.max(end, 0));
       foundry.utils.setProperty(changes, "system.hp.value", 0);
     }
 
     if (end < 0) {
       hp += end;
-      foundry.utils.setProperty(changes, "system.hp.value", hp);
+      foundry.utils.setProperty(changes, "system.hp.value", Math.max(hp, 0));
       foundry.utils.setProperty(changes, "system.endurance.value", 0);
     }
 
@@ -66,39 +78,67 @@ export default class OVACharacter extends Actor {
       foundry.utils.setProperty(changes, "system.endurance.value", 0);
     }
 
-    this._notifyValueChange(system.hp.value, hp);
-    this._notifyValueChange(system.endurance.value, end, "#427ef5");
+    this._notifyValueChange(s.hp.value, hp);
+    this._notifyValueChange(s.endurance.value, end, "#427ef5");
   }
+
+  /* -------------------------------------------- */
+  /*  Data Preparation                            */
+  /* -------------------------------------------- */
 
   prepareBaseData() {
     super.prepareBaseData();
     const s = this.system;
 
-    s.globalMod = 2;
-    s.globalRollMod = 0;
-    s.globalDefMod = 0;
-    s.armor = 0;
-    s.resistances = {};
-    s.attacks = [];
-    s.speed = 0;
+    /* ---- global defaults ---- */
+    s.globalMod ??= 2;
+    s.globalRollMod ??= 0;
+    s.globalDefMod ??= 0;
+    s.armor ??= 0;
+    s.resistances ??= {};
+    s.attacks ??= [];
+    s.speed ??= 0;
 
-    s.defenses = foundry.utils.deepClone(s.defenses);
-    s.hp = foundry.utils.deepClone(s.hp);
-    s.hpReserve = { max: s.hpReserve?.max ?? 0 };
-    s.endurance = foundry.utils.deepClone(s.endurance);
-    s.enduranceReserve = foundry.utils.deepClone(s.enduranceReserve);
+    /* ---- normalize core pools ---- */
+    s.hp = foundry.utils.mergeObject(
+      { value: 0, max: 0 },
+      s.hp ?? {}
+    );
+
+    s.hpReserve = foundry.utils.mergeObject(
+      { value: 0, max: 0 },
+      s.hpReserve ?? {}
+    );
+
+    s.endurance = foundry.utils.mergeObject(
+      { value: 0, max: 0, penalty: 0 },
+      s.endurance ?? {}
+    );
+
+    s.enduranceReserve = foundry.utils.mergeObject(
+      { value: 0, max: 0 },
+      s.enduranceReserve ?? {}
+    );
+
+    /* ---- other structures ---- */
+    s.defenses = foundry.utils.deepClone(s.defenses ?? {});
     s.attack = { roll: 0, dx: 0 };
-    s.dramaDice = foundry.utils.deepClone(s.dramaDice);
+    s.dramaDice = foundry.utils.mergeObject(
+      { used: 0, free: 0 },
+      s.dramaDice ?? {}
+    );
   }
 
   prepareDerivedData() {
     super.prepareDerivedData();
     const s = this.system;
 
-    this.items
-      .filter(i => i.type === "ability")
-      .forEach(i => i.prepareDerivedData());
+    /* ---- abilities first ---- */
+    for (const item of this.items.filter(i => i.type === "ability")) {
+      item.prepareDerivedData();
+    }
 
+    /* ---- apply ability effects ---- */
     for (const item of this.items) {
       if (item.type !== "ability" || !item.system.active) continue;
       item.ovaEffects
@@ -106,34 +146,41 @@ export default class OVACharacter extends Actor {
         .forEach(e => e.apply(s));
     }
 
+    /* ---- derived pools ---- */
     s.hp.max += s.hpReserve.max;
 
+    /* ---- magic ---- */
     const magic = this.items.filter(i => i.type === "ability" && i.system.magic);
     s.magic = magic;
     s.haveMagic = magic.length > 0;
 
-    if (!s.changes) s.changes = [];
+    s.changes ??= [];
 
     if (s.hp.value <= 0 || s.endurance.value <= 0) {
       s.globalMod -= 1;
     }
 
-    this.items
-      .filter(i => i.type !== "ability")
-      .forEach(i => i.prepareDerivedData());
+    /* ---- non-ability items ---- */
+    for (const item of this.items.filter(i => i.type !== "ability")) {
+      item.prepareDerivedData();
+    }
 
     s.tv = s.tv > 0 ? s.tv : this._calculateThreatValue();
   }
+
+  /* -------------------------------------------- */
+  /*  Threat Value                                */
+  /* -------------------------------------------- */
 
   _calculateThreatValue() {
     const s = this.system;
     let tv = 0;
 
-    const highestDefense = Math.max(...Object.values(s.defenses));
-    tv += highestDefense;
+    const defenses = Object.values(s.defenses ?? {});
+    tv += defenses.length ? Math.max(...defenses) : 0;
 
     const attacks = this.items.filter(i => i.type === "attack");
-    const free = attacks.filter(a => a.system.enduranceCost === 0 && a.system.attack.dx >= 0);
+    const free = attacks.filter(a => a.system.enduranceCost === 0 && a.system.attack?.dx >= 0);
 
     const best = free.sort((a, b) => b.system.attack.roll - a.system.attack.roll)[0];
     if (best) {
@@ -147,12 +194,16 @@ export default class OVACharacter extends Actor {
     return tv;
   }
 
+  /* -------------------------------------------- */
+  /*  Drama Dice                                  */
+  /* -------------------------------------------- */
+
   giveFreeDramaDice() {
-    this.update({ "system.dramaDice.free": this.system.dramaDice.free + 1 });
+    return this.update({ "system.dramaDice.free": this.system.dramaDice.free + 1 });
   }
 
   resetUsedDramaDice() {
-    this.update({
+    return this.update({
       "system.dramaDice.used": 0,
       "system.dramaDice.free": 0
     });
@@ -168,6 +219,10 @@ export default class OVACharacter extends Actor {
     });
   }
 
+  /* -------------------------------------------- */
+  /*  Rolls & HUD Text                            */
+  /* -------------------------------------------- */
+
   getRollData() {
     return this.system;
   }
@@ -181,7 +236,8 @@ export default class OVACharacter extends Actor {
   changeEndurance(amount, reserve = false) {
     if (amount === 0) return;
     const path = reserve ? "system.enduranceReserve.value" : "system.endurance.value";
-    this.update({ [path]: foundry.utils.getProperty(this.system, path.split(".").slice(1).join(".")) + amount });
+    const current = foundry.utils.getProperty(this.system, path.split(".").slice(1).join("."));
+    this.update({ [path]: current + amount });
   }
 
   _notifyValueChange(oldValue, newValue, stroke) {

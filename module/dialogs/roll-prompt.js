@@ -1,3 +1,5 @@
+import OVADie from "../dice/ova-die.js";
+
 const sizeMods = {
     disadvantage: -5,
     normal: 0,
@@ -37,11 +39,11 @@ export default class RollPrompt extends Dialog {
 
         this.actor = actor;
         this.type = type;
-        this.enduranceCost = enduranceCost;
         this.roll = roll;
         this.enduranseSelection = 'base';
         this.sizeSelection = 'normal';
         this.attack = attack;
+        this._baseEnduranceCost = enduranceCost;
     }
 
     get template() {
@@ -50,15 +52,16 @@ export default class RollPrompt extends Dialog {
 
     activateListeners(html) {
         super.activateListeners(html);
+        const root = html instanceof HTMLElement ? html : html[0];
 
-        html.querySelector('#endurance-cost')?.addEventListener('input', this._changeEnduranceCost.bind(this));
-        html.querySelectorAll('.size[data-selection]').forEach(el => el.addEventListener('click', this._selectSize.bind(this)));
-        html.querySelectorAll('.enduranse-pool[data-selection]').forEach(el => el.addEventListener('click', this._selectEnduransePool.bind(this)));
+        root?.querySelector('#endurance-cost')?.addEventListener('input', this._changeEnduranceCost.bind(this));
+        root?.querySelectorAll('.size[data-selection]').forEach(el => el.addEventListener('click', this._selectSize.bind(this)));
+        root?.querySelectorAll('.enduranse-pool[data-selection]').forEach(el => el.addEventListener('click', this._selectEnduransePool.bind(this)));
     }
 
     _changeEnduranceCost(e) {
         e.preventDefault();
-        this.enduranceCost = parseInt(e.currentTarget.value);
+        this._baseEnduranceCost = parseInt(e.currentTarget.value);
     }
 
     _selectSize(e) {
@@ -76,9 +79,9 @@ export default class RollPrompt extends Dialog {
     getData() {
         const data = super.getData();
         data.actor = this.actor;
-        data.enduranceCost = this.type === 'drama' && this.enduranceCost > 0
-            ? `${this.enduranceCost}/${this.enduranceCost * 6}`
-            : this.enduranceCost;
+        data.enduranceCost = this.type === 'drama' && this._baseEnduranceCost > 0
+            ? `${this._baseEnduranceCost}/${this._baseEnduranceCost * 6}`
+            : this._baseEnduranceCost;
         data.enduranseSelection = this.enduranseSelection;
         data.type = this.type;
         data.sizeSelection = this.sizeSelection;
@@ -89,32 +92,42 @@ export default class RollPrompt extends Dialog {
         this.resolve?.(false);
     }
 
-    _roll(html, multiplier) {
-        let mod = parseInt(html.querySelector('#roll-modifier')?.value) || 0;
+    async _roll(html, multiplier) {
+        const root = html instanceof HTMLElement ? html : html?.[0];
+        if (!root) return;
 
-        let roll = this.roll + mod + sizeMods[this.sizeSelection];
+        let mod = parseInt(root.querySelector('#roll-modifier')?.value) || 0;
+        let rollValue = this.roll + mod + sizeMods[this.sizeSelection];
         let negativeDice = false;
 
-        if (roll <= 0) {
+        if (rollValue <= 0) {
             negativeDice = true;
-            roll = 2 - roll;
+            rollValue = 2 - rollValue;
         }
 
-        roll = negativeDice && multiplier !== 0 ? Math.ceil(roll / multiplier) : roll * multiplier;
+        rollValue = negativeDice && multiplier !== 0
+            ? Math.ceil(rollValue / multiplier)
+            : rollValue * multiplier;
 
-        const dice = this._makeRoll(roll, negativeDice);
+        const dice = await this._makeRoll(rollValue, negativeDice);
 
-        this.resolve?.({ dice, roll });
+        this.resolve?.({ dice, roll: rollValue });
 
-        if (this.type === 'drama') this.enduranceCost *= multiplier;
+        let effectiveCost = this._baseEnduranceCost;
+        if (this.type === 'drama') effectiveCost *= multiplier;
 
-        this.actor.changeEndurance?.(-this.enduranceCost, this.enduranseSelection === 'reserve');
+        this.actor?.changeEndurance?.(
+            -effectiveCost,
+            this.enduranseSelection === 'reserve'
+        );
     }
 
-    _makeRoll(roll, negative = false) {
+    async _makeRoll(roll, negative = false) {
         const formula = negative ? `${roll}d6kl` : `${roll}d6khs`;
         const dice = new Roll(formula);
-        dice.evaluate({ async: false });
+
+        // Foundry 13 automatically handles async dice terms
+        await dice.evaluate();
         return dice;
     }
 
